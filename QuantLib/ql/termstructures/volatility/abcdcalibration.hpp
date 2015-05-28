@@ -67,11 +67,9 @@ namespace QuantLib {
         class AbcdParametersTransformation :
               public ParametersTransformation {
                  mutable Array y_;
-                 const Real eps1_;
          public:
 
-            AbcdParametersTransformation() : y_(Array(4)),
-                eps1_(.000000001){ }
+            AbcdParametersTransformation() : y_(Array(4)) {}
 
             Array direct(const Array& x) const {
                 y_[0] = x[0]*x[0] - std::abs(x[3]); // a+d >= 0

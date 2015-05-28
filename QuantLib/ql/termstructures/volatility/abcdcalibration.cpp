@@ -47,6 +47,8 @@ namespace QuantLib {
       vegaWeighted_(vegaWeighted),
       times_(t), blackVols_(blackVols) {
 
+        validateAbcdParameters(a, b, c, d);
+
         QL_REQUIRE(blackVols.size()==t.size(),
                        "mismatch between number of times (" << t.size() <<
                        ") and blackVols (" << blackVols.size() << ")");
