@@ -41,10 +41,10 @@ namespace QuantLib {
     class EuriborSwapIsdaFixA : public SwapIndex {
       public:
         EuriborSwapIsdaFixA(const Period& tenor,
-                            const Handle<ForwardRateCurve>& h =
+                            const Handle<ForwardRateCurve>& forwarding =
                                     Handle<ForwardRateCurve>());
         EuriborSwapIsdaFixA(const Period& tenor,
-                            const Handle<YieldTermStructure>& h);
+                            const Handle<YieldTermStructure>& forwarding);
         EuriborSwapIsdaFixA(const Period& tenor,
                             const Handle<ForwardRateCurve>& forwarding,
                             const Handle<YieldTermStructure>& discounting);

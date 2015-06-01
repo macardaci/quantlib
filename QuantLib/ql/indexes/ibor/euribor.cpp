@@ -1,7 +1,7 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
- Copyright (C) 2007 Ferdinando Ametrano
+ Copyright (C) 2007, 2015 Ferdinando Ametrano
  Copyright (C) 2007 Chiara Fornarola
 
  This file is part of QuantLib, a free-software/open-source library
@@ -68,8 +68,32 @@ namespace QuantLib {
                    ") dedicated DailyTenor constructor must be used");
     }
 
+    Euribor::Euribor(const Period& tenor,
+                     const Handle<YieldTermStructure>& h)
+    : IborIndex("Euribor", tenor,
+                2, // settlement days
+                EURCurrency(), TARGET(),
+                euriborConvention(tenor), euriborEOM(tenor),
+                Actual360(), h) {
+        QL_REQUIRE(this->tenor().units()!=Days,
+                   "for daily tenors (" << this->tenor() <<
+                   ") dedicated DailyTenor constructor must be used");
+    }
+
     Euribor365::Euribor365(const Period& tenor,
                            const Handle<ForwardRateCurve>& h)
+    : IborIndex("Euribor365", tenor,
+                2, // settlement days
+                EURCurrency(), TARGET(),
+                euriborConvention(tenor), euriborEOM(tenor),
+                Actual365Fixed(), h) {
+        QL_REQUIRE(this->tenor().units()!=Days,
+                   "for daily tenors (" << this->tenor() <<
+                   ") dedicated DailyTenor constructor must be used");
+    }
+
+    Euribor365::Euribor365(const Period& tenor,
+                           const Handle<YieldTermStructure>& h)
     : IborIndex("Euribor365", tenor,
                 2, // settlement days
                 EURCurrency(), TARGET(),

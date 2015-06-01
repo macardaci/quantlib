@@ -41,10 +41,10 @@ namespace QuantLib {
     class ChfLiborSwapIsdaFix : public SwapIndex {
       public:
         ChfLiborSwapIsdaFix(const Period& tenor,
-                            const Handle<ForwardRateCurve>& h =
+                            const Handle<ForwardRateCurve>& forwarding =
                                     Handle<ForwardRateCurve>());
         ChfLiborSwapIsdaFix(const Period& tenor,
-                            const Handle<YieldTermStructure>& h);
+                            const Handle<YieldTermStructure>& forwarding);
         ChfLiborSwapIsdaFix(const Period& tenor,
                             const Handle<ForwardRateCurve>& forwarding,
                             const Handle<YieldTermStructure>& discounting);

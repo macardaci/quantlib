@@ -1,7 +1,7 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
- Copyright (C) 2006, 2007, 2008, 2011 Ferdinando Ametrano
+ Copyright (C) 2006, 2007, 2008, 2011, 2015 Ferdinando Ametrano
  Copyright (C) 2006 Chiara Fornarola
 
  This file is part of QuantLib, a free-software/open-source library
@@ -30,7 +30,7 @@ namespace QuantLib {
 
     GbpLiborSwapIsdaFix::GbpLiborSwapIsdaFix(
                             const Period& tenor,
-                            const Handle<ForwardRateCurve>& h)
+                            const Handle<ForwardRateCurve>& forwarding)
     : SwapIndex("GbpLiborSwapIsdaFix", // familyName
                 tenor,
                 0, // settlementDays
@@ -41,12 +41,12 @@ namespace QuantLib {
                 ModifiedFollowing, // fixedLegConvention
                 Actual365Fixed(), // fixedLegDaycounter
                 tenor > 1*Years ?
-                    shared_ptr<IborIndex>(new GBPLibor(6*Months, h)) :
-                    shared_ptr<IborIndex>(new GBPLibor(3*Months, h))) {}
+                    shared_ptr<IborIndex>(new GBPLibor(6*Months, forwarding)) :
+                    shared_ptr<IborIndex>(new GBPLibor(3*Months, forwarding))) {}
 
     GbpLiborSwapIsdaFix::GbpLiborSwapIsdaFix(
                             const Period& tenor,
-                            const Handle<YieldTermStructure>& h)
+                            const Handle<YieldTermStructure>& forwarding)
     : SwapIndex("GbpLiborSwapIsdaFix", // familyName
                 tenor,
                 0, // settlementDays
@@ -57,8 +57,8 @@ namespace QuantLib {
                 ModifiedFollowing, // fixedLegConvention
                 Actual365Fixed(), // fixedLegDaycounter
                 tenor > 1*Years ?
-                    shared_ptr<IborIndex>(new GBPLibor(6*Months, h)) :
-                    shared_ptr<IborIndex>(new GBPLibor(3*Months, h))) {}
+                    shared_ptr<IborIndex>(new GBPLibor(6*Months, forwarding)) :
+                    shared_ptr<IborIndex>(new GBPLibor(3*Months, forwarding))) {}
 
     GbpLiborSwapIsdaFix::GbpLiborSwapIsdaFix(
                             const Period& tenor,

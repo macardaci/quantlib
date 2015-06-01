@@ -30,6 +30,7 @@ namespace QuantLib {
 
     class CmsCoupon;
     class YieldTermStructure;
+    class ForwardRateCurve;
     class Quote;
 
     class VanillaOptionPricer {
@@ -223,7 +224,7 @@ namespace QuantLib {
         virtual Real optionletPrice(Option::Type optionType,
                                     Real strike) const = 0;
 
-        boost::shared_ptr<YieldTermStructure> rateCurve_;
+        boost::shared_ptr<ForwardRateCurve> rateCurve_;
         GFunctionFactory::YieldCurveModel modelOfYieldCurve_;
         boost::shared_ptr<GFunction> gFunction_;
         const CmsCoupon* coupon_;
@@ -272,7 +273,7 @@ namespace QuantLib {
           public:
             ConundrumIntegrand(
                        const boost::shared_ptr<VanillaOptionPricer>& o,
-                       const boost::shared_ptr<YieldTermStructure>& rateCurve,
+                       const boost::shared_ptr<ForwardRateCurve>& rateCurve,
                        const boost::shared_ptr<GFunction>& gFunction,
                        Date fixingDate,
                        Date paymentDate,

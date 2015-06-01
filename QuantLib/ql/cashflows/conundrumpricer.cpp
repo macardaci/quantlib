@@ -96,13 +96,13 @@ namespace QuantLib {
         fixingDate_ = coupon_->fixingDate();
         paymentDate_ = coupon_->date();
         const boost::shared_ptr<SwapIndex>& swapIndex = coupon_->swapIndex();
-        rateCurve_ = *(swapIndex->discountingTermStructure());
+        rateCurve_ = *(swapIndex->forwardingTermStructure());
 
         Date today = Settings::instance().evaluationDate();
 
-        if (paymentDate_ > today)
-            discount_ = rateCurve_->discount(paymentDate_);
-        else discount_= 1.;
+        if (paymentDate_ > today) {
+            discount_ = swapIndex->discountingTermStructure()->discount(paymentDate_);
+        } else discount_= 1.;
 
         spreadLegValue_ = spread_ * accrualPeriod * discount_;
 
@@ -399,7 +399,7 @@ namespace QuantLib {
 
     NumericHaganPricer::ConundrumIntegrand::ConundrumIntegrand(
         const boost::shared_ptr<VanillaOptionPricer>& o,
-        const boost::shared_ptr<YieldTermStructure>&,
+        const boost::shared_ptr<ForwardRateCurve>&,
         const boost::shared_ptr<GFunction>& gFunction,
         Date fixingDate,
         Date paymentDate,

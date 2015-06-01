@@ -91,7 +91,7 @@ namespace QuantLib {
             ->integratedCovariance(i, i, process_->fixingTimes()[i]);
         Handle<YieldTermStructure> discCurve =
             convertIntoYTSHandle(process_->index()->forwardingTermStructure(),
-                                                false);
+                                 false);
         const DiscountFactor dis = discCurve->discount(bondMaturity);
 
         const Real black = blackFormula(
@@ -193,10 +193,9 @@ namespace QuantLib {
             }
         }
 
-        return swaptionVola = boost::shared_ptr<SwaptionVolatilityMatrix>(
-             new SwaptionVolatilityMatrix(today, exercises, lengths,
-                                          volatilities,
-                                          index->dayCounter()));
+        return swaptionVola = boost::shared_ptr<SwaptionVolatilityMatrix>(new
+            SwaptionVolatilityMatrix(today, exercises, lengths, volatilities,
+                                     index->dayCounter()));
     }
 
     // the next two methods are meaningless within this context
@@ -204,7 +203,7 @@ namespace QuantLib {
     DiscountFactor LiborForwardModel::discount(Time t) const {
         Handle<YieldTermStructure> discCurve =
             convertIntoYTSHandle(process_->index()->forwardingTermStructure(),
-                                                false);
+                                 false);
         return discCurve->discount(t);
     }
 

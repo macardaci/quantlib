@@ -27,7 +27,7 @@ namespace QuantLib {
 
     UsdLiborSwapIsdaFixAm::UsdLiborSwapIsdaFixAm(
                                 const Period& tenor,
-                                const Handle<ForwardRateCurve>& h)
+                                const Handle<ForwardRateCurve>& forwarding)
     : SwapIndex("UsdLiborSwapIsdaFixAm", // familyName
                 tenor,
                 2, // settlementDays
@@ -36,11 +36,11 @@ namespace QuantLib {
                 6*Months, // fixedLegTenor
                 ModifiedFollowing, // fixedLegConvention
                 Thirty360(Thirty360::BondBasis), // fixedLegDaycounter
-                boost::shared_ptr<IborIndex>(new USDLibor(3*Months, h))) {}
+                boost::shared_ptr<IborIndex>(new USDLibor(3*Months, forwarding))) {}
 
     UsdLiborSwapIsdaFixAm::UsdLiborSwapIsdaFixAm(
                                 const Period& tenor,
-                                const Handle<YieldTermStructure>& h)
+                                const Handle<YieldTermStructure>& forwarding)
     : SwapIndex("UsdLiborSwapIsdaFixAm", // familyName
                 tenor,
                 2, // settlementDays
@@ -49,7 +49,7 @@ namespace QuantLib {
                 6*Months, // fixedLegTenor
                 ModifiedFollowing, // fixedLegConvention
                 Thirty360(Thirty360::BondBasis), // fixedLegDaycounter
-                boost::shared_ptr<IborIndex>(new USDLibor(3*Months, h))) {}
+                boost::shared_ptr<IborIndex>(new USDLibor(3*Months, forwarding))) {}
 
     UsdLiborSwapIsdaFixAm::UsdLiborSwapIsdaFixAm(
                                 const Period& tenor,
@@ -68,7 +68,7 @@ namespace QuantLib {
 
     UsdLiborSwapIsdaFixPm::UsdLiborSwapIsdaFixPm(
                                 const Period& tenor,
-                                const Handle<ForwardRateCurve>& h)
+                                const Handle<ForwardRateCurve>& forwarding)
     : SwapIndex("UsdLiborSwapIsdaFixPm", // familyName
                 tenor,
                 2, // settlementDays
@@ -77,11 +77,11 @@ namespace QuantLib {
                 6*Months, // fixedLegTenor
                 ModifiedFollowing, // fixedLegConvention
                 Thirty360(Thirty360::BondBasis), // fixedLegDaycounter
-                boost::shared_ptr<IborIndex>(new USDLibor(3*Months, h))) {}
+                boost::shared_ptr<IborIndex>(new USDLibor(3*Months, forwarding))) {}
 
     UsdLiborSwapIsdaFixPm::UsdLiborSwapIsdaFixPm(
                                 const Period& tenor,
-                                const Handle<YieldTermStructure>& h)
+                                const Handle<YieldTermStructure>& forwarding)
     : SwapIndex("UsdLiborSwapIsdaFixPm", // familyName
                 tenor,
                 2, // settlementDays
@@ -90,7 +90,7 @@ namespace QuantLib {
                 6*Months, // fixedLegTenor
                 ModifiedFollowing, // fixedLegConvention
                 Thirty360(Thirty360::BondBasis), // fixedLegDaycounter
-                boost::shared_ptr<IborIndex>(new USDLibor(3*Months, h))) {}
+                boost::shared_ptr<IborIndex>(new USDLibor(3*Months, forwarding))) {}
 
     UsdLiborSwapIsdaFixPm::UsdLiborSwapIsdaFixPm(
                                 const Period& tenor,

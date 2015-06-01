@@ -68,8 +68,6 @@ namespace QuantLib {
         earliestDate_ = iborStartDate;
         latestDate_ = calendar.advance(iborStartDate, lengthInMonths*Months,
                                        convention, endOfMonth);
-        yearFraction_ = dayCounter.yearFraction(earliestDate_, latestDate_);
-
         registerWith(convAdj_);
     }
 
@@ -100,7 +98,6 @@ namespace QuantLib {
         earliestDate_ = iborStartDate;
         latestDate_ = calendar.advance(iborStartDate, lengthInMonths*Months,
                                        convention, endOfMonth);
-        yearFraction_ = dayCounter.yearFraction(earliestDate_, latestDate_);
     }
 
     FuturesRateHelper::FuturesRateHelper(const Handle<Quote>& price,
@@ -150,8 +147,6 @@ namespace QuantLib {
         }
         earliestDate_ = iborStartDate;
 
-        yearFraction_ = dayCounter.yearFraction(earliestDate_, latestDate_);
-
         registerWith(convAdj_);
     }
 
@@ -204,7 +199,6 @@ namespace QuantLib {
         }
         earliestDate_ = iborStartDate;
 
-        yearFraction_ = dayCounter.yearFraction(earliestDate_, latestDate_);
     }
 
     FuturesRateHelper::FuturesRateHelper(const Handle<Quote>& price,
@@ -229,8 +223,6 @@ namespace QuantLib {
         const Calendar& cal = i->fixingCalendar();
         latestDate_ = cal.advance(iborStartDate, i->tenor(),
                                   i->businessDayConvention());
-        yearFraction_=i->dayCounter().yearFraction(earliestDate_, latestDate_);
-
         registerWith(convAdj);
     }
 
@@ -258,7 +250,6 @@ namespace QuantLib {
         const Calendar& cal = i->fixingCalendar();
         latestDate_ = cal.advance(iborStartDate, i->tenor(),
                                   i->businessDayConvention());
-        yearFraction_=i->dayCounter().yearFraction(earliestDate_, latestDate_);
     }
 
     Real FuturesRateHelper::impliedQuote() const {

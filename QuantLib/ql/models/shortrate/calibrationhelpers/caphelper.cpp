@@ -1,6 +1,7 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
+ Copyright (C) 2015 Ferdinando Ametrano
  Copyright (C) 2001, 2002, 2003 Sadruddin Rejeb
  Copyright (C) 2007 StatPro Italia srl
 
@@ -95,7 +96,7 @@ namespace QuantLib {
                       index_->businessDayConvention(),
                       index_->endOfMonth(),
                       termStructure_->dayCounter(), // WHY ?!?!?!?!
-                      index_->forwardingTermStructure())); // THIS IS A BUGFIX
+                      index_->forwardingTermStructure())); // BUGFIX
 
         std::vector<Real> nominals(1,1.0);
 

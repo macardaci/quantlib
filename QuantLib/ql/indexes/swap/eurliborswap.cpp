@@ -1,7 +1,7 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
- Copyright (C) 2006, 2007, 2008 Ferdinando Ametrano
+ Copyright (C) 2006, 2007, 2008, 2015 Ferdinando Ametrano
  Copyright (C) 2006 Chiara Fornarola
 
  This file is part of QuantLib, a free-software/open-source library
@@ -30,7 +30,7 @@ namespace QuantLib {
 
     EurLiborSwapIsdaFixA::EurLiborSwapIsdaFixA(
                                         const Period& tenor,
-                                        const Handle<ForwardRateCurve>& h)
+                                        const Handle<ForwardRateCurve>& forwarding)
     : SwapIndex("EurLiborSwapIsdaFixA", // familyName
                 tenor,
                 2, // settlementDays
@@ -40,12 +40,12 @@ namespace QuantLib {
                 ModifiedFollowing, // fixedLegConvention
                 Thirty360(Thirty360::BondBasis), // fixedLegDaycounter
                 tenor > 1*Years ?
-                    shared_ptr<IborIndex>(new EURLibor(6*Months, h)) :
-                    shared_ptr<IborIndex>(new EURLibor(3*Months, h))) {}
+                    shared_ptr<IborIndex>(new EURLibor(6*Months, forwarding)) :
+                    shared_ptr<IborIndex>(new EURLibor(3*Months, forwarding))) {}
 
     EurLiborSwapIsdaFixA::EurLiborSwapIsdaFixA(
                                         const Period& tenor,
-                                        const Handle<YieldTermStructure>& h)
+                                        const Handle<YieldTermStructure>& forwarding)
     : SwapIndex("EurLiborSwapIsdaFixA", // familyName
                 tenor,
                 2, // settlementDays
@@ -55,8 +55,8 @@ namespace QuantLib {
                 ModifiedFollowing, // fixedLegConvention
                 Thirty360(Thirty360::BondBasis), // fixedLegDaycounter
                 tenor > 1*Years ?
-                    shared_ptr<IborIndex>(new EURLibor(6*Months, h)) :
-                    shared_ptr<IborIndex>(new EURLibor(3*Months, h))) {}
+                    shared_ptr<IborIndex>(new EURLibor(6*Months, forwarding)) :
+                    shared_ptr<IborIndex>(new EURLibor(3*Months, forwarding))) {}
 
     EurLiborSwapIsdaFixA::EurLiborSwapIsdaFixA(
                                 const Period& tenor,
@@ -77,7 +77,7 @@ namespace QuantLib {
 
     EurLiborSwapIsdaFixB::EurLiborSwapIsdaFixB(
                                         const Period& tenor,
-                                        const Handle<ForwardRateCurve>& h)
+                                        const Handle<ForwardRateCurve>& forwarding)
     : SwapIndex("EurLiborSwapIsdaFixB", // familyName
                 tenor,
                 2, // settlementDays
@@ -87,12 +87,12 @@ namespace QuantLib {
                 ModifiedFollowing, // fixedLegConvention
                 Thirty360(Thirty360::BondBasis), // fixedLegDaycounter
                 tenor > 1*Years ?
-                    shared_ptr<IborIndex>(new EURLibor(6*Months, h)) :
-                    shared_ptr<IborIndex>(new EURLibor(3*Months, h))) {}
+                    shared_ptr<IborIndex>(new EURLibor(6*Months, forwarding)) :
+                    shared_ptr<IborIndex>(new EURLibor(3*Months, forwarding))) {}
 
     EurLiborSwapIsdaFixB::EurLiborSwapIsdaFixB(
                                         const Period& tenor,
-                                        const Handle<YieldTermStructure>& h)
+                                        const Handle<YieldTermStructure>& forwarding)
     : SwapIndex("EurLiborSwapIsdaFixB", // familyName
                 tenor,
                 2, // settlementDays
@@ -102,8 +102,8 @@ namespace QuantLib {
                 ModifiedFollowing, // fixedLegConvention
                 Thirty360(Thirty360::BondBasis), // fixedLegDaycounter
                 tenor > 1*Years ?
-                    shared_ptr<IborIndex>(new EURLibor(6*Months, h)) :
-                    shared_ptr<IborIndex>(new EURLibor(3*Months, h))) {}
+                    shared_ptr<IborIndex>(new EURLibor(6*Months, forwarding)) :
+                    shared_ptr<IborIndex>(new EURLibor(3*Months, forwarding))) {}
 
     EurLiborSwapIsdaFixB::EurLiborSwapIsdaFixB(
                                 const Period& tenor,
@@ -124,7 +124,7 @@ namespace QuantLib {
 
     EurLiborSwapIfrFix::EurLiborSwapIfrFix(
                                         const Period& tenor,
-                                        const Handle<ForwardRateCurve>& h)
+                                        const Handle<ForwardRateCurve>& forwarding)
     : SwapIndex("EurLiborSwapIfrFix", // familyName
                 tenor,
                 2, // settlementDays
@@ -134,12 +134,12 @@ namespace QuantLib {
                 ModifiedFollowing, // fixedLegConvention
                 Thirty360(Thirty360::BondBasis), // fixedLegDaycounter
                 tenor > 1*Years ?
-                    shared_ptr<IborIndex>(new EURLibor(6*Months, h)) :
-                    shared_ptr<IborIndex>(new EURLibor(3*Months, h))) {}
+                    shared_ptr<IborIndex>(new EURLibor(6*Months, forwarding)) :
+                    shared_ptr<IborIndex>(new EURLibor(3*Months, forwarding))) {}
 
     EurLiborSwapIfrFix::EurLiborSwapIfrFix(
                                         const Period& tenor,
-                                        const Handle<YieldTermStructure>& h)
+                                        const Handle<YieldTermStructure>& forwarding)
     : SwapIndex("EurLiborSwapIfrFix", // familyName
                 tenor,
                 2, // settlementDays
@@ -149,8 +149,8 @@ namespace QuantLib {
                 ModifiedFollowing, // fixedLegConvention
                 Thirty360(Thirty360::BondBasis), // fixedLegDaycounter
                 tenor > 1*Years ?
-                    shared_ptr<IborIndex>(new EURLibor(6*Months, h)) :
-                    shared_ptr<IborIndex>(new EURLibor(3*Months, h))) {}
+                    shared_ptr<IborIndex>(new EURLibor(6*Months, forwarding)) :
+                    shared_ptr<IborIndex>(new EURLibor(3*Months, forwarding))) {}
 
     EurLiborSwapIfrFix::EurLiborSwapIfrFix(
                                 const Period& tenor,

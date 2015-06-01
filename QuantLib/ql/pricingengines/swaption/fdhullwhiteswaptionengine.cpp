@@ -82,7 +82,7 @@ namespace QuantLib {
         }
 
         const Handle<YieldTermStructure> disTs = model_->termStructure();
-        const Handle<YieldTermStructure> fwdTs = // FIXME
+        const Handle<YieldTermStructure> fwdTs = // FIXME: should be ForwardRateCurve
             convertIntoYTSHandle(arguments_.swap->iborIndex()->forwardingTermStructure(), false);
 
         QL_REQUIRE(fwdTs->dayCounter() == disTs->dayCounter(),

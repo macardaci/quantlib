@@ -52,8 +52,7 @@ namespace QuantLib {
                 Canada(),
                 Actual360(), h) {}
         CADLibor(const Period& tenor,
-                 const Handle<ForwardRateCurve>& h =
-                                    Handle<ForwardRateCurve>())
+                 const Handle<YieldTermStructure>& h)
         : Libor("CADLibor", tenor,
                 2,
                 CADCurrency(),

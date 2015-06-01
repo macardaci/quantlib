@@ -99,6 +99,7 @@ namespace QuantLib {
     Rate BMAIndex::forecastFixing(const Date& fixingDate) const {
         QL_REQUIRE(!termStructure_.empty(),
                    "null term structure set to this instance of " << name());
+        // TODO check daycounter == ActualActual(ActualActual::ISDA)
         Date start = fixingCalendar().advance(fixingDate, 1, Days);
         return termStructure_->forwardRate(start);
     }

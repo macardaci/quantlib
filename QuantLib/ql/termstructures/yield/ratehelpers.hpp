@@ -100,7 +100,6 @@ namespace QuantLib {
         void accept(AcyclicVisitor&);
         //@}
       private:
-        Time yearFraction_;
         Handle<Quote> convAdj_;
     };
 

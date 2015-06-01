@@ -30,7 +30,7 @@ namespace QuantLib {
 
     ChfLiborSwapIsdaFix::ChfLiborSwapIsdaFix(
                                 const Period& tenor,
-                                const Handle<ForwardRateCurve>& h)
+                                const Handle<ForwardRateCurve>& forwarding)
     : SwapIndex("ChfLiborSwapIsdaFix", // familyName
                 tenor,
                 2, // settlementDays
@@ -40,12 +40,12 @@ namespace QuantLib {
                 ModifiedFollowing, // fixedLegConvention
                 Thirty360(Thirty360::BondBasis), // fixedLegDaycounter
                 tenor > 1*Years ?
-                    shared_ptr<IborIndex>(new CHFLibor(6*Months, h)) :
-                    shared_ptr<IborIndex>(new CHFLibor(3*Months, h))) {}
+                    shared_ptr<IborIndex>(new CHFLibor(6*Months, forwarding)) :
+                    shared_ptr<IborIndex>(new CHFLibor(3*Months, forwarding))) {}
 
     ChfLiborSwapIsdaFix::ChfLiborSwapIsdaFix(
                                 const Period& tenor,
-                                const Handle<YieldTermStructure>& h)
+                                const Handle<YieldTermStructure>& forwarding)
     : SwapIndex("ChfLiborSwapIsdaFix", // familyName
                 tenor,
                 2, // settlementDays
@@ -55,8 +55,8 @@ namespace QuantLib {
                 ModifiedFollowing, // fixedLegConvention
                 Thirty360(Thirty360::BondBasis), // fixedLegDaycounter
                 tenor > 1*Years ?
-                    shared_ptr<IborIndex>(new CHFLibor(6*Months, h)) :
-                    shared_ptr<IborIndex>(new CHFLibor(3*Months, h))) {}
+                    shared_ptr<IborIndex>(new CHFLibor(6*Months, forwarding)) :
+                    shared_ptr<IborIndex>(new CHFLibor(3*Months, forwarding))) {}
 
     ChfLiborSwapIsdaFix::ChfLiborSwapIsdaFix(
                                 const Period& tenor,

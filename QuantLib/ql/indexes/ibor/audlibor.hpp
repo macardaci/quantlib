@@ -48,6 +48,13 @@ namespace QuantLib {
                 AUDCurrency(),
                 Australia(),
                 Actual360(), h) {}
+        AUDLibor(const Period& tenor,
+                 const Handle<YieldTermStructure>& h)
+        : Libor("AUDLibor", tenor,
+                2,
+                AUDCurrency(),
+                Australia(),
+                Actual360(), h) {}
     };
 
 }

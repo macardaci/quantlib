@@ -41,10 +41,10 @@ namespace QuantLib {
     class EurLiborSwapIsdaFixA : public SwapIndex {
       public:
         EurLiborSwapIsdaFixA(const Period& tenor,
-                             const Handle<ForwardRateCurve>& h =
+                             const Handle<ForwardRateCurve>& forwarding =
                                     Handle<ForwardRateCurve>());
         EurLiborSwapIsdaFixA(const Period& tenor,
-                             const Handle<YieldTermStructure>& h);
+                             const Handle<YieldTermStructure>& forwarding);
         EurLiborSwapIsdaFixA(const Period& tenor,
                              const Handle<ForwardRateCurve>& forwarding,
                              const Handle<YieldTermStructure>& discounting);
@@ -63,10 +63,10 @@ namespace QuantLib {
     class EurLiborSwapIsdaFixB : public SwapIndex {
       public:
         EurLiborSwapIsdaFixB(const Period& tenor,
-                             const Handle<ForwardRateCurve>& h =
+                             const Handle<ForwardRateCurve>& forwarding =
                                     Handle<ForwardRateCurve>());
         EurLiborSwapIsdaFixB(const Period& tenor,
-                             const Handle<YieldTermStructure>& h);
+                             const Handle<YieldTermStructure>& forwarding);
         EurLiborSwapIsdaFixB(const Period& tenor,
                              const Handle<ForwardRateCurve>& forwarding,
                              const Handle<YieldTermStructure>& discounting);
@@ -83,10 +83,10 @@ namespace QuantLib {
     class EurLiborSwapIfrFix : public SwapIndex {
       public:
         EurLiborSwapIfrFix(const Period& tenor,
-                           const Handle<ForwardRateCurve>& h =
+                           const Handle<ForwardRateCurve>& forwarding =
                                     Handle<ForwardRateCurve>());
         EurLiborSwapIfrFix(const Period& tenor,
-                           const Handle<YieldTermStructure>& h);
+                           const Handle<YieldTermStructure>& forwarding);
         EurLiborSwapIfrFix(const Period& tenor,
                            const Handle<ForwardRateCurve>& forwarding,
                            const Handle<YieldTermStructure>& discounting);

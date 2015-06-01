@@ -40,10 +40,10 @@ namespace QuantLib {
     class UsdLiborSwapIsdaFixAm : public SwapIndex {
       public:
         UsdLiborSwapIsdaFixAm(const Period& tenor,
-                              const Handle<ForwardRateCurve>& h =
+                              const Handle<ForwardRateCurve>& forwarding =
                                     Handle<ForwardRateCurve>());
         UsdLiborSwapIsdaFixAm(const Period& tenor,
-                              const Handle<YieldTermStructure>& h);
+                              const Handle<YieldTermStructure>& forwarding);
         UsdLiborSwapIsdaFixAm(const Period& tenor,
                               const Handle<ForwardRateCurve>& forwarding,
                               const Handle<YieldTermStructure>& discounting);
@@ -61,10 +61,10 @@ namespace QuantLib {
     class UsdLiborSwapIsdaFixPm : public SwapIndex {
       public:
         UsdLiborSwapIsdaFixPm(const Period& tenor,
-                              const Handle<ForwardRateCurve>& h =
+                              const Handle<ForwardRateCurve>& forwarding =
                                     Handle<ForwardRateCurve>());
         UsdLiborSwapIsdaFixPm(const Period& tenor,
-                              const Handle<YieldTermStructure>& h);
+                              const Handle<YieldTermStructure>& forwarding);
         UsdLiborSwapIsdaFixPm(const Period& tenor,
                               const Handle<ForwardRateCurve>& forwarding,
                               const Handle<YieldTermStructure>& discounting);
