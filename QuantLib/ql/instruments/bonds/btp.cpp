@@ -31,7 +31,7 @@ namespace QuantLib {
 
     CCTEU::CCTEU(const Date& maturityDate,
                  Spread spread,
-                 const Handle<YieldTermStructure>& fwdCurve,
+                 const Handle<ForwardRateCurve>& fwdCurve,
                  const Date& startDate,
                  const Date& issueDate)
     : FloatingRateBond(2, 100.0,

@@ -1,6 +1,7 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
+ Copyright (C) 2015 Ferdinando Ametrano
  Copyright (C) 2000, 2001, 2002, 2003 RiskMap srl
  Copyright (C) 2003, 2004, 2005, 2006 StatPro Italia srl
 
@@ -40,8 +41,8 @@ namespace QuantLib {
     class AUDLibor : public Libor {
       public:
         AUDLibor(const Period& tenor,
-                 const Handle<YieldTermStructure>& h =
-                                     Handle<YieldTermStructure>())
+                 const Handle<ForwardRateCurve>& h =
+                                     Handle<ForwardRateCurve>())
         : Libor("AUDLibor", tenor,
                 2,
                 AUDCurrency(),

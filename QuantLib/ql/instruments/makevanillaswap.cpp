@@ -141,10 +141,7 @@ namespace QuantLib {
                              floatSpread_, floatDayCount_);
             if (engine_ == 0) {
                 Handle<YieldTermStructure> disc =
-                                        iborIndex_->forwardingTermStructure();
-                QL_REQUIRE(!disc.empty(),
-                           "null term structure set to this instance of " <<
-                           iborIndex_->name());
+                    convertIntoYTSHandle(iborIndex_->forwardingTermStructure(), false);
                 bool includeSettlementDateFlows = false;
                 shared_ptr<PricingEngine> engine(new
                     DiscountingSwapEngine(disc, includeSettlementDateFlows));
@@ -164,7 +161,7 @@ namespace QuantLib {
 
         if (engine_ == 0) {
             Handle<YieldTermStructure> disc =
-                                    iborIndex_->forwardingTermStructure();
+                convertIntoYTSHandle(iborIndex_->forwardingTermStructure(), false);
             bool includeSettlementDateFlows = false;
             shared_ptr<PricingEngine> engine(new
                 DiscountingSwapEngine(disc, includeSettlementDateFlows));

@@ -1,7 +1,7 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
- Copyright (C) 2006, 2007 Ferdinando Ametrano
+ Copyright (C) 2006, 2007, 2015 Ferdinando Ametrano
  Copyright (C) 2006 Katiuscia Manzoni
  Copyright (C) 2005 Eric Ehlers
  Copyright (C) 2005 Plamen Neykov
@@ -32,14 +32,14 @@ namespace QuantLibAddin {
         Libor(const boost::shared_ptr<ObjectHandler::ValueObject>& properties,
               const QuantLib::Currency& currency,
               const std::string& p,
-              const QuantLib::Handle<QuantLib::YieldTermStructure>& hYTS,
+              const QuantLib::Handle<QuantLib::ForwardRateCurve>& hYTS,
               bool permanent);
     };
 
     class Sonia : public OvernightIndex {
       public:
         Sonia(const boost::shared_ptr<ObjectHandler::ValueObject>& properties,
-              const QuantLib::Handle<QuantLib::YieldTermStructure>& hYTS,
+              const QuantLib::Handle<QuantLib::ForwardRateCurve>& hYTS,
               bool permanent);
     };
 

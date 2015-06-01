@@ -43,8 +43,8 @@ namespace QuantLib {
       public:
         CCTEU(const Date& maturityDate,
               Spread spread,
-              const Handle<YieldTermStructure>& fwdCurve =
-                                    Handle<YieldTermStructure>(),
+              const Handle<ForwardRateCurve>& fwdCurve =
+                                    Handle<ForwardRateCurve>(),
               const Date& startDate = Date(),
               const Date& issueDate = Date());
         //! \name Bond interface

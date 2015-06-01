@@ -1,6 +1,7 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
+ Copyright (C) 2015 Ferdinando Ametrano
  Copyright (C) 2014 Cheng Li
 
  This file is part of QuantLib, a free-software/open-source library
@@ -40,6 +41,12 @@ namespace QuantLib {
         }
 
     }
+
+    Shibor::Shibor(const Period& tenor,
+                   const Handle<ForwardRateCurve>& h)
+    : IborIndex("Shibor", tenor, (tenor == 1*Days? 0 : 1), CNYCurrency(),
+                China(China::IB), shiborConvention(tenor), false,
+                Actual360(), h) {}
 
     Shibor::Shibor(const Period& tenor,
                    const Handle<YieldTermStructure>& h)

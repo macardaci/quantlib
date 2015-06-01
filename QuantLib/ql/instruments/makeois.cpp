@@ -94,10 +94,7 @@ namespace QuantLib {
                                       overnightIndex_, overnightSpread_);
             if (engine_ == 0) {
                 Handle<YieldTermStructure> disc =
-                                    overnightIndex_->forwardingTermStructure();
-                QL_REQUIRE(!disc.empty(),
-                           "null term structure set to this instance of " <<
-                           overnightIndex_->name());
+                    convertIntoYTSHandle(overnightIndex_->forwardingTermStructure(), false);
                 bool includeSettlementDateFlows = false;
                 shared_ptr<PricingEngine> engine(new
                     DiscountingSwapEngine(disc, includeSettlementDateFlows));
@@ -116,7 +113,7 @@ namespace QuantLib {
 
         if (engine_ == 0) {
             Handle<YieldTermStructure> disc =
-                                overnightIndex_->forwardingTermStructure();
+                convertIntoYTSHandle(overnightIndex_->forwardingTermStructure(), false);
             bool includeSettlementDateFlows = false;
             shared_ptr<PricingEngine> engine(new
                 DiscountingSwapEngine(disc, includeSettlementDateFlows));

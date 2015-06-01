@@ -65,9 +65,12 @@ namespace QuantLib {
         // update dates
         const Date& referenceDate = termVolSurface_->referenceDate();
         const DayCounter& dc = termVolSurface_->dayCounter();
+
+        // discounting does not matter here
+        Handle<YieldTermStructure> disc =
+            convertIntoYTSHandle(iborIndex_->forwardingTermStructure(), false);
         shared_ptr<BlackCapFloorEngine> dummy(new
-                    BlackCapFloorEngine(// discounting does not matter here
-                                        iborIndex_->forwardingTermStructure(),
+                    BlackCapFloorEngine(disc,
                                         0.20, dc));
         for (Size i=0; i<nOptionletTenors_; ++i) {
             CapFloor temp = MakeCapFloor(CapFloor::Cap,
@@ -96,7 +99,7 @@ namespace QuantLib {
 
         const Handle<YieldTermStructure>& discountCurve =
             discount_.empty() ?
-                iborIndex_->forwardingTermStructure() :
+                convertIntoYTSHandle(iborIndex_->forwardingTermStructure(), false):
                 discount_;
 
         const std::vector<Rate>& strikes = termVolSurface_->strikes();

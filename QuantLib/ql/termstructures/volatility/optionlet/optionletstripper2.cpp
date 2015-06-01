@@ -76,19 +76,19 @@ namespace QuantLib {
         const std::vector<Time>& optionExpiriesTimes =
                                     atmCapFloorTermVolCurve_->optionTimes();
 
+        Handle<YieldTermStructure> disc =
+            convertIntoYTSHandle(iborIndex_->forwardingTermStructure(), false);
         for (Size j=0; j<nOptionExpiries_; ++j) {
             Volatility atmOptionVol = atmCapFloorTermVolCurve_->volatility(
                 optionExpiriesTimes[j], 33.3333); // dummy strike
             boost::shared_ptr<BlackCapFloorEngine> engine(new
-                    BlackCapFloorEngine(iborIndex_->forwardingTermStructure(),
-                                        atmOptionVol, dc_));
+                    BlackCapFloorEngine(disc, atmOptionVol, dc_));
             caps_[j] = MakeCapFloor(CapFloor::Cap,
                                     optionExpiriesTenors[j],
                                     iborIndex_,
                                     Null<Rate>(),
                                     0*Days).withPricingEngine(engine);
-            atmCapFloorStrikes_[j] =
-                caps_[j]->atmRate(**iborIndex_->forwardingTermStructure());
+            atmCapFloorStrikes_[j] = caps_[j]->atmRate(**disc);
             atmCapFloorPrices_[j] = caps_[j]->NPV();
         }
 
@@ -174,11 +174,11 @@ namespace QuantLib {
             SpreadedOptionletVolatility(Handle<OptionletVolatilityStructure>(
                 adapter), Handle<Quote>(spreadQuote_)));
 
+        Handle<YieldTermStructure> disc = convertIntoYTSHandle(
+            optionletStripper1->iborIndex()->forwardingTermStructure(), false);
         boost::shared_ptr<BlackCapFloorEngine> engine(new
-            BlackCapFloorEngine(
-                optionletStripper1->iborIndex()->forwardingTermStructure(),
-                Handle<OptionletVolatilityStructure>(spreadedAdapter)));
-
+            BlackCapFloorEngine(disc,
+                                Handle<OptionletVolatilityStructure>(spreadedAdapter)));
         cap_->setPricingEngine(engine);
     }
 

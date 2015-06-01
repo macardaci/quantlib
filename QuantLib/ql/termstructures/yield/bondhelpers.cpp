@@ -34,7 +34,8 @@ namespace QuantLib {
     BondHelper::BondHelper(const Handle<Quote>& price,
                            const boost::shared_ptr<Bond>& bond,
                            const bool useCleanPrice)
-    : RateHelper(price), bond_(boost::make_shared<Bond>(*bond)) {
+    : BootstrapHelper<YieldTermStructure>(price),
+      bond_(boost::make_shared<Bond>(*bond)) {
 
         // the bond's last cashflow date, which can be later than
         // bond's maturity date because of adjustment

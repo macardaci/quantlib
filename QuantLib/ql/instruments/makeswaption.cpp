@@ -26,9 +26,11 @@
 #include <ql/exercise.hpp>
 #include <ql/settings.hpp>
 
+using boost::shared_ptr;
+
 namespace QuantLib {
 
-    MakeSwaption::MakeSwaption(const boost::shared_ptr<SwapIndex>& swapIndex,
+    MakeSwaption::MakeSwaption(const shared_ptr<SwapIndex>& swapIndex,
                                const Period& optionTenor,
                                Rate strike)
     : swapIndex_(swapIndex),
@@ -39,7 +41,7 @@ namespace QuantLib {
       strike_(strike),
       underlyingType_(VanillaSwap::Payer) {}
 
-    MakeSwaption::MakeSwaption(const boost::shared_ptr<SwapIndex>& swapIndex,
+    MakeSwaption::MakeSwaption(const shared_ptr<SwapIndex>& swapIndex,
                                const Date& fixingDate,
                                Rate strike)
     : swapIndex_(swapIndex),
@@ -50,11 +52,11 @@ namespace QuantLib {
       underlyingType_(VanillaSwap::Payer) {}
 
     MakeSwaption::operator Swaption() const {
-        boost::shared_ptr<Swaption> swaption = *this;
+        shared_ptr<Swaption> swaption = *this;
         return *swaption;
     }
 
-    MakeSwaption::operator boost::shared_ptr<Swaption>() const {
+    MakeSwaption::operator shared_ptr<Swaption>() const {
 
         const Calendar& fixingCalendar = swapIndex_->fixingCalendar();
         Date refDate = Settings::instance().evaluationDate();
@@ -65,13 +67,13 @@ namespace QuantLib {
             fixingDate_ = fixingCalendar.advance(refDate, optionTenor_,
                                                  optionConvention_);
         if (exerciseDate_ == Null<Date>()) {
-            exercise_ = boost::shared_ptr<Exercise>(new
+            exercise_ = shared_ptr<Exercise>(new
                 EuropeanExercise(fixingDate_));
         } else {
             QL_REQUIRE(exerciseDate_ <= fixingDate_,
                        "exercise date (" << exerciseDate_ << ") must be less "
                        "than or equal to fixing date (" << fixingDate_ << ")");
-            exercise_ = boost::shared_ptr<Exercise>(new
+            exercise_ = shared_ptr<Exercise>(new
                 EuropeanExercise(exerciseDate_));
         }
 
@@ -79,14 +81,20 @@ namespace QuantLib {
         if (strike_ == Null<Rate>()) {
             // ATM on the forecasting curve
             QL_REQUIRE(!swapIndex_->forwardingTermStructure().empty(),
-                       "null term structure set to this instance of " <<
+                       "null forward curve set to this instance of " <<
                        swapIndex_->name());
-            boost::shared_ptr<VanillaSwap> temp =
+            shared_ptr<VanillaSwap> temp =
                 swapIndex_->underlyingSwap(fixingDate_);
-            temp->setPricingEngine(boost::shared_ptr<PricingEngine>(
-                new DiscountingSwapEngine(
-                                        swapIndex_->forwardingTermStructure(),
-                                        false)));
+            if (engine_!=0) {
+                temp->setPricingEngine(engine_);
+            } else {
+                Handle<YieldTermStructure> d = swapIndex_->discountingTermStructure();
+                if (d.empty())
+                    d = convertIntoYTSHandle(
+                        swapIndex_->forwardingTermStructure(), true);
+                temp->setPricingEngine(shared_ptr<PricingEngine>(new
+                    DiscountingSwapEngine(d, false)));
+            }
             usedStrike = temp->fairRate();
         }
 
@@ -102,7 +110,7 @@ namespace QuantLib {
             .withFixedLegTerminationDateConvention(bdc)
             .withType(underlyingType_);
 
-        boost::shared_ptr<Swaption> swaption(new
+        shared_ptr<Swaption> swaption(new
             Swaption(underlyingSwap_, exercise_, delivery_));
         swaption->setPricingEngine(engine_);
         return swaption;
@@ -130,7 +138,7 @@ namespace QuantLib {
     }
 
     MakeSwaption& MakeSwaption::withPricingEngine(
-                             const boost::shared_ptr<PricingEngine>& engine) {
+                             const shared_ptr<PricingEngine>& engine) {
         engine_ = engine;
         return *this;
     }

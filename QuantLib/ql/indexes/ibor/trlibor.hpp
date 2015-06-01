@@ -1,6 +1,7 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
+ Copyright (C) 2015 Ferdinando Ametrano
  Copyright (C) 2005 Sercan Atalik
 
  This file is part of QuantLib, a free-software/open-source library
@@ -41,8 +42,13 @@ namespace QuantLib {
     class TRLibor : public IborIndex {
       public:
         TRLibor(const Period& tenor,
-                const Handle<YieldTermStructure>& h =
-                                    Handle<YieldTermStructure>())
+                const Handle<ForwardRateCurve>& h =
+                                    Handle<ForwardRateCurve>())
+        : IborIndex("TRLibor", tenor, 0, TRYCurrency(),
+                    Turkey(), ModifiedFollowing, false,
+                    Actual360(), h) {}
+        TRLibor(const Period& tenor,
+                const Handle<YieldTermStructure>& h)
         : IborIndex("TRLibor", tenor, 0, TRYCurrency(),
                     Turkey(), ModifiedFollowing, false,
                     Actual360(), h) {}

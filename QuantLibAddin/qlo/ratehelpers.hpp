@@ -34,11 +34,12 @@
 
 namespace QuantLib {
     class YieldTermStructure;
+    class ForwardRateCurve;
 
     template<class TS>
     class BootstrapHelper;
 
-    typedef BootstrapHelper<YieldTermStructure> RateHelper;
+    typedef BootstrapHelper<ForwardRateCurve> RateHelper;
 
     class Quote;
     class Period;

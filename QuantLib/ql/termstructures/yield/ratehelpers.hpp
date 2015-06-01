@@ -40,8 +40,8 @@ namespace QuantLib {
     class SwapIndex;
     class Quote;
 
-    typedef BootstrapHelper<YieldTermStructure> RateHelper;
-    typedef RelativeDateBootstrapHelper<YieldTermStructure>
+    typedef BootstrapHelper<ForwardRateCurve> RateHelper;
+    typedef RelativeDateBootstrapHelper<ForwardRateCurve>
                                                         RelativeDateRateHelper;
 
     //! Rate helper for bootstrapping over IborIndex futures prices
@@ -129,7 +129,7 @@ namespace QuantLib {
         //! \name RateHelper interface
         //@{
         Real impliedQuote() const;
-        void setTermStructure(YieldTermStructure*);
+        void setTermStructure(ForwardRateCurve*);
         //@}
         //! \name Visitability
         //@{
@@ -139,7 +139,7 @@ namespace QuantLib {
         void initializeDates();
         Date fixingDate_;
         boost::shared_ptr<IborIndex> iborIndex_;
-        RelinkableHandle<YieldTermStructure> termStructureHandle_;
+        RelinkableHandle<ForwardRateCurve> termStructureHandle_;
     };
 
 
@@ -193,7 +193,7 @@ namespace QuantLib {
         //! \name RateHelper interface
         //@{
         Real impliedQuote() const;
-        void setTermStructure(YieldTermStructure*);
+        void setTermStructure(ForwardRateCurve*);
         //@}
         //! \name Visitability
         //@{
@@ -204,7 +204,7 @@ namespace QuantLib {
         Date fixingDate_;
         Period periodToStart_;
         boost::shared_ptr<IborIndex> iborIndex_;
-        RelinkableHandle<YieldTermStructure> termStructureHandle_;
+        RelinkableHandle<ForwardRateCurve> termStructureHandle_;
     };
 
     //! Rate helper for bootstrapping over swap rates
@@ -258,7 +258,7 @@ namespace QuantLib {
         //! \name RateHelper interface
         //@{
         Real impliedQuote() const;
-        void setTermStructure(YieldTermStructure*);
+        void setTermStructure(ForwardRateCurve*);
         //@}
         //! \name SwapRateHelper inspectors
         //@{
@@ -280,7 +280,7 @@ namespace QuantLib {
         DayCounter fixedDayCount_;
         boost::shared_ptr<IborIndex> iborIndex_;
         boost::shared_ptr<VanillaSwap> swap_;
-        RelinkableHandle<YieldTermStructure> termStructureHandle_;
+        RelinkableHandle<ForwardRateCurve> termStructureHandle_;
         Handle<Quote> spread_;
         Period fwdStart_;
         Handle<YieldTermStructure> discountHandle_;
@@ -304,7 +304,7 @@ namespace QuantLib {
         //! \name RateHelper interface
         //@{
         Real impliedQuote() const;
-        void setTermStructure(YieldTermStructure*);
+        void setTermStructure(ForwardRateCurve*);
         //@}
         //! \name Visitability
         //@{
@@ -322,7 +322,7 @@ namespace QuantLib {
         boost::shared_ptr<IborIndex> iborIndex_;
 
         boost::shared_ptr<BMASwap> swap_;
-        RelinkableHandle<YieldTermStructure> termStructureHandle_;
+        RelinkableHandle<ForwardRateCurve> termStructureHandle_;
     };
 
 

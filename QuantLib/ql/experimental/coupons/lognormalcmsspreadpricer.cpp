@@ -105,11 +105,14 @@ namespace QuantLib {
 
         today_ = QuantLib::Settings::instance().evaluationDate();
 
-        if (couponDiscountCurve_.empty())
-            couponDiscountCurve_ =
-                index_->swapIndex1()->exogenousDiscount()
-                    ? index_->swapIndex1()->discountingTermStructure()
-                    : index_->swapIndex1()->forwardingTermStructure();
+        if (couponDiscountCurve_.empty()) {
+            if (index_->swapIndex1()->exogenousDiscount())
+                couponDiscountCurve_ =
+                    index_->swapIndex1()->discountingTermStructure();
+            else
+                couponDiscountCurve_ = convertIntoYTSHandle(
+                        index_->swapIndex1()->forwardingTermStructure(),false);
+        }
 
         spreadLegValue_ = spread_ * coupon_->accrualPeriod() *
                           couponDiscountCurve_->discount(paymentDate_);

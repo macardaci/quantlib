@@ -1,6 +1,7 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
+ Copyright (C) 2015 Ferdinando Ametrano
  Copyright (C) 2014 Cheng Li
 
  This file is part of QuantLib, a free-software/open-source library
@@ -30,12 +31,12 @@ namespace QuantLib {
 
     class Shibor : public IborIndex {
       public:
-        Shibor(
-            const Period& tenor,
-            const Handle<YieldTermStructure>& h = Handle<YieldTermStructure>());
+        Shibor(const Period& tenor,
+               const Handle<ForwardRateCurve>& h = Handle<ForwardRateCurve>());
+        Shibor(const Period& tenor,
+               const Handle<YieldTermStructure>& h);
     };
 
 }
-
 
 #endif

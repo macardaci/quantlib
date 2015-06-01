@@ -1,7 +1,7 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
- Copyright (C) 2008, 2009 Ferdinando Ametrano
+ Copyright (C) 2008, 2009, 2015 Ferdinando Ametrano
 
  This file is part of QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
@@ -41,10 +41,12 @@ namespace QuantLib {
     class EuriborSwapIsdaFixA : public SwapIndex {
       public:
         EuriborSwapIsdaFixA(const Period& tenor,
-                            const Handle<YieldTermStructure>& h =
-                                    Handle<YieldTermStructure>());
+                            const Handle<ForwardRateCurve>& h =
+                                    Handle<ForwardRateCurve>());
         EuriborSwapIsdaFixA(const Period& tenor,
-                            const Handle<YieldTermStructure>& forwarding,
+                            const Handle<YieldTermStructure>& h);
+        EuriborSwapIsdaFixA(const Period& tenor,
+                            const Handle<ForwardRateCurve>& forwarding,
                             const Handle<YieldTermStructure>& discounting);
     };
 
@@ -61,10 +63,12 @@ namespace QuantLib {
     class EuriborSwapIsdaFixB : public SwapIndex {
       public:
         EuriborSwapIsdaFixB(const Period& tenor,
-                            const Handle<YieldTermStructure>& h =
-                                    Handle<YieldTermStructure>());
+                            const Handle<ForwardRateCurve>& h =
+                                    Handle<ForwardRateCurve>());
         EuriborSwapIsdaFixB(const Period& tenor,
-                            const Handle<YieldTermStructure>& forwarding,
+                            const Handle<YieldTermStructure>& h);
+        EuriborSwapIsdaFixB(const Period& tenor,
+                            const Handle<ForwardRateCurve>& forwarding,
                             const Handle<YieldTermStructure>& discounting);
     };
 
@@ -78,10 +82,12 @@ namespace QuantLib {
     class EuriborSwapIfrFix : public SwapIndex {
       public:
         EuriborSwapIfrFix(const Period& tenor,
-                          const Handle<YieldTermStructure>& h =
-                                    Handle<YieldTermStructure>());
+                          const Handle<ForwardRateCurve>& h =
+                                    Handle<ForwardRateCurve>());
         EuriborSwapIfrFix(const Period& tenor,
-                          const Handle<YieldTermStructure>& forwarding,
+                          const Handle<YieldTermStructure>& h);
+        EuriborSwapIfrFix(const Period& tenor,
+                          const Handle<ForwardRateCurve>& forwarding,
                           const Handle<YieldTermStructure>& discounting);
     };
 

@@ -43,8 +43,15 @@ namespace QuantLib {
               const Currency& currency,
               const Calendar& financialCenterCalendar,
               const DayCounter& dayCounter,
-              const Handle<YieldTermStructure>& h =
-                                    Handle<YieldTermStructure>());
+              const Handle<ForwardRateCurve>& h =
+                                    Handle<ForwardRateCurve>());
+        Libor(const std::string& familyName,
+              const Period& tenor,
+              Natural settlementDays,
+              const Currency& currency,
+              const Calendar& financialCenterCalendar,
+              const DayCounter& dayCounter,
+              const Handle<YieldTermStructure>& h);
         /*! \name Date calculations
 
             see http://www.bba.org.uk/bba/jsp/polopoly.jsp?d=225&a=1412
@@ -56,7 +63,7 @@ namespace QuantLib {
         //! \name Other methods
         //@{
         boost::shared_ptr<IborIndex> clone(
-                                   const Handle<YieldTermStructure>& h) const;
+                                   const Handle<ForwardRateCurve>& h) const;
         // @}
         //! \name Other inspectors
         //@{
@@ -79,8 +86,14 @@ namespace QuantLib {
                         const Currency& currency,
                         const Calendar& financialCenterCalendar,
                         const DayCounter& dayCounter,
-                        const Handle<YieldTermStructure>& h =
-                                    Handle<YieldTermStructure>());
+                        const Handle<ForwardRateCurve>& h =
+                                    Handle<ForwardRateCurve>());
+        DailyTenorLibor(const std::string& familyName,
+                        Natural settlementDays,
+                        const Currency& currency,
+                        const Calendar& financialCenterCalendar,
+                        const DayCounter& dayCounter,
+                        const Handle<YieldTermStructure>& h);
     };
 
 }

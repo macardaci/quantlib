@@ -1,7 +1,7 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
- Copyright (C) 2009 Ferdinando Ametrano
+ Copyright (C) 2009, 2015 Ferdinando Ametrano
 
  This file is part of QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
@@ -31,8 +31,9 @@ namespace QuantLib {
     //! %Eonia (Euro Overnight Index Average) rate fixed by the ECB.
     class Eonia : public OvernightIndex {
       public:
-        Eonia(const Handle<YieldTermStructure>& h =
-                                    Handle<YieldTermStructure>());
+        Eonia(const Handle<ForwardRateCurve>& h =
+                                    Handle<ForwardRateCurve>());
+        Eonia(const Handle<YieldTermStructure>& h);
     };
 
 }

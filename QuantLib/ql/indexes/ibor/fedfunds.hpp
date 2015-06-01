@@ -1,6 +1,7 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
+ Copyright (C) 2015 Ferdinando Ametrano
  Copyright (C) 2014 StatPro Italia srl
 
  This file is part of QuantLib, a free-software/open-source library
@@ -32,8 +33,9 @@ namespace QuantLib {
     /*! (for balances held at the Federal Reserve) */
     class FedFunds : public OvernightIndex {
       public:
-        FedFunds(const Handle<YieldTermStructure>& h =
-                                                Handle<YieldTermStructure>());
+        FedFunds(const Handle<ForwardRateCurve>& h =
+                                                Handle<ForwardRateCurve>());
+        FedFunds(const Handle<YieldTermStructure>& h);
     };
 
 }

@@ -1,6 +1,7 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
+ Copyright (C) 2015 Ferdinando Ametrano
  Copyright (C) 2005 StatPro Italia srl
 
  This file is part of QuantLib, a free-software/open-source library
@@ -43,8 +44,13 @@ namespace QuantLib {
     class Zibor : public IborIndex {
       public:
         Zibor(const Period& tenor,
-              const Handle<YieldTermStructure>& h =
-                                    Handle<YieldTermStructure>())
+              const Handle<ForwardRateCurve>& h =
+                                    Handle<ForwardRateCurve>())
+        : IborIndex("Zibor", tenor, 2, CHFCurrency(),
+                Switzerland(), ModifiedFollowing, false,
+                Actual360(), h) {}
+        Zibor(const Period& tenor,
+              const Handle<YieldTermStructure>& h)
         : IborIndex("Zibor", tenor, 2, CHFCurrency(),
                 Switzerland(), ModifiedFollowing, false,
                 Actual360(), h) {}

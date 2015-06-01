@@ -1,7 +1,7 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
- Copyright (C) 2006, 2007, 2009 Ferdinando Ametrano
+ Copyright (C) 2006, 2007, 2009, 2015 Ferdinando Ametrano
  Copyright (C) 2006 Katiuscia Manzoni
  Copyright (C) 2005 Eric Ehlers
  Copyright (C) 2005 Plamen Neykov
@@ -39,7 +39,7 @@ namespace QuantLibAddin {
                  QuantLib::BusinessDayConvention fltBDC,
                  bool endOfMonth,
                  const QuantLib::DayCounter& fltDayCounter,
-                 const QuantLib::Handle<QuantLib::YieldTermStructure>& hYTS,
+                 const QuantLib::Handle<QuantLib::ForwardRateCurve>& hYTS,
                  bool permanent)
     : InterestRateIndex(properties, permanent)
     {
@@ -58,7 +58,7 @@ namespace QuantLibAddin {
                  const QuantLib::Currency& crr,
                  const QuantLib::Calendar& calendar,
                  const QuantLib::DayCounter& fltDayCounter,
-                 const QuantLib::Handle<QuantLib::YieldTermStructure>& hYTS,
+                 const QuantLib::Handle<QuantLib::ForwardRateCurve>& hYTS,
                  bool permanent)
     : IborIndex(properties, permanent)
     {

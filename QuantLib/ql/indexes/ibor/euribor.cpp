@@ -57,7 +57,7 @@ namespace QuantLib {
     }
 
     Euribor::Euribor(const Period& tenor,
-                     const Handle<YieldTermStructure>& h)
+                     const Handle<ForwardRateCurve>& h)
     : IborIndex("Euribor", tenor,
                 2, // settlement days
                 EURCurrency(), TARGET(),
@@ -69,7 +69,7 @@ namespace QuantLib {
     }
 
     Euribor365::Euribor365(const Period& tenor,
-                           const Handle<YieldTermStructure>& h)
+                           const Handle<ForwardRateCurve>& h)
     : IborIndex("Euribor365", tenor,
                 2, // settlement days
                 EURCurrency(), TARGET(),

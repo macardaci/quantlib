@@ -1,7 +1,7 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
- Copyright (C) 2006, 2007, 2008, 2009 Ferdinando Ametrano
+ Copyright (C) 2006, 2007, 2008, 2009, 2015 Ferdinando Ametrano
  Copyright (C) 2006 Katiuscia Manzoni
  Copyright (C) 2005 Eric Ehlers
  Copyright (C) 2005 Plamen Neykov
@@ -25,6 +25,10 @@
 
 #include <qlo/indexes/swapindex.hpp>
 
+namespace QuantLib {
+    class ForwardRateCurve;
+}
+
 namespace QuantLibAddin {
 
     class EuriborSwap : public SwapIndex {
@@ -33,7 +37,7 @@ namespace QuantLibAddin {
             const boost::shared_ptr<ObjectHandler::ValueObject>& properties,
             SwapIndex::FixingType fixingType,
             const QuantLib::Period& p,
-            const QuantLib::Handle<QuantLib::YieldTermStructure>& f,
+            const QuantLib::Handle<QuantLib::ForwardRateCurve>& f,
             const QuantLib::Handle<QuantLib::YieldTermStructure>& d,
             bool permanent);
     };

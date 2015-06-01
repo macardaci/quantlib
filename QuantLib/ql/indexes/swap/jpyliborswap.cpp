@@ -29,6 +29,19 @@ namespace QuantLib {
 
     JpyLiborSwapIsdaFixAm::JpyLiborSwapIsdaFixAm(
                                 const Period& tenor,
+                                const Handle<ForwardRateCurve>& h)
+    : SwapIndex("JpyLiborSwapIsdaFixAm", // familyName
+                tenor,
+                2, // settlementDays
+                JPYCurrency(),
+                TARGET(),
+                6*Months, // fixedLegTenor
+                ModifiedFollowing, // fixedLegConvention
+                ActualActual(ActualActual::ISDA), // fixedLegDaycounter
+                boost::shared_ptr<IborIndex>(new JPYLibor(6*Months, h))) {}
+
+    JpyLiborSwapIsdaFixAm::JpyLiborSwapIsdaFixAm(
+                                const Period& tenor,
                                 const Handle<YieldTermStructure>& h)
     : SwapIndex("JpyLiborSwapIsdaFixAm", // familyName
                 tenor,
@@ -42,7 +55,7 @@ namespace QuantLib {
 
     JpyLiborSwapIsdaFixAm::JpyLiborSwapIsdaFixAm(
                                 const Period& tenor,
-                                const Handle<YieldTermStructure>& forwarding,
+                                const Handle<ForwardRateCurve>& forwarding,
                                 const Handle<YieldTermStructure>& discounting)
     : SwapIndex("JpyLiborSwapIsdaFixAm", // familyName
                 tenor,
@@ -54,6 +67,19 @@ namespace QuantLib {
                 ActualActual(ActualActual::ISDA), // fixedLegDaycounter
                 shared_ptr<IborIndex>(new JPYLibor(6*Months, forwarding)),
                 discounting) {}
+
+    JpyLiborSwapIsdaFixPm::JpyLiborSwapIsdaFixPm(
+                                const Period& tenor,
+                                const Handle<ForwardRateCurve>& h)
+    : SwapIndex("JpyLiborSwapIsdaFixPm", // familyName
+                tenor,
+                2, // settlementDays
+                JPYCurrency(),
+                TARGET(),
+                6*Months, // fixedLegTenor
+                ModifiedFollowing, // fixedLegConvention
+                ActualActual(ActualActual::ISDA), // fixedLegDaycounter
+                boost::shared_ptr<IborIndex>(new JPYLibor(6*Months, h))) {}
 
     JpyLiborSwapIsdaFixPm::JpyLiborSwapIsdaFixPm(
                                 const Period& tenor,
@@ -70,7 +96,7 @@ namespace QuantLib {
 
     JpyLiborSwapIsdaFixPm::JpyLiborSwapIsdaFixPm(
                                 const Period& tenor,
-                                const Handle<YieldTermStructure>& forwarding,
+                                const Handle<ForwardRateCurve>& forwarding,
                                 const Handle<YieldTermStructure>& discounting)
     : SwapIndex("JpyLiborSwapIsdaFixPm", // familyName
                 tenor,

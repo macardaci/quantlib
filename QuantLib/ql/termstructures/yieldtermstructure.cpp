@@ -1,7 +1,7 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
- Copyright (C) 2004, 2009 Ferdinando Ametrano
+ Copyright (C) 2004, 2009, 2015 Ferdinando Ametrano
  Copyright (C) 2000, 2001, 2002, 2003 RiskMap srl
  Copyright (C) 2003, 2004, 2005, 2006 StatPro Italia srl
 
@@ -22,7 +22,57 @@
 #include <ql/termstructures/yieldtermstructure.hpp>
 #include <ql/utilities/dataformatters.hpp>
 
+using boost::shared_ptr;
+using boost::dynamic_pointer_cast;
+
 namespace QuantLib {
+
+    shared_ptr<YieldTermStructure>
+    convertIntoYTS(const shared_ptr<ForwardRateCurve>& f,
+                   bool doNotThrow) {
+        shared_ptr<YieldTermStructure> y =
+            dynamic_pointer_cast<YieldTermStructure>(f);
+        QL_REQUIRE(y!=0 || doNotThrow, "cannot convert from ForwardRateCurve"
+                                       " to YieldTermStructure");
+        return y;
+    }
+
+    shared_ptr<ForwardRateCurve>
+    convertIntoFRC(const shared_ptr<YieldTermStructure>& y,
+                   bool doNotThrow) {
+        shared_ptr<ForwardRateCurve> f =
+            dynamic_pointer_cast<ForwardRateCurve>(y);
+        QL_REQUIRE(f!=0 || doNotThrow, "cannot convert from YieldTermStructure"
+                                       " to ForwardRateCurve");
+        return f;
+    }
+
+    Handle<YieldTermStructure>
+    convertIntoYTSHandle(const Handle<ForwardRateCurve>& fh,
+                         bool doNotThrow) {
+        if (fh.empty()) {
+            QL_REQUIRE(doNotThrow, "empty Handle<ForwardRateCurve>: "
+                                   "cannot convert to YieldTermStructure");
+            return Handle<YieldTermStructure>();
+        }
+        shared_ptr<YieldTermStructure> y =
+            convertIntoYTS(fh.currentLink(), doNotThrow);
+        return Handle<YieldTermStructure>(y);
+    }
+
+    Handle<ForwardRateCurve>
+    convertIntoFRCHandle(const Handle<YieldTermStructure>& yh,
+                         bool doNotThrow) {
+        if (yh.empty()) {
+            QL_REQUIRE(doNotThrow, "empty Handle<YieldTermStructure>: "
+                                   "cannot convert to ForwardRateCurve");
+            return Handle<ForwardRateCurve>();
+        }
+        shared_ptr<ForwardRateCurve> f =
+            convertIntoFRC(yh.currentLink(), doNotThrow);
+        return Handle<ForwardRateCurve>(f);
+    }
+
 
     namespace {
         // time interval used in finite differences
@@ -33,8 +83,10 @@ namespace QuantLib {
                                     const DayCounter& dc,
                                     const std::vector<Handle<Quote> >& jumps,
                                     const std::vector<Date>& jumpDates)
-    : TermStructure(dc), jumps_(jumps),
-      jumpDates_(jumpDates), jumpTimes_(jumpDates.size()),
+    : ForwardRateCurve("", Period(), Null<Natural>(), Currency(), Calendar(),
+                       Following, true, DayCounter(),
+                       dc),
+      jumps_(jumps), jumpDates_(jumpDates), jumpTimes_(jumpDates.size()),
       nJumps_(jumps_.size()) {
         setJumps();
         for (Size i=0; i<nJumps_; ++i)
@@ -47,8 +99,10 @@ namespace QuantLib {
                                     const DayCounter& dc,
                                     const std::vector<Handle<Quote> >& jumps,
                                     const std::vector<Date>& jumpDates)
-    : TermStructure(referenceDate, cal, dc), jumps_(jumps),
-      jumpDates_(jumpDates), jumpTimes_(jumpDates.size()),
+    : ForwardRateCurve("", Period(), Null<Natural>(), Currency(), Calendar(),
+                       Following, true, DayCounter(),
+                       referenceDate, cal, dc),
+      jumps_(jumps), jumpDates_(jumpDates), jumpTimes_(jumpDates.size()),
       nJumps_(jumps_.size()) {
         setJumps();
         for (Size i=0; i<nJumps_; ++i)
@@ -61,8 +115,10 @@ namespace QuantLib {
                                     const DayCounter& dc,
                                     const std::vector<Handle<Quote> >& jumps,
                                     const std::vector<Date>& jumpDates)
-    : TermStructure(settlementDays, cal, dc), jumps_(jumps),
-      jumpDates_(jumpDates), jumpTimes_(jumpDates.size()),
+    : ForwardRateCurve("", Period(), Null<Natural>(), Currency(), Calendar(),
+                       Following, true, DayCounter(),
+                       settlementDays, cal, dc),
+      jumps_(jumps), jumpDates_(jumpDates), jumpTimes_(jumpDates.size()),
       nJumps_(jumps_.size()) {
         setJumps();
         for (Size i=0; i<nJumps_; ++i)

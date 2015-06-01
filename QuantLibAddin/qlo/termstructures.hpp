@@ -38,27 +38,29 @@ namespace QuantLib {
 
     class VolatilityTermStructure;
 
+    class ForwardRateCurve;
     class YieldTermStructure;
 
 }
 
 namespace QuantLibAddin {
-     
-    OH_OBJ_CLASS(TermStructure, Extrapolator);
-        OH_OBJ_CLASS(YieldTermStructure,              TermStructure);
-        OH_OBJ_CLASS(DefaultProbabilityTermStructure, TermStructure);
-        OH_OBJ_CLASS(CorrelationTermStructure, TermStructure);
-        OH_OBJ_CLASS(InflationTermStructure,          TermStructure);
-        OH_OBJ_CLASS(VolatilityTermStructure,         TermStructure);
-            OH_OBJ_CLASS(BlackAtmVolCurve,                VolatilityTermStructure);
-                OH_OBJ_CLASS(BlackVolSurface, BlackAtmVolCurve);
-                    OH_OBJ_CLASS(InterestRateVolSurface, BlackVolSurface);
-            OH_OBJ_CLASS(BlackVolTermStructure,           VolatilityTermStructure);
-            OH_OBJ_CLASS(SwaptionVolatilityStructure,     VolatilityTermStructure);
-                OH_OBJ_CLASS(SwaptionVolatilityDiscrete, SwaptionVolatilityStructure);
-                    OH_OBJ_CLASS(SwaptionVolatilityCube, SwaptionVolatilityDiscrete);
+
+    OH_OBJ_CLASS(TermStructure,                           Extrapolator);
+        OH_OBJ_CLASS(ForwardRateCurve,                    TermStructure);
+            OH_OBJ_CLASS(YieldTermStructure,              ForwardRateCurve);
+        OH_OBJ_CLASS(DefaultProbabilityTermStructure,     TermStructure);
+        OH_OBJ_CLASS(CorrelationTermStructure,            TermStructure);
+        OH_OBJ_CLASS(InflationTermStructure,              TermStructure);
+        OH_OBJ_CLASS(VolatilityTermStructure,             TermStructure);
             OH_OBJ_CLASS(OptionletVolatilityStructure,    VolatilityTermStructure);
             OH_OBJ_CLASS(CapFloorTermVolatilityStructure, VolatilityTermStructure);
+            OH_OBJ_CLASS(BlackVolTermStructure,           VolatilityTermStructure);
+            OH_OBJ_CLASS(SwaptionVolatilityStructure,     VolatilityTermStructure);
+                OH_OBJ_CLASS(SwaptionVolatilityDiscrete,  SwaptionVolatilityStructure);
+                OH_OBJ_CLASS(SwaptionVolatilityCube,      SwaptionVolatilityDiscrete);
+            OH_OBJ_CLASS(BlackAtmVolCurve,                VolatilityTermStructure);
+                OH_OBJ_CLASS(BlackVolSurface,             BlackAtmVolCurve);
+                    OH_OBJ_CLASS(InterestRateVolSurface,  BlackVolSurface);
 }
 
 #endif

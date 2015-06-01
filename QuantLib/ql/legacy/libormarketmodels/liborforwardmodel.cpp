@@ -89,8 +89,10 @@ namespace QuantLib {
         const Real capRate   = (1.0/strike - 1.0)/tenor;
         const Volatility var = covarProxy_
             ->integratedCovariance(i, i, process_->fixingTimes()[i]);
-        const DiscountFactor dis =
-            process_->index()->forwardingTermStructure()->discount(bondMaturity);
+        Handle<YieldTermStructure> discCurve =
+            convertIntoYTSHandle(process_->index()->forwardingTermStructure(),
+                                                false);
+        const DiscountFactor dis = discCurve->discount(bondMaturity);
 
         const Real black = blackFormula(
             (type==Option::Put ? Option::Call : Option::Put),
@@ -200,7 +202,10 @@ namespace QuantLib {
     // the next two methods are meaningless within this context
     // we might remove them from the AffineModel interface
     DiscountFactor LiborForwardModel::discount(Time t) const {
-        return process_->index()->forwardingTermStructure()->discount(t);
+        Handle<YieldTermStructure> discCurve =
+            convertIntoYTSHandle(process_->index()->forwardingTermStructure(),
+                                                false);
+        return discCurve->discount(t);
     }
 
     Real LiborForwardModel::discountBond(Time, Time maturity, Array) const {

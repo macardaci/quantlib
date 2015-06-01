@@ -1,7 +1,7 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
- Copyright (C) 2009 Ferdinando Ametrano
+ Copyright (C) 2009, 2015 Ferdinando Ametrano
 
  This file is part of QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
@@ -23,6 +23,9 @@
 #include <ql/currencies/europe.hpp>
 
 namespace QuantLib {
+
+    Eonia::Eonia(const Handle<ForwardRateCurve>& h)
+    : OvernightIndex("Eonia", 0, EURCurrency(), TARGET(), Actual360(), h) {}
 
     Eonia::Eonia(const Handle<YieldTermStructure>& h)
     : OvernightIndex("Eonia", 0, EURCurrency(), TARGET(), Actual360(), h) {}

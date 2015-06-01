@@ -1,6 +1,7 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
+ Copyright (C) 2015 Ferdinando Ametrano
  Copyright (C) 2011 Ferdinando Ametrano
 
  This file is part of QuantLib, a free-software/open-source library
@@ -31,8 +32,9 @@ namespace QuantLib {
     //! %Sonia (Sterling Overnight Index Average) rate.
     class Sonia : public OvernightIndex {
       public:
-        Sonia(const Handle<YieldTermStructure>& h =
-                                    Handle<YieldTermStructure>());
+        Sonia(const Handle<ForwardRateCurve>& h =
+                                    Handle<ForwardRateCurve>());
+        Sonia(const Handle<YieldTermStructure>& h);
     };
 
 }

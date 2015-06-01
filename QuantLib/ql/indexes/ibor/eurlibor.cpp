@@ -58,6 +58,25 @@ namespace QuantLib {
     }
 
     EURLibor::EURLibor(const Period& tenor,
+                       const Handle<ForwardRateCurve>& h)
+    : IborIndex("EURLibor", tenor,
+                2,
+                EURCurrency(),
+                // http://www.bba.org.uk/bba/jsp/polopoly.jsp?d=225&a=1412 :
+                // JoinBusinessDays is the fixing calendar for
+                // all indexes but o/n
+                JointCalendar(UnitedKingdom(UnitedKingdom::Exchange),
+                              TARGET(),
+                              JoinBusinessDays),
+                eurliborConvention(tenor), eurliborEOM(tenor),
+                Actual360(), h),
+      target_(TARGET()) {
+        QL_REQUIRE(this->tenor().units()!=Days,
+                   "for daily tenors (" << this->tenor() <<
+                   ") dedicated DailyTenor constructor must be used");
+    }
+
+    EURLibor::EURLibor(const Period& tenor,
                        const Handle<YieldTermStructure>& h)
     : IborIndex("EURLibor", tenor,
                 2,
@@ -93,6 +112,19 @@ namespace QuantLib {
         // which the Target system is open.
         return target_.advance(valueDate, tenor_, convention_, endOfMonth());
     }
+
+    DailyTenorEURLibor::DailyTenorEURLibor(Natural settlementDays,
+                                           const Handle<ForwardRateCurve>& h)
+    : IborIndex("EURLibor", 1*Days,
+                settlementDays,
+                EURCurrency(),
+                // http://www.bba.org.uk/bba/jsp/polopoly.jsp?d=225&a=1412 :
+                // no o/n or s/n fixings (as the case may be) will take place
+                // when the principal centre of the currency concerned is
+                // closed but London is open on the fixing day.
+                TARGET(),
+                eurliborConvention(1*Days), eurliborEOM(1*Days),
+                Actual360(), h) {}
 
     DailyTenorEURLibor::DailyTenorEURLibor(Natural settlementDays,
                                            const Handle<YieldTermStructure>& h)

@@ -107,10 +107,12 @@ namespace {
             }
             termStructure = boost::shared_ptr<YieldTermStructure>(new
                 PiecewiseYieldCurve<Discount,LogLinear>(settlement,
-                                                        instruments, Actual360()));
+                                                        instruments,
+                                                        Actual360()));
             dummyTermStructure = boost::shared_ptr<YieldTermStructure>(new
                 PiecewiseYieldCurve<Discount,LogLinear>(settlement,
-                                                        instruments, Actual360()));
+                                                        instruments,
+                                                        Actual360()));
         }
     };
 

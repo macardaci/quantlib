@@ -1,6 +1,7 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
+ Copyright (C) 2015 Ferdinando Ametrano
  Copyright (C) 2000, 2001, 2002, 2003 RiskMap srl
  Copyright (C) 2003, 2004, 2005, 2006 StatPro Italia srl
 
@@ -43,8 +44,16 @@ namespace QuantLib {
     class CADLibor : public Libor {
       public:
         CADLibor(const Period& tenor,
-                 const Handle<YieldTermStructure>& h =
-                                    Handle<YieldTermStructure>())
+                 const Handle<ForwardRateCurve>& h =
+                                    Handle<ForwardRateCurve>())
+        : Libor("CADLibor", tenor,
+                2,
+                CADCurrency(),
+                Canada(),
+                Actual360(), h) {}
+        CADLibor(const Period& tenor,
+                 const Handle<ForwardRateCurve>& h =
+                                    Handle<ForwardRateCurve>())
         : Libor("CADLibor", tenor,
                 2,
                 CADCurrency(),
@@ -55,8 +64,14 @@ namespace QuantLib {
     //! Overnight %CAD %Libor index
     class CADLiborON : public DailyTenorLibor {
       public:
-        CADLiborON(const Handle<YieldTermStructure>& h =
-                                    Handle<YieldTermStructure>())
+        CADLiborON(const Handle<ForwardRateCurve>& h =
+                                    Handle<ForwardRateCurve>())
+        : DailyTenorLibor("CADLibor",
+                          0,
+                          CADCurrency(),
+                          Canada(),
+                          Actual360(), h) {}
+        CADLiborON(const Handle<YieldTermStructure>& h)
         : DailyTenorLibor("CADLibor",
                           0,
                           CADCurrency(),

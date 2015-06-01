@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2006, 2009 Ferdinando Ametrano
+ Copyright (C) 2006, 2009, 2015 Ferdinando Ametrano
  Copyright (C) 2006, 2007, 2009 StatPro Italia srl
 
  This file is part of QuantLib, a free-software/open-source library
@@ -67,7 +67,7 @@ namespace QuantLib {
         Period fixedLegTenor() const { return fixedLegTenor_; }
         BusinessDayConvention fixedLegConvention() const;
         boost::shared_ptr<IborIndex> iborIndex() const { return iborIndex_; }
-        Handle<YieldTermStructure> forwardingTermStructure() const;
+        Handle<ForwardRateCurve> forwardingTermStructure() const;
         Handle<YieldTermStructure> discountingTermStructure() const;
         bool exogenousDiscount() const;
         /*! \warning Relinking the term structure underlying the index will
@@ -80,10 +80,10 @@ namespace QuantLib {
         //@{
         //! returns a copy of itself linked to a different forwarding curve
         virtual boost::shared_ptr<SwapIndex> clone(
-                        const Handle<YieldTermStructure>& forwarding) const;
+                        const Handle<ForwardRateCurve>& forwarding) const;
         //! returns a copy of itself linked to different curves
         virtual boost::shared_ptr<SwapIndex> clone(
-                        const Handle<YieldTermStructure>& forwarding,
+                        const Handle<ForwardRateCurve>& forwarding,
                         const Handle<YieldTermStructure>& discounting) const;
         //! returns a copy of itself with different tenor
         virtual boost::shared_ptr<SwapIndex> clone(

@@ -1,7 +1,7 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
- Copyright (C) 2008, 2009 Ferdinando Ametrano
+ Copyright (C) 2008, 2009, 2015 Ferdinando Ametrano
 
  This file is part of QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
@@ -41,10 +41,12 @@ namespace QuantLib {
     class EurLiborSwapIsdaFixA : public SwapIndex {
       public:
         EurLiborSwapIsdaFixA(const Period& tenor,
-                             const Handle<YieldTermStructure>& h =
-                                    Handle<YieldTermStructure>());
+                             const Handle<ForwardRateCurve>& h =
+                                    Handle<ForwardRateCurve>());
         EurLiborSwapIsdaFixA(const Period& tenor,
-                             const Handle<YieldTermStructure>& forwarding,
+                             const Handle<YieldTermStructure>& h);
+        EurLiborSwapIsdaFixA(const Period& tenor,
+                             const Handle<ForwardRateCurve>& forwarding,
                              const Handle<YieldTermStructure>& discounting);
     };
 
@@ -61,10 +63,12 @@ namespace QuantLib {
     class EurLiborSwapIsdaFixB : public SwapIndex {
       public:
         EurLiborSwapIsdaFixB(const Period& tenor,
-                             const Handle<YieldTermStructure>& h =
-                                    Handle<YieldTermStructure>());
+                             const Handle<ForwardRateCurve>& h =
+                                    Handle<ForwardRateCurve>());
         EurLiborSwapIsdaFixB(const Period& tenor,
-                             const Handle<YieldTermStructure>& forwarding,
+                             const Handle<YieldTermStructure>& h);
+        EurLiborSwapIsdaFixB(const Period& tenor,
+                             const Handle<ForwardRateCurve>& forwarding,
                              const Handle<YieldTermStructure>& discounting);
     };
 
@@ -79,10 +83,12 @@ namespace QuantLib {
     class EurLiborSwapIfrFix : public SwapIndex {
       public:
         EurLiborSwapIfrFix(const Period& tenor,
-                           const Handle<YieldTermStructure>& h =
-                                    Handle<YieldTermStructure>());
+                           const Handle<ForwardRateCurve>& h =
+                                    Handle<ForwardRateCurve>());
         EurLiborSwapIfrFix(const Period& tenor,
-                           const Handle<YieldTermStructure>& forwarding,
+                           const Handle<YieldTermStructure>& h);
+        EurLiborSwapIfrFix(const Period& tenor,
+                           const Handle<ForwardRateCurve>& forwarding,
                            const Handle<YieldTermStructure>& discounting);
     };
 

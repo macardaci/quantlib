@@ -1,7 +1,7 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
- Copyright (C) 2008, 2011 Ferdinando Ametrano
+ Copyright (C) 2008, 2011, 2015 Ferdinando Ametrano
 
  This file is part of QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
@@ -27,6 +27,19 @@ namespace QuantLib {
 
     UsdLiborSwapIsdaFixAm::UsdLiborSwapIsdaFixAm(
                                 const Period& tenor,
+                                const Handle<ForwardRateCurve>& h)
+    : SwapIndex("UsdLiborSwapIsdaFixAm", // familyName
+                tenor,
+                2, // settlementDays
+                USDCurrency(),
+                TARGET(),
+                6*Months, // fixedLegTenor
+                ModifiedFollowing, // fixedLegConvention
+                Thirty360(Thirty360::BondBasis), // fixedLegDaycounter
+                boost::shared_ptr<IborIndex>(new USDLibor(3*Months, h))) {}
+
+    UsdLiborSwapIsdaFixAm::UsdLiborSwapIsdaFixAm(
+                                const Period& tenor,
                                 const Handle<YieldTermStructure>& h)
     : SwapIndex("UsdLiborSwapIsdaFixAm", // familyName
                 tenor,
@@ -40,7 +53,7 @@ namespace QuantLib {
 
     UsdLiborSwapIsdaFixAm::UsdLiborSwapIsdaFixAm(
                                 const Period& tenor,
-                                const Handle<YieldTermStructure>& forwarding,
+                                const Handle<ForwardRateCurve>& forwarding,
                                 const Handle<YieldTermStructure>& discounting)
     : SwapIndex("UsdLiborSwapIsdaFixAm", // familyName
                 tenor,
@@ -52,6 +65,19 @@ namespace QuantLib {
                 Thirty360(Thirty360::BondBasis), // fixedLegDaycounter
                 boost::shared_ptr<IborIndex>(new USDLibor(3*Months, forwarding)),
                 discounting) {}
+
+    UsdLiborSwapIsdaFixPm::UsdLiborSwapIsdaFixPm(
+                                const Period& tenor,
+                                const Handle<ForwardRateCurve>& h)
+    : SwapIndex("UsdLiborSwapIsdaFixPm", // familyName
+                tenor,
+                2, // settlementDays
+                USDCurrency(),
+                UnitedStates(UnitedStates::GovernmentBond),
+                6*Months, // fixedLegTenor
+                ModifiedFollowing, // fixedLegConvention
+                Thirty360(Thirty360::BondBasis), // fixedLegDaycounter
+                boost::shared_ptr<IborIndex>(new USDLibor(3*Months, h))) {}
 
     UsdLiborSwapIsdaFixPm::UsdLiborSwapIsdaFixPm(
                                 const Period& tenor,
@@ -68,7 +94,7 @@ namespace QuantLib {
 
     UsdLiborSwapIsdaFixPm::UsdLiborSwapIsdaFixPm(
                                 const Period& tenor,
-                                const Handle<YieldTermStructure>& forwarding,
+                                const Handle<ForwardRateCurve>& forwarding,
                                 const Handle<YieldTermStructure>& discounting)
     : SwapIndex("UsdLiborSwapIsdaFixPm", // familyName
                 tenor,

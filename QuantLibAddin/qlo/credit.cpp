@@ -40,10 +40,11 @@
 #include <ql/experimental/credit/nthtodefault.hpp>
 #include <ql/experimental/credit/integralntdengine.hpp>
 
+#include <ql/settings.hpp>
+
 #include <boost/algorithm/string/case_conv.hpp>
 #include <boost/make_shared.hpp>
 
-#include <ql/settings.hpp>
 
 using boost::algorithm::to_upper_copy;
 

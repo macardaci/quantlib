@@ -96,11 +96,11 @@ namespace QuantLib {
         fixingDate_ = coupon_->fixingDate();
         paymentDate_ = coupon_->date();
         const boost::shared_ptr<SwapIndex>& swapIndex = coupon_->swapIndex();
-        rateCurve_ = *(swapIndex->forwardingTermStructure());
+        rateCurve_ = *(swapIndex->discountingTermStructure());
 
         Date today = Settings::instance().evaluationDate();
 
-        if(paymentDate_ > today)
+        if (paymentDate_ > today)
             discount_ = rateCurve_->discount(paymentDate_);
         else discount_= 1.;
 
@@ -147,7 +147,7 @@ namespace QuantLib {
             }
             vanillaOptionPricer_= boost::shared_ptr<VanillaOptionPricer>(new
                 BlackVanillaOptionPricer(swapRateValue_, fixingDate_, swapTenor_,
-                                        *swaptionVolatility()));
+                                         *swaptionVolatility()));
          }
     }
 
@@ -583,7 +583,7 @@ namespace QuantLib {
             swapIndex->underlyingSwap(coupon.fixingDate());
 
         const Schedule& schedule = swap->fixedSchedule();
-        Handle<YieldTermStructure> rateCurve =
+        Handle<ForwardRateCurve> rateCurve =
             swapIndex->forwardingTermStructure();
 
         const DayCounter& dc = swapIndex->dayCounter();
@@ -686,16 +686,16 @@ namespace QuantLib {
         objectiveFunction_ = boost::shared_ptr<ObjectiveFunction>(new ObjectiveFunction(*this, swapRateValue_));
 
         const Schedule& schedule = swap->fixedSchedule();
-        Handle<YieldTermStructure> rateCurve =
-            swapIndex->forwardingTermStructure();
+        Handle<YieldTermStructure> discCurve =
+            swapIndex->discountingTermStructure(); // BUGFIX
         const DayCounter& dc = swapIndex->dayCounter();
 
-        swapStartTime_ = dc.yearFraction(rateCurve->referenceDate(),
+        swapStartTime_ = dc.yearFraction(discCurve->referenceDate(),
                                          schedule.startDate());
-        discountAtStart_ = rateCurve->discount(schedule.startDate());
+        discountAtStart_ = discCurve->discount(schedule.startDate());
 
-        Real paymentTime = dc.yearFraction(rateCurve->referenceDate(),
-                                                 coupon.date());
+        Real paymentTime = dc.yearFraction(discCurve->referenceDate(),
+                                           coupon.date());
 
         shapedPaymentTime_ = shapeOfShift(paymentTime);
 
@@ -709,9 +709,9 @@ namespace QuantLib {
                 boost::dynamic_pointer_cast<Coupon>(fixedLeg[i]);
             accruals_.push_back(coupon->accrualPeriod());
             const Date paymentDate(coupon->date());
-            const double swapPaymentTime(dc.yearFraction(rateCurve->referenceDate(), paymentDate));
+            const double swapPaymentTime(dc.yearFraction(discCurve->referenceDate(), paymentDate));
             shapedSwapPaymentTimes_.push_back(shapeOfShift(swapPaymentTime));
-            swapPaymentDiscounts_.push_back(rateCurve->discount(paymentDate));
+            swapPaymentDiscounts_.push_back(discCurve->discount(paymentDate));
         }
         discountRatio_ = swapPaymentDiscounts_.back()/discountAtStart_;
     }

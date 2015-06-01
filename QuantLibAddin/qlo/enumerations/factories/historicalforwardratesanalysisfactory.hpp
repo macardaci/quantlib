@@ -32,7 +32,6 @@ namespace QuantLib {
     template<class TS>
     class BootstrapHelper;
 
-    typedef BootstrapHelper<YieldTermStructure> RateHelper;
 }
 
 namespace ObjectHandler {

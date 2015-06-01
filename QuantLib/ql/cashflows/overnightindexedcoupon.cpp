@@ -84,16 +84,12 @@ namespace QuantLib {
                 // forward part using telescopic property in order
                 // to avoid the evaluation of multiple forward fixings
                 if (i<n) {
+                    // FIXME
                     Handle<YieldTermStructure> curve =
-                        index->forwardingTermStructure();
-                    QL_REQUIRE(!curve.empty(),
-                               "null term structure set to this instance of "<<
-                               index->name());
-
+                        convertIntoYTSHandle(index->forwardingTermStructure(), false);
                     const vector<Date>& dates = coupon_->valueDates();
                     DiscountFactor startDiscount = curve->discount(dates[i]);
                     DiscountFactor endDiscount = curve->discount(dates[n]);
-
                     compoundFactor *= startDiscount/endDiscount;
                 }
 

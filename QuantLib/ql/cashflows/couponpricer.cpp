@@ -55,7 +55,7 @@ namespace QuantLib {
             QL_FAIL("IborIndex required");
         }
         Handle<YieldTermStructure> rateCurve =
-                                            index_->forwardingTermStructure();
+            convertIntoYTSHandle(index_->forwardingTermStructure(), false);
 
         Date paymentDate = coupon.date();
         if (paymentDate > rateCurve->referenceDate())

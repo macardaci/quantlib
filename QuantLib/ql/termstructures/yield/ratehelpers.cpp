@@ -40,7 +40,7 @@ using boost::shared_ptr;
 namespace QuantLib {
 
     namespace {
-        void no_deletion(YieldTermStructure*) {}
+        void no_deletion(ForwardRateCurve*) {}
     }
 
     FuturesRateHelper::FuturesRateHelper(const Handle<Quote>& price,
@@ -263,8 +263,7 @@ namespace QuantLib {
 
     Real FuturesRateHelper::impliedQuote() const {
         QL_REQUIRE(termStructure_ != 0, "term structure not set");
-        Rate forwardRate = (termStructure_->discount(earliestDate_) /
-            termStructure_->discount(latestDate_)-1.0)/yearFraction_;
+        Rate forwardRate = termStructure_->forwardRate(earliestDate_);
         Rate convAdj = convAdj_.empty() ? 0.0 : convAdj_->value();
         // Convexity, as FRA/futures adjustment, has been used in the
         // past to take into account futures margining vs FRA.
@@ -347,11 +346,13 @@ namespace QuantLib {
         return iborIndex_->fixing(fixingDate_, true);
     }
 
-    void DepositRateHelper::setTermStructure(YieldTermStructure* t) {
-        // no need to register---the index is not lazy
-        termStructureHandle_.linkTo(
-                         shared_ptr<YieldTermStructure>(t,no_deletion),
-                         false);
+    void DepositRateHelper::setTermStructure(ForwardRateCurve* t) {
+        shared_ptr<ForwardRateCurve> temp(t, no_deletion);
+        // do not set the relinkable handle as an observer
+        // the index is not lazy
+        // force recalculation when needed
+        bool observer = false;
+        termStructureHandle_.linkTo(temp, observer);
         RelativeDateRateHelper::setTermStructure(t);
     }
 
@@ -519,11 +520,13 @@ namespace QuantLib {
         return iborIndex_->fixing(fixingDate_, true);
     }
 
-    void FraRateHelper::setTermStructure(YieldTermStructure* t) {
-        // no need to register---the index is not lazy
-        termStructureHandle_.linkTo(
-                         shared_ptr<YieldTermStructure>(t,no_deletion),
-                         false);
+    void FraRateHelper::setTermStructure(ForwardRateCurve* t) {
+        shared_ptr<ForwardRateCurve> temp(t, no_deletion);
+        // do not set the relinkable handle as an observer
+        // the index is not lazy
+        // force recalculation when needed
+        bool observer = false;
+        termStructureHandle_.linkTo(temp, observer);
         RelativeDateRateHelper::setTermStructure(t);
     }
 
@@ -710,17 +713,21 @@ namespace QuantLib {
         #endif
     }
 
-    void SwapRateHelper::setTermStructure(YieldTermStructure* t) {
-        // do not set the relinkable handle as an observer -
+    void SwapRateHelper::setTermStructure(ForwardRateCurve* t) {
+        shared_ptr<ForwardRateCurve> temp(t, no_deletion);
+        // do not set the relinkable handle as an observer
+        // the index is not lazy
         // force recalculation when needed
         bool observer = false;
-
-        shared_ptr<YieldTermStructure> temp(t, no_deletion);
         termStructureHandle_.linkTo(temp, observer);
 
-        if (discountHandle_.empty())
-            discountRelinkableHandle_.linkTo(temp, observer);
-        else
+        if (discountHandle_.empty()) {
+            bool doNotThrow = false;
+            shared_ptr<YieldTermStructure> d =
+                convertIntoYTS(temp, doNotThrow);
+            // FIXME no_deletion
+            discountRelinkableHandle_.linkTo(d, observer);
+        } else
             discountRelinkableHandle_.linkTo(*discountHandle_, observer);
 
         RelativeDateRateHelper::setTermStructure(t);
@@ -812,8 +819,10 @@ namespace QuantLib {
                                                 bmaSchedule,
                                                 clonedIndex,
                                                 bmaDayCount_));
+        Handle<YieldTermStructure> disc = convertIntoYTSHandle(
+                                iborIndex_->forwardingTermStructure(), false);
         swap_->setPricingEngine(shared_ptr<PricingEngine>(new
-            DiscountingSwapEngine(iborIndex_->forwardingTermStructure())));
+                                                DiscountingSwapEngine(disc)));
 
         Date d = calendar_.adjust(swap_->maturityDate(), Following);
         Weekday w = d.weekday();
@@ -824,12 +833,13 @@ namespace QuantLib {
                          clonedIndex->fixingCalendar().adjust(nextWednesday));
     }
 
-    void BMASwapRateHelper::setTermStructure(YieldTermStructure* t) {
-        // do not set the relinkable handle as an observer -
+    void BMASwapRateHelper::setTermStructure(ForwardRateCurve* t) {
+        shared_ptr<ForwardRateCurve> temp(t, no_deletion);
+        // do not set the relinkable handle as an observer
+        // the index is not lazy
         // force recalculation when needed
-        termStructureHandle_.linkTo(
-                         shared_ptr<YieldTermStructure>(t,no_deletion),
-                         false);
+        bool observer = false;
+        termStructureHandle_.linkTo(temp, observer);
         RelativeDateRateHelper::setTermStructure(t);
     }
 

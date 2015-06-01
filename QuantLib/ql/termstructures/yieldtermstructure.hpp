@@ -1,7 +1,7 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
- Copyright (C) 2004, 2009 Ferdinando Ametrano
+ Copyright (C) 2004, 2009, 2015 Ferdinando Ametrano
  Copyright (C) 2000, 2001, 2002, 2003 RiskMap srl
  Copyright (C) 2003, 2004, 2005, 2006 StatPro Italia srl
 
@@ -26,12 +26,29 @@
 #ifndef quantlib_yield_term_structure_hpp
 #define quantlib_yield_term_structure_hpp
 
-#include <ql/termstructure.hpp>
-#include <ql/interestrate.hpp>
+#include <ql/termstructures/forwardratecurve.hpp>
 #include <ql/quote.hpp>
 #include <vector>
 
 namespace QuantLib {
+
+    class YieldTermStructure;
+
+    boost::shared_ptr<YieldTermStructure>
+    convertIntoYTS(const boost::shared_ptr<ForwardRateCurve>& f,
+                   bool doNotThrow);
+
+    boost::shared_ptr<ForwardRateCurve>
+    convertIntoYTS(const boost::shared_ptr<YieldTermStructure>& y,
+                   bool doNotThrow);
+
+    Handle<YieldTermStructure>
+    convertIntoYTSHandle(const Handle<ForwardRateCurve>& fh,
+                         bool doNotThrow);
+
+    Handle<ForwardRateCurve>
+    convertIntoFRCHandle(const Handle<YieldTermStructure>& yh,
+                         bool doNotThrow);
 
     //! Interest-rate term structure
     /*! This abstract class defines the interface of concrete
@@ -41,7 +58,7 @@ namespace QuantLib {
 
         \test observability against evaluation date changes is checked.
     */
-    class YieldTermStructure : public TermStructure {
+    class YieldTermStructure : public ForwardRateCurve {
       public:
         /*! \name Constructors
             See the TermStructure documentation for issues regarding

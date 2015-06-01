@@ -1,7 +1,7 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
- Copyright (C) 2006, 2007 Ferdinando Ametrano
+ Copyright (C) 2006, 2007, 2015 Ferdinando Ametrano
  Copyright (C) 2006 Katiuscia Manzoni
  Copyright (C) 2005 Eric Ehlers
  Copyright (C) 2005 Plamen Neykov
@@ -45,7 +45,7 @@ namespace QuantLibAddin {
     Libor::Libor(const shared_ptr<ValueObject>& properties,
                  const QuantLib::Currency& currency,
                  const std::string& p,
-                 const QuantLib::Handle<QuantLib::YieldTermStructure>& h,
+                 const QuantLib::Handle<QuantLib::ForwardRateCurve>& h,
                  bool permanent) : IborIndex(properties, permanent)
     {
         switch (currency.numericCode()) {
@@ -165,7 +165,7 @@ namespace QuantLibAddin {
     }
 
     Sonia::Sonia(const shared_ptr<ValueObject>& properties,
-                 const QuantLib::Handle<QuantLib::YieldTermStructure>& h,
+                 const QuantLib::Handle<QuantLib::ForwardRateCurve>& h,
                  bool permanent)
     : OvernightIndex(properties, permanent)
     {

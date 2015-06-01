@@ -1,6 +1,7 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
+ Copyright (C) 2015 Ferdinando Ametrano
  Copyright (C) 2011 Ferdinando Ametrano
 
  This file is part of QuantLib, a free-software/open-source library
@@ -23,6 +24,11 @@
 #include <ql/currencies/europe.hpp>
 
 namespace QuantLib {
+
+    Sonia::Sonia(const Handle<ForwardRateCurve>& h)
+    : OvernightIndex("Sonia", 0, GBPCurrency(),
+                     UnitedKingdom(UnitedKingdom::Exchange),
+                     Actual365Fixed(), h) {}
 
     Sonia::Sonia(const Handle<YieldTermStructure>& h)
     : OvernightIndex("Sonia", 0, GBPCurrency(),

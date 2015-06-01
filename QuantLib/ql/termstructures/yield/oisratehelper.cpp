@@ -27,7 +27,7 @@ using boost::shared_ptr;
 namespace QuantLib {
 
     namespace {
-        void no_deletion(YieldTermStructure*) {}
+        void no_deletion(ForwardRateCurve*) {}
     }
 
     OISRateHelper::OISRateHelper(
@@ -63,17 +63,21 @@ namespace QuantLib {
         latestDate_ = swap_->maturityDate();
     }
 
-    void OISRateHelper::setTermStructure(YieldTermStructure* t) {
-        // do not set the relinkable handle as an observer -
+    void OISRateHelper::setTermStructure(ForwardRateCurve* t) {
+        shared_ptr<ForwardRateCurve> temp(t, no_deletion);
+        // do not set the relinkable handle as an observer
+        // the index is not lazy
         // force recalculation when needed
         bool observer = false;
-
-        shared_ptr<YieldTermStructure> temp(t, no_deletion);
         termStructureHandle_.linkTo(temp, observer);
 
-        if (discountHandle_.empty())
-            discountRelinkableHandle_.linkTo(temp, observer);
-        else
+        if (discountHandle_.empty()) {
+            bool doNotThrow = false;
+            shared_ptr<YieldTermStructure> d =
+                convertIntoYTS(temp, doNotThrow);
+            // FIXME no_deletion
+            discountRelinkableHandle_.linkTo(d, observer);
+        } else
             discountRelinkableHandle_.linkTo(*discountHandle_, observer);
 
         RelativeDateRateHelper::setTermStructure(t);
@@ -124,17 +128,21 @@ namespace QuantLib {
         latestDate_ = swap_->maturityDate();
     }
 
-    void DatedOISRateHelper::setTermStructure(YieldTermStructure* t) {
-        // do not set the relinkable handle as an observer -
+    void DatedOISRateHelper::setTermStructure(ForwardRateCurve* t) {
+        shared_ptr<ForwardRateCurve> temp(t, no_deletion);
+        // do not set the relinkable handle as an observer
+        // the index is not lazy
         // force recalculation when needed
         bool observer = false;
-
-        shared_ptr<YieldTermStructure> temp(t, no_deletion);
         termStructureHandle_.linkTo(temp, observer);
 
-        if (discountHandle_.empty())
-            discountRelinkableHandle_.linkTo(temp, observer);
-        else
+        if (discountHandle_.empty()) {
+            bool doNotThrow = false;
+            shared_ptr<YieldTermStructure> d =
+                convertIntoYTS(temp, doNotThrow);
+            // FIXME no_deletion
+            discountRelinkableHandle_.linkTo(d, observer);
+        } else
             discountRelinkableHandle_.linkTo(*discountHandle_, observer);
 
         RateHelper::setTermStructure(t);

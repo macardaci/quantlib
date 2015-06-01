@@ -36,14 +36,12 @@ namespace QuantLib {
                          bool includeFirstSwaplet,
                          const Handle<YieldTermStructure>& termStructure,
                          CalibrationHelper::CalibrationErrorType errorType)
-        : CalibrationHelper(volatility,termStructure,errorType),
-        length_(length), index_(index), fixedLegFrequency_(fixedLegFrequency),
-        fixedLegDayCounter_(fixedLegDayCounter),
-        includeFirstSwaplet_(includeFirstSwaplet)
+    : CalibrationHelper(volatility, termStructure, errorType),
+      length_(length), index_(index), fixedLegFrequency_(fixedLegFrequency),
+      fixedLegDayCounter_(fixedLegDayCounter),
+      includeFirstSwaplet_(includeFirstSwaplet)
     {
-
         registerWith(index_);
-
     }
 
     void CapHelper::addTimesTo(std::list<Time>& times) const {
@@ -96,8 +94,8 @@ namespace QuantLib {
                       index_->fixingCalendar(),
                       index_->businessDayConvention(),
                       index_->endOfMonth(),
-                      termStructure_->dayCounter(),
-                      termStructure_));
+                      termStructure_->dayCounter(), // WHY ?!?!?!?!
+                      index_->forwardingTermStructure())); // THIS IS A BUGFIX
 
         std::vector<Real> nominals(1,1.0);
 

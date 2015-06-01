@@ -745,11 +745,11 @@ void PiecewiseYieldCurveTest::testObservability() {
 
     CommonVars vars;
 
-    vars.termStructure = boost::shared_ptr<YieldTermStructure>(
-       new PiecewiseYieldCurve<Discount,LogLinear>(vars.settlementDays,
-                                                   vars.calendar,
-                                                   vars.instruments,
-                                                   Actual360()));
+    vars.termStructure = boost::shared_ptr<YieldTermStructure>(new
+        PiecewiseYieldCurve<Discount,LogLinear>(vars.settlementDays,
+                                                vars.calendar,
+                                                vars.instruments,
+                                                Actual360()));
     Flag f;
     f.registerWith(vars.termStructure);
 
@@ -901,11 +901,11 @@ void PiecewiseYieldCurveTest::testJpyLibor() {
                               vars.fixedLegDayCounter, index));
     }
 
-    vars.termStructure = boost::shared_ptr<YieldTermStructure>(
-        new PiecewiseYieldCurve<Discount,LogLinear>(
-                                       vars.settlement, vars.instruments,
-                                       Actual360(),
-                                       1.0e-12));
+    vars.termStructure = boost::shared_ptr<YieldTermStructure>(new
+        PiecewiseYieldCurve<Discount,LogLinear>(vars.settlement,
+                                                vars.instruments,
+                                                Actual360(),
+                                                1.0e-12));
 
     RelinkableHandle<YieldTermStructure> curveHandle;
     curveHandle.linkTo(vars.termStructure);

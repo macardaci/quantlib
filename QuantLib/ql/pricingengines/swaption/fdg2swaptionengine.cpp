@@ -88,8 +88,8 @@ namespace QuantLib {
         }
 
         const Handle<YieldTermStructure> disTs = model_->termStructure();
-        const Handle<YieldTermStructure> fwdTs
-            = arguments_.swap->iborIndex()->forwardingTermStructure();
+        const Handle<YieldTermStructure> fwdTs =
+            convertIntoYTSHandle(arguments_.swap->iborIndex()->forwardingTermStructure(), false);
 
         QL_REQUIRE(fwdTs->dayCounter() == disTs->dayCounter(),
                 "day counter of forward and discount curve must match");

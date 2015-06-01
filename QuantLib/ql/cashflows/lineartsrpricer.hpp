@@ -185,7 +185,8 @@ namespace QuantLib {
 
         Handle<Quote> meanReversion_;
 
-        Handle<YieldTermStructure> forwardCurve_, discountCurve_;
+        Handle<ForwardRateCurve> forwardCurve_;
+        Handle<YieldTermStructure> discountCurve_;
         Handle<YieldTermStructure> couponDiscountCurve_;
 
         const CmsCoupon *coupon_;

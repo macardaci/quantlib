@@ -56,7 +56,8 @@ namespace QuantLib {
             Time t,
             const FdmLinearOpIterator& iter) const;
 
-        RelinkableHandle<YieldTermStructure> disTs_, fwdTs_;
+        RelinkableHandle<YieldTermStructure> disTs_;
+        RelinkableHandle<ForwardRateCurve> fwdTs_;
         const boost::shared_ptr<ModelType> disModel_, fwdModel_;
 
         const boost::shared_ptr<IborIndex> index_;

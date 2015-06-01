@@ -1,6 +1,7 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
+ Copyright (C) 2015 Ferdinando Ametrano
  Copyright (C) 2014 StatPro Italia srl
 
  This file is part of QuantLib, a free-software/open-source library
@@ -23,6 +24,12 @@
 #include <ql/currencies/america.hpp>
 
 namespace QuantLib {
+
+    FedFunds::FedFunds(const Handle<ForwardRateCurve>& h)
+    : OvernightIndex("FedFunds", 0,
+                     USDCurrency(),
+                     UnitedStates(UnitedStates::Settlement),
+                     Actual360(), h) {}
 
     FedFunds::FedFunds(const Handle<YieldTermStructure>& h)
     : OvernightIndex("FedFunds", 0,

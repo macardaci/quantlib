@@ -4779,6 +4779,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ql\termstructures\forwardratecurve.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ql\termstructures\forwardratecurve.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\ql\termstructures\inflationtermstructure.cpp"
 				>
 			</File>

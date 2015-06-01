@@ -70,7 +70,7 @@ namespace QuantLib {
         observationDates_.erase(observationDates_.begin()); //remove start date
         observationsNo_ = observationDates_.size();
 
-        const Handle<YieldTermStructure>& rateCurve =
+        const Handle<ForwardRateCurve>& rateCurve =
             index->forwardingTermStructure();
         Date referenceDate = rateCurve->referenceDate();
 
@@ -113,9 +113,9 @@ namespace QuantLib {
 
         boost::shared_ptr<IborIndex> index =
             boost::dynamic_pointer_cast<IborIndex>(coupon_->index());
-        const Handle<YieldTermStructure>& rateCurve =
-            index->forwardingTermStructure();
-        discount_ = rateCurve->discount(paymentDate);
+        Handle<YieldTermStructure> discCurve =
+            convertIntoYTSHandle(index->forwardingTermStructure(), false);
+        discount_ = discCurve->discount(paymentDate);
         accrualFactor_ = coupon_->accrualPeriod();
         spreadLegValue_ = spread_ * accrualFactor_* discount_;
 

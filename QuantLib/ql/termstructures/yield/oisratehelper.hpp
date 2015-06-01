@@ -43,7 +43,7 @@ namespace QuantLib {
         //! \name RateHelper interface
         //@{
         Real impliedQuote() const;
-        void setTermStructure(YieldTermStructure*);
+        void setTermStructure(ForwardRateCurve*);
         //@}
         //! \name inspectors
         //@{
@@ -61,7 +61,7 @@ namespace QuantLib {
         boost::shared_ptr<OvernightIndex> overnightIndex_;
 
         boost::shared_ptr<OvernightIndexedSwap> swap_;
-        RelinkableHandle<YieldTermStructure> termStructureHandle_;
+        RelinkableHandle<ForwardRateCurve> termStructureHandle_;
 
         Handle<YieldTermStructure> discountHandle_;
         RelinkableHandle<YieldTermStructure> discountRelinkableHandle_;
@@ -81,7 +81,7 @@ namespace QuantLib {
         //! \name RateHelper interface
         //@{
         Real impliedQuote() const;
-        void setTermStructure(YieldTermStructure*);
+        void setTermStructure(ForwardRateCurve*);
         //@}
         //! \name Visitability
         //@{
@@ -89,7 +89,7 @@ namespace QuantLib {
         //@}
     protected:
         boost::shared_ptr<OvernightIndexedSwap> swap_;
-        RelinkableHandle<YieldTermStructure> termStructureHandle_;
+        RelinkableHandle<ForwardRateCurve> termStructureHandle_;
 
         Handle<YieldTermStructure> discountHandle_;
         RelinkableHandle<YieldTermStructure> discountRelinkableHandle_;

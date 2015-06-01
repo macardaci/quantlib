@@ -1,6 +1,7 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
+ Copyright (C) 2015 Ferdinando Ametrano
  Copyright (C) 2007 Roland Lichters
 
  This file is part of QuantLib, a free-software/open-source library
@@ -40,7 +41,7 @@ namespace QuantLib {
 
     }
 
-    BMAIndex::BMAIndex(const Handle<YieldTermStructure>& h)
+    BMAIndex::BMAIndex(const Handle<ForwardRateCurve>& h)
     : InterestRateIndex("BMA",
                         1 * Weeks,
                         1,
@@ -48,6 +49,17 @@ namespace QuantLib {
                         UnitedStates(UnitedStates::NYSE),
                         ActualActual(ActualActual::ISDA)),
       termStructure_(h) {
+        registerWith (h);
+    }
+
+    BMAIndex::BMAIndex(const Handle<YieldTermStructure>& h)
+    : InterestRateIndex("BMA",
+                        1 * Weeks,
+                        1,
+                        USDCurrency(),
+                        UnitedStates(UnitedStates::NYSE),
+                        ActualActual(ActualActual::ISDA)),
+      termStructure_(convertIntoFRCHandle(h, true)) {
         registerWith (h);
     }
 
@@ -64,7 +76,7 @@ namespace QuantLib {
         return cal.isBusinessDay(date);
     }
 
-    Handle<YieldTermStructure> BMAIndex::forwardingTermStructure() const {
+    Handle<ForwardRateCurve> BMAIndex::forwardingTermStructure() const {
         return termStructure_;
     }
 
@@ -88,10 +100,7 @@ namespace QuantLib {
         QL_REQUIRE(!termStructure_.empty(),
                    "null term structure set to this instance of " << name());
         Date start = fixingCalendar().advance(fixingDate, 1, Days);
-        Date end = maturityDate(start);
-        return termStructure_->forwardRate(start, end,
-                                           dayCounter_,
-                                           Simple);
+        return termStructure_->forwardRate(start);
     }
 
 }

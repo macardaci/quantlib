@@ -1,6 +1,7 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
+ Copyright (C) 2015 Ferdinando Ametrano
  Copyright (C) 2000, 2001, 2002, 2003 RiskMap srl
  Copyright (C) 2003, 2004, 2005, 2006 StatPro Italia srl
 
@@ -40,8 +41,15 @@ namespace QuantLib {
     class USDLibor : public Libor {
       public:
         USDLibor(const Period& tenor,
-                 const Handle<YieldTermStructure>& h =
-                                    Handle<YieldTermStructure>())
+                 const Handle<ForwardRateCurve>& h =
+                                    Handle<ForwardRateCurve>())
+        : Libor("USDLibor", tenor,
+                2,
+                USDCurrency(),
+                UnitedStates(UnitedStates::Settlement),
+                Actual360(), h) {}
+        USDLibor(const Period& tenor,
+                 const Handle<YieldTermStructure>& h)
         : Libor("USDLibor", tenor,
                 2,
                 USDCurrency(),
@@ -53,8 +61,14 @@ namespace QuantLib {
     class DailyTenorUSDLibor : public DailyTenorLibor {
       public:
         DailyTenorUSDLibor(Natural settlementDays,
-                           const Handle<YieldTermStructure>& h =
-                                    Handle<YieldTermStructure>())
+                           const Handle<ForwardRateCurve>& h =
+                                    Handle<ForwardRateCurve>())
+        : DailyTenorLibor("USDLibor", settlementDays,
+                          USDCurrency(),
+                          UnitedStates(UnitedStates::Settlement),
+                          Actual360(), h) {}
+        DailyTenorUSDLibor(Natural settlementDays,
+                           const Handle<YieldTermStructure>& h)
         : DailyTenorLibor("USDLibor", settlementDays,
                           USDCurrency(),
                           UnitedStates(UnitedStates::Settlement),
@@ -64,8 +78,10 @@ namespace QuantLib {
     //! Overnight %USD %Libor index
     class USDLiborON : public DailyTenorUSDLibor {
       public:
-        USDLiborON(const Handle<YieldTermStructure>& h =
-                                    Handle<YieldTermStructure>())
+        USDLiborON(const Handle<ForwardRateCurve>& h =
+                                    Handle<ForwardRateCurve>())
+        : DailyTenorUSDLibor(0, h) {}
+        USDLiborON(const Handle<YieldTermStructure>& h)
         : DailyTenorUSDLibor(0, h) {}
     };
 }

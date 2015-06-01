@@ -34,9 +34,9 @@ const Real Gaussian1dModel::forwardRate(const Date &fixing,
     if (fixing <= (evaluationDate_ + (enforcesTodaysHistoricFixings_ ? 0 : -1)))
         return iborIdx->fixing(fixing);
 
+    // might be empty, then use model curve
     Handle<YieldTermStructure> yts =
-        iborIdx->forwardingTermStructure(); // might be empty, then use
-                                            // model curve
+        convertIntoYTSHandle(iborIdx->forwardingTermStructure(), false); 
 
     Date valueDate = iborIdx->valueDate(fixing);
     Date endDate = iborIdx->fixingCalendar().advance(
@@ -62,7 +62,7 @@ const Real Gaussian1dModel::swapRate(const Date &fixing, const Period &tenor,
         return swapIdx->fixing(fixing);
 
     Handle<YieldTermStructure> ytsf =
-        swapIdx->iborIndex()->forwardingTermStructure();
+        convertIntoYTSHandle(swapIdx->forwardingTermStructure(), false);
     Handle<YieldTermStructure> ytsd =
         swapIdx->discountingTermStructure(); // either might be empty, then
                                              // use model curve

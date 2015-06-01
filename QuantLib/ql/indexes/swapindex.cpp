@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2006, 2009 Ferdinando Ametrano
+ Copyright (C) 2006, 2009, 2015 Ferdinando Ametrano
  Copyright (C) 2006, 2007, 2009 StatPro Italia srl
 
  This file is part of QuantLib, a free-software/open-source library
@@ -67,7 +67,7 @@ namespace QuantLib {
         registerWith(iborIndex_);
     }
 
-    Handle<YieldTermStructure> SwapIndex::forwardingTermStructure() const {
+    Handle<ForwardRateCurve> SwapIndex::forwardingTermStructure() const {
         return iborIndex_->forwardingTermStructure();
     }
 
@@ -115,7 +115,7 @@ namespace QuantLib {
     }
 
     shared_ptr<SwapIndex>
-    SwapIndex::clone(const Handle<YieldTermStructure>& forwarding) const {
+    SwapIndex::clone(const Handle<ForwardRateCurve>& forwarding) const {
 
         if (exogenousDiscount_)
             return shared_ptr<SwapIndex>(new
@@ -143,7 +143,7 @@ namespace QuantLib {
     }
 
     shared_ptr<SwapIndex>
-    SwapIndex::clone(const Handle<YieldTermStructure>& forwarding,
+    SwapIndex::clone(const Handle<ForwardRateCurve>& forwarding,
                      const Handle<YieldTermStructure>& discounting) const {
         return shared_ptr<SwapIndex>(new
              SwapIndex(familyName(),

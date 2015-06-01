@@ -95,7 +95,7 @@ namespace QuantLib {
                     standardSwapBase->iborIndex()->dayCounter(),
                     standardSwapBase->exogenousDiscount()
                         ? standardSwapBase->discountingTermStructure()
-                        : standardSwapBase->forwardingTermStructure(),
+                        : convertIntoYTSHandle(standardSwapBase->forwardingTermStructure(), false),
                     CalibrationHelper::RelativePriceError, Null<Real>(), 1.0, shift));
 
                 break;
@@ -223,7 +223,7 @@ namespace QuantLib {
                     standardSwapBase->iborIndex()->dayCounter(),
                     standardSwapBase->exogenousDiscount()
                         ? standardSwapBase->discountingTermStructure()
-                        : standardSwapBase->forwardingTermStructure(),
+                        : convertIntoYTSHandle(standardSwapBase->forwardingTermStructure(), false),
                     CalibrationHelper::RelativePriceError, solution[2],
                     fabs(solution[0]),shift));
                 break;

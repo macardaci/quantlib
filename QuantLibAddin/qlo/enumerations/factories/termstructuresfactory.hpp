@@ -30,11 +30,12 @@ namespace QuantLib {
     class Quote;
     class DayCounter;
     class YieldTermStructure;
+    class ForwardRateCurve;
 
     template<class TS>
     class BootstrapHelper;
 
-    typedef BootstrapHelper<YieldTermStructure> RateHelper;
+    typedef BootstrapHelper<ForwardRateCurve> RateHelper;
 }
 
 namespace ObjectHandler {

@@ -1,6 +1,7 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
+ Copyright (C) 2015 Ferdinando Ametrano
  Copyright (C) 2000, 2001, 2002, 2003 RiskMap srl
  Copyright (C) 2003, 2004, 2005, 2006 StatPro Italia srl
 
@@ -40,8 +41,15 @@ namespace QuantLib {
     class GBPLibor : public Libor {
       public:
         GBPLibor(const Period& tenor,
-                 const Handle<YieldTermStructure>& h =
-                                    Handle<YieldTermStructure>())
+                 const Handle<ForwardRateCurve>& h =
+                                    Handle<ForwardRateCurve>())
+        : Libor("GBPLibor", tenor,
+                0,
+                GBPCurrency(),
+                UnitedKingdom(UnitedKingdom::Exchange),
+                Actual365Fixed(), h) {}
+        GBPLibor(const Period& tenor,
+                 const Handle<YieldTermStructure>& h)
         : Libor("GBPLibor", tenor,
                 0,
                 GBPCurrency(),
@@ -53,8 +61,14 @@ namespace QuantLib {
     class DailyTenorGBPLibor : public DailyTenorLibor {
       public:
         DailyTenorGBPLibor(Natural settlementDays,
-                           const Handle<YieldTermStructure>& h =
-                                    Handle<YieldTermStructure>())
+                           const Handle<ForwardRateCurve>& h =
+                                    Handle<ForwardRateCurve>())
+        : DailyTenorLibor("GBPLibor", settlementDays,
+                          GBPCurrency(),
+                          UnitedKingdom(UnitedKingdom::Exchange),
+                          Actual365Fixed(), h) {}
+        DailyTenorGBPLibor(Natural settlementDays,
+                           const Handle<YieldTermStructure>& h)
         : DailyTenorLibor("GBPLibor", settlementDays,
                           GBPCurrency(),
                           UnitedKingdom(UnitedKingdom::Exchange),
@@ -64,8 +78,10 @@ namespace QuantLib {
     //! Overnight %GBP %Libor index
     class GBPLiborON : public DailyTenorGBPLibor {
       public:
-        GBPLiborON(const Handle<YieldTermStructure>& h =
-                                    Handle<YieldTermStructure>())
+        GBPLiborON(const Handle<ForwardRateCurve>& h =
+                                    Handle<ForwardRateCurve>())
+        : DailyTenorGBPLibor(0, h) {}
+        GBPLiborON(const Handle<YieldTermStructure>& h)
         : DailyTenorGBPLibor(0, h) {}
     };
 

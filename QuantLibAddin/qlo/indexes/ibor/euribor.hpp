@@ -1,7 +1,7 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
- Copyright (C) 2006, 2007 Ferdinando Ametrano
+ Copyright (C) 2006, 2007, 2015 Ferdinando Ametrano
  Copyright (C) 2006 Katiuscia Manzoni
  Copyright (C) 2005 Eric Ehlers
  Copyright (C) 2005 Plamen Neykov
@@ -31,7 +31,7 @@ namespace QuantLibAddin {
       public:
         Euribor(const boost::shared_ptr<ObjectHandler::ValueObject>& properties,
                 const std::string& p,
-                const QuantLib::Handle<QuantLib::YieldTermStructure>& hYTS,
+                const QuantLib::Handle<QuantLib::ForwardRateCurve>& hYTS,
                 bool permanent);
     };
 
@@ -39,14 +39,14 @@ namespace QuantLibAddin {
       public:
         Euribor365(const boost::shared_ptr<ObjectHandler::ValueObject>& properties,
                    const std::string& p,
-                   const QuantLib::Handle<QuantLib::YieldTermStructure>& hYTS,
+                   const QuantLib::Handle<QuantLib::ForwardRateCurve>& hYTS,
                    bool permanent);
     };
 
     class Eonia : public OvernightIndex {
       public:
         Eonia(const boost::shared_ptr<ObjectHandler::ValueObject>& properties,
-              const QuantLib::Handle<QuantLib::YieldTermStructure>& hYTS,
+              const QuantLib::Handle<QuantLib::ForwardRateCurve>& hYTS,
               bool permanent);
     };
 

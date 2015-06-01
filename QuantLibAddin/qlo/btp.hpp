@@ -31,6 +31,7 @@ namespace QuantLib {
     class Handle;
     class Quote;
     class Euribor;
+    class ForwardRateCurve;
 }
 
 namespace QuantLibAddin {
@@ -41,7 +42,7 @@ namespace QuantLibAddin {
               const std::string&,
               const QuantLib::Date& maturityDate,
               QuantLib::Spread spread,
-              const QuantLib::Handle<QuantLib::YieldTermStructure>& fwdCurve,
+              const QuantLib::Handle<QuantLib::ForwardRateCurve>& fwdCurve,
               const QuantLib::Date& startDate,
               const QuantLib::Date& issueDate,
               bool permanent);

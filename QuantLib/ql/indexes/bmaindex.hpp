@@ -1,6 +1,7 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
+ Copyright (C) 2015 Ferdinando Ametrano
  Copyright (C) 2007 Roland Lichters
 
  This file is part of QuantLib, a free-software/open-source library
@@ -39,8 +40,9 @@ namespace QuantLib {
     */
     class BMAIndex : public InterestRateIndex {
       public:
-        BMAIndex(const Handle<YieldTermStructure>& h =
-                                                Handle<YieldTermStructure>());
+        BMAIndex(const Handle<ForwardRateCurve>& h =
+                                                Handle<ForwardRateCurve>());
+        BMAIndex(const Handle<YieldTermStructure>& h);
         //! \name Index interface
         //@{
         /*! BMA is fixed weekly on Wednesdays.
@@ -50,7 +52,7 @@ namespace QuantLib {
         //@}
         //! \name Inspectors
         //@{
-        Handle<YieldTermStructure> forwardingTermStructure() const;
+        Handle<ForwardRateCurve> forwardingTermStructure() const;
         //@}
         //! \name Date calculations
         //@{
@@ -63,7 +65,7 @@ namespace QuantLib {
         // @}
       protected:
         Rate forecastFixing(const Date& fixingDate) const;
-        Handle<YieldTermStructure> termStructure_;
+        Handle<ForwardRateCurve> termStructure_;
     };
 
 }

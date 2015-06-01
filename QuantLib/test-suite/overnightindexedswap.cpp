@@ -377,10 +377,10 @@ void OvernightIndexedSwapTest::testBootstrap() {
     }
 
     shared_ptr<PiecewiseFlatForward> eoniaTS(new
-        PiecewiseFlatForward (vars.today, eoniaHelpers, Actual365Fixed()));
+        PiecewiseFlatForward(vars.today, eoniaHelpers, Actual365Fixed()));
 
     shared_ptr<PiecewiseFlatForward> swapTS(new
-        PiecewiseFlatForward (vars.today, swap3mHelpers, Actual365Fixed()));
+        PiecewiseFlatForward(vars.today, swap3mHelpers, Actual365Fixed()));
 
     vars.eoniaTermStructure.linkTo(eoniaTS);
 

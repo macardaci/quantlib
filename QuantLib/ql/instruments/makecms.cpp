@@ -57,9 +57,7 @@ namespace QuantLib {
       floatFirstDate_(Date()), floatNextToLastDate_(Date()),
       cmsDayCount_(Actual360()),
       floatDayCount_(iborIndex->dayCounter()),
-      // arbitrary choice:
-      //engine_(new DiscountingSwapEngine(iborIndex->termStructure())),
-      engine_(new DiscountingSwapEngine(swapIndex->forwardingTermStructure())) {}
+      engine_(new DiscountingSwapEngine(swapIndex->discountingTermStructure())) {}
 
 
     MakeCms::MakeCms(const Period& swapTenor,
@@ -88,7 +86,7 @@ namespace QuantLib {
       floatFirstDate_(Date()), floatNextToLastDate_(Date()),
       cmsDayCount_(Actual360()),
       floatDayCount_(iborIndex_->dayCounter()),
-      engine_(new DiscountingSwapEngine(swapIndex->forwardingTermStructure())) {}
+      engine_(new DiscountingSwapEngine(swapIndex->discountingTermStructure())) {}
 
 
     MakeCms::operator Swap() const {
