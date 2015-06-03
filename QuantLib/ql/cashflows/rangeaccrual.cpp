@@ -114,7 +114,7 @@ namespace QuantLib {
         boost::shared_ptr<IborIndex> index =
             boost::dynamic_pointer_cast<IborIndex>(coupon_->index());
         Handle<YieldTermStructure> discCurve =
-            convertIntoYTSHandle(index->forwardingTermStructure(), false);
+            convertIntoYTSHandle(index->forwardingTermStructure());
         discount_ = discCurve->discount(paymentDate);
         accrualFactor_ = coupon_->accrualPeriod();
         spreadLegValue_ = spread_ * accrualFactor_* discount_;

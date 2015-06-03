@@ -77,7 +77,7 @@ namespace QuantLib {
                                     atmCapFloorTermVolCurve_->optionTimes();
 
         Handle<YieldTermStructure> disc =
-            convertIntoYTSHandle(iborIndex_->forwardingTermStructure(), false);
+            convertIntoYTSHandle(iborIndex_->forwardingTermStructure());
         for (Size j=0; j<nOptionExpiries_; ++j) {
             Volatility atmOptionVol = atmCapFloorTermVolCurve_->volatility(
                 optionExpiriesTimes[j], 33.3333); // dummy strike
@@ -175,7 +175,7 @@ namespace QuantLib {
                 adapter), Handle<Quote>(spreadQuote_)));
 
         Handle<YieldTermStructure> disc = convertIntoYTSHandle(
-            optionletStripper1->iborIndex()->forwardingTermStructure(), false);
+            optionletStripper1->iborIndex()->forwardingTermStructure());
         boost::shared_ptr<BlackCapFloorEngine> engine(new
             BlackCapFloorEngine(disc,
                                 Handle<OptionletVolatilityStructure>(spreadedAdapter)));

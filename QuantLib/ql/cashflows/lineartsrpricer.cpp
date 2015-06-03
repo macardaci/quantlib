@@ -99,7 +99,7 @@ namespace QuantLib {
         if (swapIndex_->exogenousDiscount())
             discountCurve_ = swapIndex_->discountingTermStructure();
         else
-            discountCurve_ = convertIntoYTSHandle(forwardCurve_, false);
+            discountCurve_ = convertIntoYTSHandle(forwardCurve_);
 
         // if no coupon discount curve is given just use the discounting curve
         // from the swap index. for rate calculation this curve cancels out in

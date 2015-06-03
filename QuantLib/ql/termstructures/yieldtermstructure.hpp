@@ -35,20 +35,16 @@ namespace QuantLib {
     class YieldTermStructure;
 
     boost::shared_ptr<YieldTermStructure>
-    convertIntoYTS(const boost::shared_ptr<ForwardRateCurve>& f,
-                   bool doNotThrow);
+    convertIntoYTS(const boost::shared_ptr<ForwardRateCurve>& f);
 
     boost::shared_ptr<ForwardRateCurve>
-    convertIntoYTS(const boost::shared_ptr<YieldTermStructure>& y,
-                   bool doNotThrow);
+    convertIntoYTS(const boost::shared_ptr<YieldTermStructure>& y);
 
     Handle<YieldTermStructure>
-    convertIntoYTSHandle(const Handle<ForwardRateCurve>& fh,
-                         bool doNotThrow);
+    convertIntoYTSHandle(const Handle<ForwardRateCurve>& fh);
 
     Handle<ForwardRateCurve>
-    convertIntoFRCHandle(const Handle<YieldTermStructure>& yh,
-                         bool doNotThrow);
+    convertIntoFRCHandle(const Handle<YieldTermStructure>& yh);
 
     //! Interest-rate term structure
     /*! This abstract class defines the interface of concrete
@@ -78,6 +74,12 @@ namespace QuantLib {
                            const DayCounter& dc = DayCounter(),
                            const std::vector<Handle<Quote> >& jumps = std::vector<Handle<Quote> >(),
                            const std::vector<Date>& jumpDates = std::vector<Date>());
+        //@}
+
+        //! \name ForwardRateCurve interface
+        //@{
+        Rate forwardRate(Time t,
+                         bool extrapolate = false) const;
         //@}
 
         /*! \name Discount factors

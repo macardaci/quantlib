@@ -223,7 +223,7 @@ void LiborMarketModelTest::testCapletPricing() {
                         new LiborForwardModel(process, volaModel, corrModel));
 
     const Handle<YieldTermStructure> termStructure =
-        convertIntoYTSHandle(process->index()->forwardingTermStructure(), false);
+        convertIntoYTSHandle(process->index()->forwardingTermStructure());
 
     boost::shared_ptr<AnalyticCapFloorEngine> engine1(
                             new AnalyticCapFloorEngine(model, termStructure));
@@ -269,9 +269,10 @@ void LiborMarketModelTest::testCalibration() {
                                  0.106996, 0.100064};
 
     boost::shared_ptr<IborIndex> index = makeIndex();
-    boost::shared_ptr<LiborForwardModelProcess> process(
-        new LiborForwardModelProcess(size, index));
-    Handle<YieldTermStructure> termStructure = convertIntoYTSHandle(index->forwardingTermStructure(), false);
+    boost::shared_ptr<LiborForwardModelProcess> process(new
+        LiborForwardModelProcess(size, index));
+    Handle<YieldTermStructure> termStructure =
+        convertIntoYTSHandle(index->forwardingTermStructure());
 
     // set-up the model
     boost::shared_ptr<LmVolatilityModel> volaModel(
@@ -428,8 +429,9 @@ void LiborMarketModelTest::testSwaptionPricing() {
                 new VanillaSwap(VanillaSwap::Receiver, 1.0,
                                 schedule, swapRate, dayCounter,
                                 schedule, index, 0.0, index->dayCounter()));
-            forwardSwap->setPricingEngine(boost::shared_ptr<PricingEngine>(
-                new DiscountingSwapEngine(convertIntoYTSHandle(index->forwardingTermStructure(), false))));
+            forwardSwap->setPricingEngine(boost::shared_ptr<PricingEngine>(new
+                DiscountingSwapEngine(
+                    convertIntoYTSHandle(index->forwardingTermStructure()))));
 
             // check forward pricing first
             const Real expected = forwardSwap->fairRate();
@@ -445,13 +447,14 @@ void LiborMarketModelTest::testSwaptionPricing() {
                 new VanillaSwap(VanillaSwap::Receiver, 1.0,
                                 schedule, swapRate, dayCounter,
                                 schedule, index, 0.0, index->dayCounter()));
-            forwardSwap->setPricingEngine(boost::shared_ptr<PricingEngine>(
-                new DiscountingSwapEngine(convertIntoYTSHandle(index->forwardingTermStructure(), false))));
+            forwardSwap->setPricingEngine(boost::shared_ptr<PricingEngine>(new
+                DiscountingSwapEngine(
+                convertIntoYTSHandle(index->forwardingTermStructure()))));
 
             if (i == j && i<=size/2) {
-                boost::shared_ptr<PricingEngine> engine(
-                     new LfmSwaptionEngine(liborModel,
-                                           convertIntoYTSHandle(index->forwardingTermStructure(), false)));
+                boost::shared_ptr<PricingEngine> engine(new
+                    LfmSwaptionEngine(liborModel,
+                                      convertIntoYTSHandle(index->forwardingTermStructure())));
                 boost::shared_ptr<Exercise> exercise(
                     new EuropeanExercise(process->fixingDates()[i]));
 

@@ -91,7 +91,7 @@ namespace QuantLib {
                 Handle<YieldTermStructure> d = swapIndex_->discountingTermStructure();
                 if (d.empty())
                     d = convertIntoYTSHandle(
-                        swapIndex_->forwardingTermStructure(), true);
+                        swapIndex_->forwardingTermStructure());
                 temp->setPricingEngine(shared_ptr<PricingEngine>(new
                     DiscountingSwapEngine(d, false)));
             }

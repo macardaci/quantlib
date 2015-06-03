@@ -141,7 +141,7 @@ namespace QuantLib {
                              floatSpread_, floatDayCount_);
             if (engine_ == 0) {
                 Handle<YieldTermStructure> disc =
-                    convertIntoYTSHandle(iborIndex_->forwardingTermStructure(), false);
+                    convertIntoYTSHandle(iborIndex_->forwardingTermStructure());
                 bool includeSettlementDateFlows = false;
                 shared_ptr<PricingEngine> engine(new
                     DiscountingSwapEngine(disc, includeSettlementDateFlows));
@@ -161,7 +161,7 @@ namespace QuantLib {
 
         if (engine_ == 0) {
             Handle<YieldTermStructure> disc =
-                convertIntoYTSHandle(iborIndex_->forwardingTermStructure(), false);
+                convertIntoYTSHandle(iborIndex_->forwardingTermStructure());
             bool includeSettlementDateFlows = false;
             shared_ptr<PricingEngine> engine(new
                 DiscountingSwapEngine(disc, includeSettlementDateFlows));

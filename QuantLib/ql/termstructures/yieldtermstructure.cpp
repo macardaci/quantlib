@@ -28,51 +28,51 @@ using boost::dynamic_pointer_cast;
 namespace QuantLib {
 
     shared_ptr<YieldTermStructure>
-    convertIntoYTS(const shared_ptr<ForwardRateCurve>& f,
-                   bool doNotThrow) {
+    convertIntoYTS(const shared_ptr<ForwardRateCurve>& f) {
         shared_ptr<YieldTermStructure> y =
             dynamic_pointer_cast<YieldTermStructure>(f);
-        QL_REQUIRE(y!=0 || doNotThrow, "cannot convert from ForwardRateCurve"
-                                       " to YieldTermStructure");
+        QL_REQUIRE(y!=0, "cannot convert from ForwardRateCurve "
+                         "to YieldTermStructure");
         return y;
     }
 
     shared_ptr<ForwardRateCurve>
-    convertIntoFRC(const shared_ptr<YieldTermStructure>& y,
-                   bool doNotThrow) {
+    convertIntoFRC(const shared_ptr<YieldTermStructure>& y) {
         shared_ptr<ForwardRateCurve> f =
             dynamic_pointer_cast<ForwardRateCurve>(y);
-        QL_REQUIRE(f!=0 || doNotThrow, "cannot convert from YieldTermStructure"
-                                       " to ForwardRateCurve");
+        QL_REQUIRE(f!=0, "cannot convert from YieldTermStructure"
+                         " to ForwardRateCurve");
         return f;
     }
 
     Handle<YieldTermStructure>
-    convertIntoYTSHandle(const Handle<ForwardRateCurve>& fh,
-                         bool doNotThrow) {
-        if (fh.empty()) {
-            QL_REQUIRE(doNotThrow, "empty Handle<ForwardRateCurve>: "
-                                   "cannot convert to YieldTermStructure");
-            return Handle<YieldTermStructure>();
-        }
-        shared_ptr<YieldTermStructure> y =
-            convertIntoYTS(fh.currentLink(), doNotThrow);
+    convertIntoYTSHandle(const Handle<ForwardRateCurve>& fh) {
+        QL_REQUIRE(!fh.empty(), "empty Handle<ForwardRateCurve>: "
+                                "cannot convert to YieldTermStructure");
+        shared_ptr<YieldTermStructure> y = convertIntoYTS(fh.currentLink());
         return Handle<YieldTermStructure>(y);
     }
 
     Handle<ForwardRateCurve>
-    convertIntoFRCHandle(const Handle<YieldTermStructure>& yh,
-                         bool doNotThrow) {
-        if (yh.empty()) {
-            QL_REQUIRE(doNotThrow, "empty Handle<YieldTermStructure>: "
-                                   "cannot convert to ForwardRateCurve");
-            return Handle<ForwardRateCurve>();
-        }
+    convertIntoFRCHandle(const Handle<YieldTermStructure>& yh) {
+        QL_REQUIRE(!yh.empty(), "empty Handle<YieldTermStructure>: "
+                                "cannot convert to ForwardRateCurve");
         shared_ptr<ForwardRateCurve> f =
-            convertIntoFRC(yh.currentLink(), doNotThrow);
+            convertIntoFRC(yh.currentLink());
         return Handle<ForwardRateCurve>(f);
     }
 
+    Rate YieldTermStructure::forwardRate(Time t1,
+                                         bool extrapolate) const
+    {
+        BigInteger temp =
+            referenceDate().serialNumber() + BigInteger(t1*365.0);
+        if (temp >= Date::maxDate().serialNumber())
+            temp= Date::maxDate().serialNumber();
+        Date d(temp);
+        InterestRate r = forwardRate(d, fwdTenor_, fwdDayCounter_, Simple, Annual, extrapolate);
+        return r.rate();
+    }
 
     namespace {
         // time interval used in finite differences

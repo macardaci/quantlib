@@ -40,12 +40,8 @@ namespace QuantLib {
     class SwapIndex;
     class Quote;
 
-    typedef BootstrapHelper<ForwardRateCurve> RateHelper;
-    typedef RelativeDateBootstrapHelper<ForwardRateCurve>
-                                                        RelativeDateRateHelper;
-
     //! Rate helper for bootstrapping over IborIndex futures prices
-    class FuturesRateHelper : public RateHelper {
+    class FuturesRateHelper : public BootstrapHelper<ForwardRateCurve> {
       public:
         FuturesRateHelper(const Handle<Quote>& price,
                           const Date& iborStartDate,
@@ -87,7 +83,7 @@ namespace QuantLib {
                           const boost::shared_ptr<IborIndex>& iborIndex,
                           Rate convexityAdjustment = 0.0,
                           Futures::Type type = Futures::IMM);
-        //! \name RateHelper interface
+        //! \name BootstrapHelper<ForwardRateCurve> interface
         //@{
         Real impliedQuote() const;
         //@}
@@ -105,7 +101,7 @@ namespace QuantLib {
 
 
     //! Rate helper for bootstrapping over deposit rates
-    class DepositRateHelper : public RelativeDateRateHelper {
+    class DepositRateHelper : public RelativeDateBootstrapHelper<ForwardRateCurve> {
       public:
         DepositRateHelper(const Handle<Quote>& rate,
                           const Period& tenor,
@@ -125,7 +121,7 @@ namespace QuantLib {
                           const boost::shared_ptr<IborIndex>& iborIndex);
         DepositRateHelper(Rate rate,
                           const boost::shared_ptr<IborIndex>& iborIndex);
-        //! \name RateHelper interface
+        //! \name BootstrapHelper<ForwardRateCurve> interface
         //@{
         Real impliedQuote() const;
         void setTermStructure(ForwardRateCurve*);
@@ -143,7 +139,7 @@ namespace QuantLib {
 
 
     //! Rate helper for bootstrapping over %FRA rates
-    class FraRateHelper : public RelativeDateRateHelper {
+    class FraRateHelper : public RelativeDateBootstrapHelper<ForwardRateCurve> {
       public:
         FraRateHelper(const Handle<Quote>& rate,
                       Natural monthsToStart,
@@ -189,7 +185,7 @@ namespace QuantLib {
         FraRateHelper(Rate rate,
                       Period periodToStart,
                       const boost::shared_ptr<IborIndex>& iborIndex);
-        //! \name RateHelper interface
+        //! \name BootstrapHelper<ForwardRateCurve> interface
         //@{
         Real impliedQuote() const;
         void setTermStructure(ForwardRateCurve*);
@@ -208,7 +204,7 @@ namespace QuantLib {
 
     //! Rate helper for bootstrapping over swap rates
     /*! \todo use input SwapIndex to create the swap */
-    class SwapRateHelper : public RelativeDateRateHelper {
+    class SwapRateHelper : public RelativeDateBootstrapHelper<ForwardRateCurve> {
       public:
         SwapRateHelper(const Handle<Quote>& rate,
                        const boost::shared_ptr<SwapIndex>& swapIndex,
@@ -254,7 +250,7 @@ namespace QuantLib {
                        const Handle<YieldTermStructure>& discountingCurve
                                             = Handle<YieldTermStructure>(),
                        Natural settlementDays = Null<Natural>());
-        //! \name RateHelper interface
+        //! \name BootstrapHelper<ForwardRateCurve> interface
         //@{
         Real impliedQuote() const;
         void setTermStructure(ForwardRateCurve*);
@@ -287,7 +283,7 @@ namespace QuantLib {
     };
 
     //! Rate helper for bootstrapping over BMA swap rates
-    class BMASwapRateHelper : public RelativeDateRateHelper {
+    class BMASwapRateHelper : public RelativeDateBootstrapHelper<ForwardRateCurve> {
       public:
         BMASwapRateHelper(const Handle<Quote>& liborFraction,
                           const Period& tenor, // swap maturity
@@ -300,7 +296,7 @@ namespace QuantLib {
                           const boost::shared_ptr<BMAIndex>& bmaIndex,
                           // ibor leg
                           const boost::shared_ptr<IborIndex>& index);
-        //! \name RateHelper interface
+        //! \name BootstrapHelper<ForwardRateCurve> interface
         //@{
         Real impliedQuote() const;
         void setTermStructure(ForwardRateCurve*);

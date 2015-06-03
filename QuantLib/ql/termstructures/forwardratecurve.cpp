@@ -30,7 +30,11 @@ namespace QuantLib {
                                        bool fwdEndOfMonth,
                                        const DayCounter& fwdDayCounter,
                                        const DayCounter& dc)
-    : TermStructure(dc) {}
+    : TermStructure(dc),
+      fwdFamilyName_(fwdFamilyName), fwdTenor_(fwdTenor),
+      fwdSettlementDays_(fwdSettlementDays), fwdCurrency_(fwdCurrency),
+      fwdFixingCalendar_(fwdFixingCalendar), fwdConvention_(fwdConvention),
+      fwdEndOfMonth_(fwdEndOfMonth), fwdDayCounter_(fwdDayCounter) {}
 
     ForwardRateCurve::ForwardRateCurve(const std::string& fwdFamilyName,
                                        const Period& fwdTenor,
@@ -43,7 +47,11 @@ namespace QuantLib {
                                        const Date& referenceDate,
                                        const Calendar& cal,
                                        const DayCounter& dc)
-    : TermStructure(referenceDate, cal, dc) {}
+    : TermStructure(referenceDate, cal, dc),
+      fwdFamilyName_(fwdFamilyName), fwdTenor_(fwdTenor),
+      fwdSettlementDays_(fwdSettlementDays), fwdCurrency_(fwdCurrency),
+      fwdFixingCalendar_(fwdFixingCalendar), fwdConvention_(fwdConvention),
+      fwdEndOfMonth_(fwdEndOfMonth), fwdDayCounter_(fwdDayCounter) {}
 
     ForwardRateCurve::ForwardRateCurve(const std::string& fwdFamilyName,
                                        const Period& fwdTenor,
@@ -56,6 +64,28 @@ namespace QuantLib {
                                        Natural settlementDays,
                                        const Calendar& cal,
                                        const DayCounter& dc)
-    : TermStructure(settlementDays, cal, dc) {}
+    : TermStructure(settlementDays, cal, dc),
+      fwdFamilyName_(fwdFamilyName), fwdTenor_(fwdTenor),
+      fwdSettlementDays_(fwdSettlementDays), fwdCurrency_(fwdCurrency),
+      fwdFixingCalendar_(fwdFixingCalendar), fwdConvention_(fwdConvention),
+      fwdEndOfMonth_(fwdEndOfMonth), fwdDayCounter_(fwdDayCounter) {}
+
+    InterestRate ForwardRateCurve::forwardInterestRate(const Date& d,
+                                                       bool extrap) const {
+        Time t = timeFromReference(d);
+        return forwardInterestRate(t, extrap);
+    }
+
+    Rate ForwardRateCurve::forwardRate(const Date& d,
+                                       bool extrap) const {
+        Time t = timeFromReference(d);
+        return forwardRate(t, extrap);
+    }
+
+    InterestRate ForwardRateCurve::forwardInterestRate(Time t,
+                                                       bool extrap) const {
+        Rate fwd = forwardRate(t, extrap);
+        return InterestRate(fwd, fwdDayCounter_, Simple, Annual);
+    }
 
 }

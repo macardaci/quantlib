@@ -44,11 +44,12 @@
 #include <iomanip>
 
 using namespace QuantLib;
+
 using namespace boost::unit_test_framework;
-
-using std::exp;
-
 using boost::shared_ptr;
+
+using std::vector;
+using std::exp;
 
 typedef PiecewiseYieldCurve<Discount,LogLinear> PiecewiseFlatForward;
 
@@ -303,8 +304,8 @@ void OvernightIndexedSwapTest::testBootstrap() {
 
     CommonVars vars;
 
-    std::vector<shared_ptr<RateHelper> > eoniaHelpers;
-    std::vector<shared_ptr<RateHelper> > swap3mHelpers;
+    std::vector<shared_ptr<BootstrapHelper<ForwardRateCurve> > > eoniaHelpers;
+    std::vector<shared_ptr<BootstrapHelper<ForwardRateCurve> > > swap3mHelpers;
 
     shared_ptr<IborIndex> euribor3m(new Euribor3M);
     shared_ptr<Eonia> eonia(new Eonia);
@@ -314,7 +315,7 @@ void OvernightIndexedSwapTest::testBootstrap() {
         shared_ptr<SimpleQuote> simple = shared_ptr<SimpleQuote>(new SimpleQuote(rate));
         shared_ptr<Quote> quote (simple);
         Period term = depositData[i].n * depositData[i].unit;
-        shared_ptr<RateHelper> helper(new
+        shared_ptr<BootstrapHelper<ForwardRateCurve> > helper(new
                     DepositRateHelper(Handle<Quote>(quote),
                                       term,
                                       depositData[i].settlementDays,
@@ -333,7 +334,7 @@ void OvernightIndexedSwapTest::testBootstrap() {
         Real rate = 0.01 * fraData[i].rate;
         shared_ptr<SimpleQuote> simple = shared_ptr<SimpleQuote>(new SimpleQuote(rate));
         shared_ptr<Quote> quote (simple);
-        shared_ptr<RateHelper> helper(new
+        shared_ptr<BootstrapHelper<ForwardRateCurve> > helper(new
                                FraRateHelper(Handle<Quote>(quote),
                                              fraData[i].nExpiry,
                                              fraData[i].nMaturity,
@@ -350,7 +351,7 @@ void OvernightIndexedSwapTest::testBootstrap() {
         shared_ptr<SimpleQuote> simple = shared_ptr<SimpleQuote>(new SimpleQuote(rate));
         shared_ptr<Quote> quote (simple);
         Period term = eoniaSwapData[i].n * eoniaSwapData[i].unit;
-        shared_ptr<RateHelper> helper(new
+        shared_ptr<BootstrapHelper<ForwardRateCurve> > helper(new
                      OISRateHelper(eoniaSwapData[i].settlementDays,
                                    term,
                                    Handle<Quote>(quote),
@@ -364,14 +365,14 @@ void OvernightIndexedSwapTest::testBootstrap() {
         shared_ptr<Quote> quote (simple);
         Period tenor = swapData[i].nIndexUnits * swapData[i].indexUnit;
         Period term = swapData[i].nTermUnits * swapData[i].termUnit;
-        shared_ptr<RateHelper> helper(new SwapRateHelper(
-                               Handle<Quote>(quote),
-                               term,
-                               vars.calendar,
-                               vars.fixedSwapFrequency,
-                               vars.fixedSwapConvention,
-                               vars.fixedSwapDayCount,
-                               euribor3m));
+        shared_ptr<BootstrapHelper<ForwardRateCurve> > helper(new
+            SwapRateHelper(Handle<Quote>(quote),
+                           term,
+                           vars.calendar,
+                           vars.fixedSwapFrequency,
+                           vars.fixedSwapConvention,
+                           vars.fixedSwapDayCount,
+                           euribor3m));
         if (tenor == 3*Months)
             swap3mHelpers.push_back(helper);
     }

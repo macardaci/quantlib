@@ -50,7 +50,7 @@ namespace QuantLib {
                          const Handle<YieldTermStructure>& fwd)
     : InterestRateIndex(familyName, tenor, settlementDays, currency,
                         fixingCalendar, dayCounter),
-      convention_(convention), fwdCurve_(convertIntoFRCHandle(fwd, false)),
+      convention_(convention), fwdCurve_(convertIntoFRCHandle(fwd)),
       endOfMonth_(endOfMonth) {
         registerWith(fwdCurve_);
       }

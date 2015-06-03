@@ -31,7 +31,7 @@
 namespace QuantLib {
 
     //! Rate helper for bootstrapping over Overnight Indexed Swap rates
-    class OISRateHelper : public RelativeDateRateHelper {
+    class OISRateHelper : public RelativeDateBootstrapHelper<ForwardRateCurve> {
       public:
         OISRateHelper(Natural settlementDays,
                       const Period& tenor, // swap maturity
@@ -68,7 +68,7 @@ namespace QuantLib {
     };
 
     //! Rate helper for bootstrapping over Overnight Indexed Swap rates
-    class DatedOISRateHelper : public RateHelper {
+    class DatedOISRateHelper : public BootstrapHelper<ForwardRateCurve> {
       public:
         DatedOISRateHelper(
                     const Date& startDate,

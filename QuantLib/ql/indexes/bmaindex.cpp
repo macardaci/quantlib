@@ -59,7 +59,7 @@ namespace QuantLib {
                         USDCurrency(),
                         UnitedStates(UnitedStates::NYSE),
                         ActualActual(ActualActual::ISDA)),
-      termStructure_(convertIntoFRCHandle(h, true)) {
+      termStructure_(convertIntoFRCHandle(h)) {
         registerWith (h);
     }
 

@@ -58,9 +58,9 @@ namespace QuantLib {
                          BusinessDayConvention fwdConvention,
                          bool fwdEndOfMonth,
                          const DayCounter& fwdDayCounter,
+
                          const Date& referenceDate,
                          const Calendar& cal = Calendar(),
-
                          const DayCounter& dc = DayCounter());
         ForwardRateCurve(const std::string& fwdFamilyName,
                          const Period& fwdTenor,
@@ -70,9 +70,9 @@ namespace QuantLib {
                          BusinessDayConvention fwdConvention,
                          bool fwdEndOfMonth,
                          const DayCounter& fwdDayCounter,
+
                          Natural settlementDays,
                          const Calendar& cal,
-
                          const DayCounter& dc = DayCounter());
         //@}
         /*! \name Forward rates
@@ -95,10 +95,18 @@ namespace QuantLib {
         */
         InterestRate forwardInterestRate(Time t,
                                          bool extrapolate = false) const;
-        Rate forwardRate(Time t,
-                         bool extrapolate = false) const;
+        virtual Rate forwardRate(Time t,
+                                 bool extrapolate = false) const = 0;
         //@}
-
+      protected:
+        std::string fwdFamilyName_;
+        Period fwdTenor_;
+        Natural fwdSettlementDays_;
+        Currency fwdCurrency_;
+        Calendar fwdFixingCalendar_;
+        BusinessDayConvention fwdConvention_;
+        bool fwdEndOfMonth_;
+        DayCounter fwdDayCounter_;
     };
 
 }

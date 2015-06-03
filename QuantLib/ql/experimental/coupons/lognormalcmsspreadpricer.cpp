@@ -111,7 +111,7 @@ namespace QuantLib {
                     index_->swapIndex1()->discountingTermStructure();
             else
                 couponDiscountCurve_ = convertIntoYTSHandle(
-                        index_->swapIndex1()->forwardingTermStructure(),false);
+                        index_->swapIndex1()->forwardingTermStructure());
         }
 
         spreadLegValue_ = spread_ * coupon_->accrualPeriod() *

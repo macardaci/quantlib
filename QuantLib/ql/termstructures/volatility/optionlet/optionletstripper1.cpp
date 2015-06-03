@@ -68,7 +68,7 @@ namespace QuantLib {
 
         // discounting does not matter here
         Handle<YieldTermStructure> disc =
-            convertIntoYTSHandle(iborIndex_->forwardingTermStructure(), false);
+            convertIntoYTSHandle(iborIndex_->forwardingTermStructure());
         shared_ptr<BlackCapFloorEngine> dummy(new
                     BlackCapFloorEngine(disc,
                                         0.20, dc));
@@ -99,7 +99,7 @@ namespace QuantLib {
 
         const Handle<YieldTermStructure>& discountCurve =
             discount_.empty() ?
-                convertIntoYTSHandle(iborIndex_->forwardingTermStructure(), false):
+                convertIntoYTSHandle(iborIndex_->forwardingTermStructure()):
                 discount_;
 
         const std::vector<Rate>& strikes = termVolSurface_->strikes();

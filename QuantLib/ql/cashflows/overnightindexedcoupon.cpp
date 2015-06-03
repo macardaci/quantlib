@@ -86,7 +86,7 @@ namespace QuantLib {
                 if (i<n) {
                     // FIXME
                     Handle<YieldTermStructure> curve =
-                        convertIntoYTSHandle(index->forwardingTermStructure(), false);
+                        convertIntoYTSHandle(index->forwardingTermStructure());
                     const vector<Date>& dates = coupon_->valueDates();
                     DiscountFactor startDiscount = curve->discount(dates[i]);
                     DiscountFactor endDiscount = curve->discount(dates[n]);

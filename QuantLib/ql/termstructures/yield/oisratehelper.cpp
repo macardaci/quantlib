@@ -36,7 +36,7 @@ namespace QuantLib {
                     const Handle<Quote>& fixedRate,
                     const boost::shared_ptr<OvernightIndex>& overnightIndex,
                     const Handle<YieldTermStructure>& discount)
-    : RelativeDateRateHelper(fixedRate),
+    : RelativeDateBootstrapHelper<ForwardRateCurve>(fixedRate),
       settlementDays_(settlementDays), tenor_(tenor),
       overnightIndex_(overnightIndex), discountHandle_(discount) {
         registerWith(overnightIndex_);
@@ -72,15 +72,13 @@ namespace QuantLib {
         termStructureHandle_.linkTo(temp, observer);
 
         if (discountHandle_.empty()) {
-            bool doNotThrow = false;
-            shared_ptr<YieldTermStructure> d =
-                convertIntoYTS(temp, doNotThrow);
+            shared_ptr<YieldTermStructure> d = convertIntoYTS(temp);
             // FIXME no_deletion
             discountRelinkableHandle_.linkTo(d, observer);
         } else
             discountRelinkableHandle_.linkTo(*discountHandle_, observer);
 
-        RelativeDateRateHelper::setTermStructure(t);
+        RelativeDateBootstrapHelper<ForwardRateCurve>::setTermStructure(t);
     }
 
     Real OISRateHelper::impliedQuote() const {
@@ -96,7 +94,7 @@ namespace QuantLib {
         if (v1 != 0)
             v1->visit(*this);
         else
-            RateHelper::accept(v);
+            BootstrapHelper<ForwardRateCurve>::accept(v);
     }
 
     DatedOISRateHelper::DatedOISRateHelper(
@@ -105,7 +103,7 @@ namespace QuantLib {
                     const Handle<Quote>& fixedRate,
                     const boost::shared_ptr<OvernightIndex>& overnightIndex,
                     const Handle<YieldTermStructure>& discount)
-    : RateHelper(fixedRate), discountHandle_(discount) {
+    : BootstrapHelper<ForwardRateCurve>(fixedRate), discountHandle_(discount) {
 
         registerWith(overnightIndex);
         registerWith(discountHandle_);
@@ -137,15 +135,13 @@ namespace QuantLib {
         termStructureHandle_.linkTo(temp, observer);
 
         if (discountHandle_.empty()) {
-            bool doNotThrow = false;
-            shared_ptr<YieldTermStructure> d =
-                convertIntoYTS(temp, doNotThrow);
+            shared_ptr<YieldTermStructure> d = convertIntoYTS(temp);
             // FIXME no_deletion
             discountRelinkableHandle_.linkTo(d, observer);
         } else
             discountRelinkableHandle_.linkTo(*discountHandle_, observer);
 
-        RateHelper::setTermStructure(t);
+        BootstrapHelper<ForwardRateCurve>::setTermStructure(t);
     }
 
     Real DatedOISRateHelper::impliedQuote() const {
@@ -161,7 +157,7 @@ namespace QuantLib {
         if (v1 != 0)
             v1->visit(*this);
         else
-            RateHelper::accept(v);
+            BootstrapHelper<ForwardRateCurve>::accept(v);
     }
 
 }

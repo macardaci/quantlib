@@ -90,8 +90,7 @@ namespace QuantLib {
         const Volatility var = covarProxy_
             ->integratedCovariance(i, i, process_->fixingTimes()[i]);
         Handle<YieldTermStructure> discCurve =
-            convertIntoYTSHandle(process_->index()->forwardingTermStructure(),
-                                 false);
+            convertIntoYTSHandle(process_->index()->forwardingTermStructure());
         const DiscountFactor dis = discCurve->discount(bondMaturity);
 
         const Real black = blackFormula(
@@ -202,8 +201,7 @@ namespace QuantLib {
     // we might remove them from the AffineModel interface
     DiscountFactor LiborForwardModel::discount(Time t) const {
         Handle<YieldTermStructure> discCurve =
-            convertIntoYTSHandle(process_->index()->forwardingTermStructure(),
-                                 false);
+            convertIntoYTSHandle(process_->index()->forwardingTermStructure());
         return discCurve->discount(t);
     }
 

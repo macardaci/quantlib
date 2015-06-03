@@ -52,7 +52,7 @@ namespace QuantLib {
                                          const DayCounter& dayCounter,
                                          const Handle<Quote>& convAdj,
                                          Futures::Type type)
-    : RateHelper(price), convAdj_(convAdj) {
+    : BootstrapHelper<ForwardRateCurve>(price), convAdj_(convAdj) {
         switch (type) {
           case Futures::IMM:
             QL_REQUIRE(IMM::isIMMdate(iborStartDate, false),
@@ -80,7 +80,7 @@ namespace QuantLib {
                                          const DayCounter& dayCounter,
                                          Rate convAdj,
                                          Futures::Type type)
-    : RateHelper(price),
+    : BootstrapHelper<ForwardRateCurve>(price),
       convAdj_(Handle<Quote>(shared_ptr<Quote>(new SimpleQuote(convAdj))))
     {
         switch (type) {
@@ -106,7 +106,7 @@ namespace QuantLib {
                                          const DayCounter& dayCounter,
                                          const Handle<Quote>& convAdj,
                                          Futures::Type type)
-    : RateHelper(price), convAdj_(convAdj) {
+    : BootstrapHelper<ForwardRateCurve>(price), convAdj_(convAdj) {
         switch (type) {
           case Futures::IMM:
             QL_REQUIRE(IMM::isIMMdate(iborStartDate, false),
@@ -156,7 +156,7 @@ namespace QuantLib {
                                          const DayCounter& dayCounter,
                                          Rate convAdj,
                                          Futures::Type type)
-    : RateHelper(price),
+    : BootstrapHelper<ForwardRateCurve>(price),
       convAdj_(Handle<Quote>(shared_ptr<Quote>(new SimpleQuote(convAdj))))
     {
         switch (type) {
@@ -206,7 +206,7 @@ namespace QuantLib {
                                          const shared_ptr<IborIndex>& i,
                                          const Handle<Quote>& convAdj,
                                          Futures::Type type)
-    : RateHelper(price), convAdj_(convAdj) {
+    : BootstrapHelper<ForwardRateCurve>(price), convAdj_(convAdj) {
         switch (type) {
           case Futures::IMM:
             QL_REQUIRE(IMM::isIMMdate(iborStartDate, false),
@@ -231,7 +231,7 @@ namespace QuantLib {
                                          const shared_ptr<IborIndex>& i,
                                          Rate convAdj,
                                          Futures::Type type)
-    : RateHelper(price),
+    : BootstrapHelper<ForwardRateCurve>(price),
       convAdj_(Handle<Quote>(shared_ptr<Quote>(new SimpleQuote(convAdj))))
     {
         switch (type) {
@@ -273,7 +273,7 @@ namespace QuantLib {
         if (v1 != 0)
             v1->visit(*this);
         else
-            RateHelper::accept(v);
+            BootstrapHelper<ForwardRateCurve>::accept(v);
     }
 
     DepositRateHelper::DepositRateHelper(const Handle<Quote>& rate,
@@ -283,7 +283,7 @@ namespace QuantLib {
                                          BusinessDayConvention convention,
                                          bool endOfMonth,
                                          const DayCounter& dayCounter)
-    : RelativeDateRateHelper(rate) {
+    : RelativeDateBootstrapHelper<ForwardRateCurve>(rate) {
         iborIndex_ = shared_ptr<IborIndex>(new
             IborIndex("no-fix", // never take fixing into account
                       tenor, fixingDays,
@@ -299,7 +299,7 @@ namespace QuantLib {
                                          BusinessDayConvention convention,
                                          bool endOfMonth,
                                          const DayCounter& dayCounter)
-    : RelativeDateRateHelper(rate) {
+    : RelativeDateBootstrapHelper<ForwardRateCurve>(rate) {
         iborIndex_ = shared_ptr<IborIndex>(new
             IborIndex("no-fix", // never take fixing into account
                       tenor, fixingDays,
@@ -310,7 +310,7 @@ namespace QuantLib {
 
     DepositRateHelper::DepositRateHelper(const Handle<Quote>& rate,
                                          const shared_ptr<IborIndex>& i)
-    : RelativeDateRateHelper(rate) {
+    : RelativeDateBootstrapHelper<ForwardRateCurve>(rate) {
         // do not use clone, as we do not want to take fixing into account
         iborIndex_ = shared_ptr<IborIndex>(new
             IborIndex("no-fix", // never take fixing into account
@@ -322,7 +322,7 @@ namespace QuantLib {
 
     DepositRateHelper::DepositRateHelper(Rate rate,
                                          const shared_ptr<IborIndex>& i)
-    : RelativeDateRateHelper(rate) {
+    : RelativeDateBootstrapHelper<ForwardRateCurve>(rate) {
         // do not use clone, as we do not want to take fixing into account
         iborIndex_ = shared_ptr<IborIndex>(new
             IborIndex("no-fix", // never take fixing into account
@@ -344,7 +344,7 @@ namespace QuantLib {
         // force recalculation when needed
         bool observer = false;
         termStructureHandle_.linkTo(temp, observer);
-        RelativeDateRateHelper::setTermStructure(t);
+        RelativeDateBootstrapHelper<ForwardRateCurve>::setTermStructure(t);
     }
 
     void DepositRateHelper::initializeDates() {
@@ -364,7 +364,7 @@ namespace QuantLib {
         if (v1 != 0)
             v1->visit(*this);
         else
-            RateHelper::accept(v);
+            BootstrapHelper<ForwardRateCurve>::accept(v);
     }
 
 
@@ -376,7 +376,7 @@ namespace QuantLib {
                                  BusinessDayConvention convention,
                                  bool endOfMonth,
                                  const DayCounter& dayCounter)
-    : RelativeDateRateHelper(rate), periodToStart_(monthsToStart*Months) {
+    : RelativeDateBootstrapHelper<ForwardRateCurve>(rate), periodToStart_(monthsToStart*Months) {
         QL_REQUIRE(monthsToEnd>monthsToStart,
                    "monthsToEnd (" << monthsToEnd <<
                    ") must be grater than monthsToStart (" << monthsToStart <<
@@ -400,7 +400,7 @@ namespace QuantLib {
                                  BusinessDayConvention convention,
                                  bool endOfMonth,
                                  const DayCounter& dayCounter)
-    : RelativeDateRateHelper(rate),periodToStart_(monthsToStart*Months) {
+    : RelativeDateBootstrapHelper<ForwardRateCurve>(rate),periodToStart_(monthsToStart*Months) {
         QL_REQUIRE(monthsToEnd>monthsToStart,
                    "monthsToEnd (" << monthsToEnd <<
                    ") must be grater than monthsToStart (" << monthsToStart <<
@@ -419,7 +419,7 @@ namespace QuantLib {
     FraRateHelper::FraRateHelper(const Handle<Quote>& rate,
                                  Natural monthsToStart,
                                  const shared_ptr<IborIndex>& i)
-    : RelativeDateRateHelper(rate), periodToStart_(monthsToStart*Months) {
+    : RelativeDateBootstrapHelper<ForwardRateCurve>(rate), periodToStart_(monthsToStart*Months) {
         // take fixing into account
         iborIndex_ = i->clone(termStructureHandle_);
         // We want to be notified of changes of fixings, but we don't
@@ -433,7 +433,7 @@ namespace QuantLib {
     FraRateHelper::FraRateHelper(Rate rate,
                                  Natural monthsToStart,
                                  const shared_ptr<IborIndex>& i)
-    : RelativeDateRateHelper(rate), periodToStart_(monthsToStart*Months) {
+    : RelativeDateBootstrapHelper<ForwardRateCurve>(rate), periodToStart_(monthsToStart*Months) {
         // take fixing into account
         iborIndex_ = i->clone(termStructureHandle_);
         // see above
@@ -450,7 +450,7 @@ namespace QuantLib {
                                  BusinessDayConvention convention,
                                  bool endOfMonth,
                                  const DayCounter& dayCounter)
-    : RelativeDateRateHelper(rate), periodToStart_(periodToStart) {
+    : RelativeDateBootstrapHelper<ForwardRateCurve>(rate), periodToStart_(periodToStart) {
         // no way to take fixing into account,
         // even if we would like to for FRA over today
         iborIndex_ = shared_ptr<IborIndex>(new
@@ -470,7 +470,7 @@ namespace QuantLib {
                                  BusinessDayConvention convention,
                                  bool endOfMonth,
                                  const DayCounter& dayCounter)
-    : RelativeDateRateHelper(rate),periodToStart_(periodToStart) {
+    : RelativeDateBootstrapHelper<ForwardRateCurve>(rate),periodToStart_(periodToStart) {
         // no way to take fixing into account,
         // even if we would like to for FRA over today
         iborIndex_ = shared_ptr<IborIndex>(new
@@ -485,7 +485,7 @@ namespace QuantLib {
     FraRateHelper::FraRateHelper(const Handle<Quote>& rate,
                                  Period periodToStart,
                                  const shared_ptr<IborIndex>& i)
-    : RelativeDateRateHelper(rate), periodToStart_(periodToStart) {
+    : RelativeDateBootstrapHelper<ForwardRateCurve>(rate), periodToStart_(periodToStart) {
         // take fixing into account
         iborIndex_ = i->clone(termStructureHandle_);
         // see above
@@ -497,7 +497,7 @@ namespace QuantLib {
     FraRateHelper::FraRateHelper(Rate rate,
                                  Period periodToStart,
                                  const shared_ptr<IborIndex>& i)
-    : RelativeDateRateHelper(rate), periodToStart_(periodToStart) {
+    : RelativeDateBootstrapHelper<ForwardRateCurve>(rate), periodToStart_(periodToStart) {
         // take fixing into account
         iborIndex_ = i->clone(termStructureHandle_);
         // see above
@@ -518,7 +518,7 @@ namespace QuantLib {
         // force recalculation when needed
         bool observer = false;
         termStructureHandle_.linkTo(temp, observer);
-        RelativeDateRateHelper::setTermStructure(t);
+        RelativeDateBootstrapHelper<ForwardRateCurve>::setTermStructure(t);
     }
 
     void FraRateHelper::initializeDates() {
@@ -543,7 +543,7 @@ namespace QuantLib {
         if (v1 != 0)
             v1->visit(*this);
         else
-            RateHelper::accept(v);
+            BootstrapHelper<ForwardRateCurve>::accept(v);
     }
 
 
@@ -552,7 +552,7 @@ namespace QuantLib {
                                    const Handle<Quote>& spread,
                                    const Period& fwdStart,
                                    const Handle<YieldTermStructure>& discount)
-    : RelativeDateRateHelper(rate),
+    : RelativeDateBootstrapHelper<ForwardRateCurve>(rate),
       settlementDays_(swapIndex->fixingDays()),
       tenor_(swapIndex->tenor()), calendar_(swapIndex->fixingCalendar()),
       fixedConvention_(swapIndex->fixedLegConvention()),
@@ -584,7 +584,7 @@ namespace QuantLib {
                                    const Period& fwdStart,
                                    const Handle<YieldTermStructure>& discount,
                                    Natural settlementDays)
-    : RelativeDateRateHelper(rate),
+    : RelativeDateBootstrapHelper<ForwardRateCurve>(rate),
       settlementDays_(settlementDays),
       tenor_(tenor), calendar_(calendar),
       fixedConvention_(fixedConvention),
@@ -614,7 +614,7 @@ namespace QuantLib {
                                    const Handle<Quote>& spread,
                                    const Period& fwdStart,
                                    const Handle<YieldTermStructure>& discount)
-    : RelativeDateRateHelper(rate),
+    : RelativeDateBootstrapHelper<ForwardRateCurve>(rate),
       settlementDays_(swapIndex->fixingDays()),
       tenor_(swapIndex->tenor()), calendar_(swapIndex->fixingCalendar()),
       fixedConvention_(swapIndex->fixedLegConvention()),
@@ -646,7 +646,7 @@ namespace QuantLib {
                                    const Period& fwdStart,
                                    const Handle<YieldTermStructure>& discount,
                                    Natural settlementDays)
-    : RelativeDateRateHelper(rate),
+    : RelativeDateBootstrapHelper<ForwardRateCurve>(rate),
       settlementDays_(settlementDays),
       tenor_(tenor), calendar_(calendar),
       fixedConvention_(fixedConvention),
@@ -713,15 +713,13 @@ namespace QuantLib {
         termStructureHandle_.linkTo(temp, observer);
 
         if (discountHandle_.empty()) {
-            bool doNotThrow = false;
-            shared_ptr<YieldTermStructure> d =
-                convertIntoYTS(temp, doNotThrow);
+            shared_ptr<YieldTermStructure> d = convertIntoYTS(temp);
             // FIXME no_deletion
             discountRelinkableHandle_.linkTo(d, observer);
         } else
             discountRelinkableHandle_.linkTo(*discountHandle_, observer);
 
-        RelativeDateRateHelper::setTermStructure(t);
+        RelativeDateBootstrapHelper<ForwardRateCurve>::setTermStructure(t);
     }
 
     Real SwapRateHelper::impliedQuote() const {
@@ -744,7 +742,7 @@ namespace QuantLib {
         if (v1 != 0)
             v1->visit(*this);
         else
-            RateHelper::accept(v);
+            BootstrapHelper<ForwardRateCurve>::accept(v);
     }
 
     BMASwapRateHelper::BMASwapRateHelper(
@@ -759,7 +757,7 @@ namespace QuantLib {
                           const shared_ptr<BMAIndex>& bmaIndex,
                           // libor leg
                           const shared_ptr<IborIndex>& iborIndex)
-    : RelativeDateRateHelper(liborFraction),
+    : RelativeDateBootstrapHelper<ForwardRateCurve>(liborFraction),
       tenor_(tenor), settlementDays_(settlementDays),
       calendar_(calendar),
       bmaPeriod_(bmaPeriod),
@@ -811,7 +809,7 @@ namespace QuantLib {
                                                 clonedIndex,
                                                 bmaDayCount_));
         Handle<YieldTermStructure> disc = convertIntoYTSHandle(
-                                iborIndex_->forwardingTermStructure(), false);
+                                iborIndex_->forwardingTermStructure());
         swap_->setPricingEngine(shared_ptr<PricingEngine>(new
                                                 DiscountingSwapEngine(disc)));
 
@@ -831,7 +829,7 @@ namespace QuantLib {
         // force recalculation when needed
         bool observer = false;
         termStructureHandle_.linkTo(temp, observer);
-        RelativeDateRateHelper::setTermStructure(t);
+        RelativeDateBootstrapHelper<ForwardRateCurve>::setTermStructure(t);
     }
 
     Real BMASwapRateHelper::impliedQuote() const {
@@ -847,7 +845,7 @@ namespace QuantLib {
         if (v1 != 0)
             v1->visit(*this);
         else
-            RateHelper::accept(v);
+            BootstrapHelper<ForwardRateCurve>::accept(v);
     }
 
 }

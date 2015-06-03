@@ -36,7 +36,7 @@ const Real Gaussian1dModel::forwardRate(const Date &fixing,
 
     // might be empty, then use model curve
     Handle<YieldTermStructure> yts =
-        convertIntoYTSHandle(iborIdx->forwardingTermStructure(), false); 
+        convertIntoYTSHandle(iborIdx->forwardingTermStructure()); 
 
     Date valueDate = iborIdx->valueDate(fixing);
     Date endDate = iborIdx->fixingCalendar().advance(
@@ -62,7 +62,7 @@ const Real Gaussian1dModel::swapRate(const Date &fixing, const Period &tenor,
         return swapIdx->fixing(fixing);
 
     Handle<YieldTermStructure> ytsf =
-        convertIntoYTSHandle(swapIdx->forwardingTermStructure(), false);
+        convertIntoYTSHandle(swapIdx->forwardingTermStructure());
     Handle<YieldTermStructure> ytsd =
         swapIdx->discountingTermStructure(); // either might be empty, then
                                              // use model curve
