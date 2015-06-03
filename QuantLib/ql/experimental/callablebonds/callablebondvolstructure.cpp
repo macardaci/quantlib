@@ -23,23 +23,18 @@
 namespace QuantLib {
 
     CallableBondVolatilityStructure::CallableBondVolatilityStructure(
-                                                    const DayCounter& dc,
-                                                    BusinessDayConvention bdc)
-    : TermStructure(dc), bdc_(bdc) {}
-
-    CallableBondVolatilityStructure::CallableBondVolatilityStructure(
                                                     const Date& referenceDate,
                                                     const Calendar& calendar,
                                                     const DayCounter& dc,
                                                     BusinessDayConvention bdc)
-    : TermStructure(referenceDate, calendar, dc), bdc_(bdc) {}
+    : TermStructure(referenceDate), bdc_(bdc) {}
 
     CallableBondVolatilityStructure::CallableBondVolatilityStructure(
                                                     Natural settlementDays,
                                                     const Calendar& calendar,
                                                     const DayCounter& dc,
                                                     BusinessDayConvention bdc)
-    : TermStructure(settlementDays, calendar, dc), bdc_(bdc) {}
+    : TermStructure(settlementDays, calendar), bdc_(bdc) {}
 
     Time CallableBondVolatilityStructure::maxBondLength() const {
         return timeFromReference(referenceDate()+maxBondTenor());

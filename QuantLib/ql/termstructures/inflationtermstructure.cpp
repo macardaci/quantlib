@@ -23,21 +23,6 @@
 namespace QuantLib {
 
     InflationTermStructure::InflationTermStructure(
-                                        Rate baseRate,
-                                        const Period& observationLag,
-                                        Frequency frequency,
-                                        bool indexIsInterpolated,
-                                        const Handle<YieldTermStructure>& yTS,
-                                        const DayCounter& dayCounter,
-                                        const boost::shared_ptr<Seasonality> &seasonality)
-    : TermStructure(dayCounter),
-      observationLag_(observationLag), frequency_(frequency), indexIsInterpolated_(indexIsInterpolated),
-      baseRate_(baseRate), nominalTermStructure_(yTS) {
-        registerWith(nominalTermStructure_);
-        setSeasonality(seasonality);
-    }
-
-    InflationTermStructure::InflationTermStructure(
                                         const Date& referenceDate,
                                         Rate baseRate,
                                         const Period& observationLag,
@@ -47,7 +32,7 @@ namespace QuantLib {
                                         const Calendar& calendar,
                                         const DayCounter& dayCounter,
                                         const boost::shared_ptr<Seasonality> &seasonality)
-    : TermStructure(referenceDate, calendar, dayCounter),
+    : TermStructure(referenceDate),
       observationLag_(observationLag),
       frequency_(frequency), indexIsInterpolated_(indexIsInterpolated),
       baseRate_(baseRate), nominalTermStructure_(yTS) {
@@ -65,7 +50,7 @@ namespace QuantLib {
                                         const Handle<YieldTermStructure>& yTS,
                                         const DayCounter &dayCounter,
                                         const boost::shared_ptr<Seasonality> &seasonality)
-    : TermStructure(settlementDays, calendar, dayCounter),
+    : TermStructure(settlementDays, calendar),
       observationLag_(observationLag),
       frequency_(frequency), indexIsInterpolated_(indexIsInterpolated),
       baseRate_(baseRate), nominalTermStructure_(yTS) {

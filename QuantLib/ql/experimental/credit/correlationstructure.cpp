@@ -25,7 +25,7 @@ namespace QuantLib {
         const Calendar& cal,
         BusinessDayConvention bdc,
         const DayCounter& dc)
-    : TermStructure(dc), bdc_(bdc){
+    : TermStructure(), bdc_(bdc){
         calendar_ = cal;
     }
 
@@ -34,6 +34,6 @@ namespace QuantLib {
         const Calendar& cal,
         BusinessDayConvention bdc,
         const DayCounter& dc)
-    : TermStructure(settlementDays, cal, dc), bdc_(bdc){ }
+    : TermStructure(settlementDays, cal), bdc_(bdc){ }
 
 }

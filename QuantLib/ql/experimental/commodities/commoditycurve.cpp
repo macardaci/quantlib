@@ -30,7 +30,7 @@ namespace QuantLib {
                                    const std::vector<Date>& dates,
                                    const std::vector<Real>& prices,
                                    const DayCounter& dayCounter)
-    : TermStructure(dates[0], calendar, dayCounter),
+    : TermStructure(dates[0]),
       name_(name), commodityType_(commodityType), unitOfMeasure_(unitOfMeasure),
       currency_(currency), dates_(dates), data_(prices),
       interpolator_(ForwardFlat()), basisOfCurveUomConversionFactor_(1) {
@@ -44,7 +44,7 @@ namespace QuantLib {
             QL_REQUIRE(dates_[i] > dates_[i-1],
                        "invalid date (" << dates_[i] << ", vs "
                        << dates_[i-1] << ")");
-            times_[i] = dayCounter.yearFraction(dates_[0], dates_[i]);
+            times_[i] = timeFromReference(dates_[i]);
         }
 
         interpolation_ =
@@ -59,7 +59,7 @@ namespace QuantLib {
                                    const UnitOfMeasure& unitOfMeasure,
                                    const Calendar& calendar,
                                    const DayCounter& dayCounter)
-    : TermStructure(0, calendar, dayCounter),
+    : TermStructure(0, calendar),
       name_(name), commodityType_(commodityType), unitOfMeasure_(unitOfMeasure),
       currency_(currency), interpolator_(ForwardFlat()),
       basisOfCurveUomConversionFactor_(1) {}
@@ -77,7 +77,7 @@ namespace QuantLib {
         times_.resize(dates_.size());
         times_[0]=0.0;
         for (Size i = 1; i < dates_.size(); i++)
-            times_[i] = dayCounter().yearFraction(dates_[0], dates_[i]);
+            times_[i] = timeFromReference(dates_[i]);
 
         interpolation_ =
             interpolator_.interpolate(times_.begin(), times_.end(),

@@ -46,19 +46,12 @@ namespace QuantLib {
         */
         //@{
         DefaultProbabilityTermStructure(
-            const DayCounter& dc = DayCounter(),
-            const std::vector<Handle<Quote> >& jumps = std::vector<Handle<Quote> >(),
-            const std::vector<Date>& jumpDates = std::vector<Date>());
-        DefaultProbabilityTermStructure(
             const Date& referenceDate,
-            const Calendar& cal = Calendar(),
-            const DayCounter& dc = DayCounter(),
             const std::vector<Handle<Quote> >& jumps = std::vector<Handle<Quote> >(),
             const std::vector<Date>& jumpDates = std::vector<Date>());
         DefaultProbabilityTermStructure(
             Natural settlementDays,
             const Calendar& cal,
-            const DayCounter& dc = DayCounter(),
             const std::vector<Handle<Quote> >& jumps = std::vector<Handle<Quote> >(),
             const std::vector<Date>& jumpDates = std::vector<Date>());
         //@}
@@ -128,6 +121,7 @@ namespace QuantLib {
 
         //@{
         Rate hazardRate(const Date& d,
+                        const DayCounter& dc = DayCounter(),
                         bool extrapolate = false) const;
         Rate hazardRate(Time t,
                         bool extrapolate = false) const;

@@ -48,17 +48,11 @@ namespace QuantLib {
             constructors.
         */
         //@{
-        YieldTermStructure(const DayCounter& dc = DayCounter(),
-                           const std::vector<Handle<Quote> >& jumps = std::vector<Handle<Quote> >(),
-                           const std::vector<Date>& jumpDates = std::vector<Date>());
         YieldTermStructure(const Date& referenceDate,
-                           const Calendar& cal = Calendar(),
-                           const DayCounter& dc = DayCounter(),
                            const std::vector<Handle<Quote> >& jumps = std::vector<Handle<Quote> >(),
                            const std::vector<Date>& jumpDates = std::vector<Date>());
         YieldTermStructure(Natural settlementDays,
                            const Calendar& cal,
-                           const DayCounter& dc = DayCounter(),
                            const std::vector<Handle<Quote> >& jumps = std::vector<Handle<Quote> >(),
                            const std::vector<Date>& jumpDates = std::vector<Date>());
         //@}
@@ -95,14 +89,6 @@ namespace QuantLib {
                               Frequency freq = Annual,
                               bool extrapolate = false) const;
 
-        /*! The resulting interest rate has the same day-counting rule
-            used by the term structure. The same rule should be used
-            for calculating the passed time t.
-        */
-        InterestRate zeroRate(Time t,
-                              Compounding comp,
-                              Frequency freq = Annual,
-                              bool extrapolate = false) const;
         //@}
 
         /*! \name Forward rates
@@ -135,15 +121,6 @@ namespace QuantLib {
                                  Frequency freq = Annual,
                                  bool extrapolate = false) const;
 
-        /*! The resulting interest rate has the same day-counting rule
-            used by the term structure. The same rule should be used
-            for calculating the passed times t1 and t2.
-        */
-        InterestRate forwardRate(Time t1,
-                                 Time t2,
-                                 Compounding comp,
-                                 Frequency freq = Annual,
-                                 bool extrapolate = false) const;
         //@}
 
         //! \name Jump inspectors

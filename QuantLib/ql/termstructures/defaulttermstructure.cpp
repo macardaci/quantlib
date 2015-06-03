@@ -26,24 +26,12 @@
 namespace QuantLib {
 
     DefaultProbabilityTermStructure::DefaultProbabilityTermStructure(
-                                    const DayCounter& dc,
-                                    const std::vector<Handle<Quote> >& jumps,
-                                    const std::vector<Date>& jumpDates)
-    : TermStructure(dc), jumps_(jumps),
-      jumpDates_(jumpDates), jumpTimes_(jumpDates.size()),
-      nJumps_(jumps_.size()) {
-        setJumps();
-        for (Size i=0; i<nJumps_; ++i)
-            registerWith(jumps_[i]);
-    }
-
-    DefaultProbabilityTermStructure::DefaultProbabilityTermStructure(
                                     const Date& referenceDate,
                                     const Calendar& cal,
                                     const DayCounter& dc,
                                     const std::vector<Handle<Quote> >& jumps,
                                     const std::vector<Date>& jumpDates)
-    : TermStructure(referenceDate, cal, dc), jumps_(jumps),
+    : TermStructure(referenceDate), jumps_(jumps),
       jumpDates_(jumpDates), jumpTimes_(jumpDates.size()),
       nJumps_(jumps_.size()) {
         setJumps();
@@ -57,7 +45,7 @@ namespace QuantLib {
                                     const DayCounter& dc,
                                     const std::vector<Handle<Quote> >& jumps,
                                     const std::vector<Date>& jumpDates)
-    : TermStructure(settlementDays, cal, dc), jumps_(jumps),
+    : TermStructure(settlementDays, cal), jumps_(jumps),
       jumpDates_(jumpDates), jumpTimes_(jumpDates.size()),
       nJumps_(jumps_.size()) {
         setJumps();

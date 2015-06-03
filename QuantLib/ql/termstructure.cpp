@@ -20,35 +20,40 @@
 #include <ql/termstructure.hpp>
 #include <ql/math/comparison.hpp>
 
+namespace {
+    QuantLib::Real Time2Date = 365.0;
+    QuantLib::BigInteger maxSerial = QuantLib::Date::maxDate().serialNumber();
+}
+
 namespace QuantLib {
 
-    TermStructure::TermStructure(const DayCounter& dc)
-    : moving_(false),
-      updated_(true),
-      settlementDays_(Null<Natural>()),
-      dayCounter_(dc) {}
-
-    TermStructure::TermStructure(const Date& referenceDate,
-                                 const Calendar& cal,
-                                 const DayCounter& dc)
-    : moving_(false), updated_(true), calendar_(cal),
-      referenceDate_(referenceDate),
-      settlementDays_(Null<Natural>()),
-      dayCounter_(dc) {}
+    TermStructure::TermStructure(const Date& referenceDate)
+    : moving_(false), updated_(true),
+      calendar_(Calendar()), settlementDays_(Null<Natural>()),
+      referenceDate_(referenceDate) {}
 
     TermStructure::TermStructure(Natural settlementDays,
-                                 const Calendar& cal,
-                                 const DayCounter& dc)
-    : moving_(true), updated_(false), calendar_(cal),
-      settlementDays_(settlementDays),
-      dayCounter_(dc) {
+                                 const Calendar& cal)
+    : moving_(true), updated_(false),
+      calendar_(cal), settlementDays_(settlementDays)
+    {
         registerWith(Settings::instance().evaluationDate());
+    }
+
+    Time TermStructure::timeFromReference(const Date& d) const {
+        return (d-referenceDate())/Time2Date;
+    }
+
+    Date TermStructure::dateFromTime(Time t) const {
+        BigInteger result = std::min<BigInteger>(maxSerial, 
+            referenceDate().serialNumber() + BigInteger(t*Time2Date));
+        return Date(result);
     }
 
     const Date& TermStructure::referenceDate() const {
         if (!updated_) {
             Date today = Settings::instance().evaluationDate();
-            referenceDate_ = calendar().advance(today, settlementDays(), Days);
+            referenceDate_ = calendar_.advance(today, settlementDays(), Days);
             updated_ = true;
         }
         return referenceDate_;

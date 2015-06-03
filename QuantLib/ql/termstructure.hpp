@@ -59,36 +59,27 @@ namespace QuantLib {
             return the appropriate date.
         */
         //@{
-        //! default constructor
-        /*! \warning term structures initialized by means of this
-                     constructor must manage their own reference date
-                     by overriding the referenceDate() method.
-        */
-        TermStructure(const DayCounter& dc = DayCounter());
         //! initialize with a fixed reference date
-        TermStructure(const Date& referenceDate,
-                      const Calendar& calendar = Calendar(),
-                      const DayCounter& dc = DayCounter());
+        TermStructure(const Date& referenceDate);
         //! calculate the reference date based on the global evaluation date
         TermStructure(Natural settlementDays,
-                      const Calendar&,
-                      const DayCounter& dc = DayCounter());
+                      const Calendar&);
         //@}
         virtual ~TermStructure() {}
         //! \name Dates and Time
         //@{
-        //! the day counter used for date/time conversion
-        virtual DayCounter dayCounter() const;
         //! date/time conversion
         Time timeFromReference(const Date& date) const;
+        //! time-to-date conversion
+        Date dateFromTime(Time t) const;
         //! the latest date for which the curve can return values
         virtual Date maxDate() const = 0;
         //! the latest time for which the curve can return values
         virtual Time maxTime() const;
         //! the date at which discount = 1.0 and/or variance = 0.0
         virtual const Date& referenceDate() const;
-        //! the calendar used for reference and/or option date calculation
-        virtual Calendar calendar() const;
+        //! the calendar used for date calculation
+        //virtual Calendar calendar() const { return calendar_; }
         //! the settlementDays used for reference date calculation
         virtual Natural settlementDays() const;
         //@}
@@ -105,35 +96,22 @@ namespace QuantLib {
                         bool extrapolate) const;
         bool moving_;
         mutable bool updated_;
-        Calendar calendar_;
       private:
-        mutable Date referenceDate_;
         Natural settlementDays_;
-        DayCounter dayCounter_;
+        Calendar calendar_;
+        mutable Date referenceDate_;
     };
 
     // inline definitions
 
-    inline DayCounter TermStructure::dayCounter() const {
-        return dayCounter_;
-    }
-
     inline Time TermStructure::maxTime() const {
         return timeFromReference(maxDate());
-    }
-
-    inline Calendar TermStructure::calendar() const {
-        return calendar_;
     }
 
     inline Natural TermStructure::settlementDays() const {
         QL_REQUIRE(settlementDays_!=Null<Natural>(),
                    "settlement days not provided for this instance");
         return settlementDays_;
-    }
-
-    inline Time TermStructure::timeFromReference(const Date& d) const {
-        return dayCounter().yearFraction(referenceDate(), d);
     }
 
 }

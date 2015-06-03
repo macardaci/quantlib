@@ -40,25 +40,19 @@ namespace QuantLib {
             constructors.
         */
         //@{
-        /*! \warning term structures initialized by means of this
-                     constructor must manage their own reference date
-                     by overriding the referenceDate() method.
-        */
-        VolatilityTermStructure(BusinessDayConvention bdc,
-                                const DayCounter& dc = DayCounter());
         //! initialize with a fixed reference date
         VolatilityTermStructure(const Date& referenceDate,
                                 const Calendar& cal,
                                 BusinessDayConvention bdc,
-                                const DayCounter& dc = DayCounter());
+                                const DayCounter& dc);
         //! calculate the reference date based on the global evaluation date
         VolatilityTermStructure(Natural settlementDays,
                                 const Calendar& cal,
                                 BusinessDayConvention bdc,
-                                const DayCounter& dc = DayCounter());
+                                const DayCounter& dc);
         //@}
         //! the business day convention used in tenor to date conversion
-        virtual BusinessDayConvention businessDayConvention() const;
+        BusinessDayConvention businessDayConvention() const;
         //! period/date conversion
         Date optionDateFromTenor(const Period&) const;
         //! the minimum strike for which the term structure can return vols
@@ -69,6 +63,8 @@ namespace QuantLib {
         //! strike-range check
         void checkStrike(Rate strike,
                          bool extrapolate) const;
+        Calendar cal_;
+        DayCounter dc_;
       private:
         BusinessDayConvention bdc_;
     };
@@ -83,9 +79,7 @@ namespace QuantLib {
     inline Date
     VolatilityTermStructure::optionDateFromTenor(const Period& p) const {
         // swaption style
-        return calendar().advance(referenceDate(),
-                                  p,
-                                  businessDayConvention());
+        return cal_.advance(referenceDate(), p, bdc_);
     }
 }
 
