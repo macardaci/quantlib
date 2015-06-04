@@ -6,6 +6,7 @@
  Copyright (C) 2007, 2008, 2009, 2015 Ferdinando Ametrano
  Copyright (C) 2007, 2009 Roland Lichters
  Copyright (C) 2015 Maddalena Zanzi
+ Copyright (C) 2015 Riccardo Barone
 
  This file is part of QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
@@ -90,6 +91,7 @@ namespace QuantLib {
         //! \name RateHelper interface
         //@{
         Real impliedQuote() const;
+        void setTermStructure(YieldTermStructure*);
         //@}
         //! \name FuturesRateHelper inspectors
         //@{
@@ -101,7 +103,11 @@ namespace QuantLib {
         //@}
       private:
         Time yearFraction_;
+        Date fixingDate_;
+        boost::shared_ptr<IborIndex> iborIndex_;
+        RelinkableHandle<YieldTermStructure> termStructureHandle_;
         Handle<Quote> convAdj_;
+        bool IsGivenIndex_;
     };
 
 

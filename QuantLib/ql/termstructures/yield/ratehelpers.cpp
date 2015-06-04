@@ -6,6 +6,7 @@
  Copyright (C) 2007, 2008, 2009, 2015 Ferdinando Ametrano
  Copyright (C) 2007, 2009 Roland Lichters
  Copyright (C) 2015 Maddalena Zanzi
+ Copyright (C) 2015 Riccardo Barone
 
 
  This file is part of QuantLib, a free-software/open-source library
@@ -71,6 +72,7 @@ namespace QuantLib {
         yearFraction_ = dayCounter.yearFraction(earliestDate_, latestDate_);
 
         registerWith(convAdj_);
+        IsGivenIndex_ = false;
     }
 
     FuturesRateHelper::FuturesRateHelper(Real price,
@@ -101,6 +103,7 @@ namespace QuantLib {
         latestDate_ = calendar.advance(iborStartDate, lengthInMonths*Months,
                                        convention, endOfMonth);
         yearFraction_ = dayCounter.yearFraction(earliestDate_, latestDate_);
+        IsGivenIndex_ = false;
     }
 
     FuturesRateHelper::FuturesRateHelper(const Handle<Quote>& price,
@@ -153,6 +156,8 @@ namespace QuantLib {
         yearFraction_ = dayCounter.yearFraction(earliestDate_, latestDate_);
 
         registerWith(convAdj_);
+
+        IsGivenIndex_ = false;
     }
 
     FuturesRateHelper::FuturesRateHelper(Real price,
@@ -205,6 +210,8 @@ namespace QuantLib {
         earliestDate_ = iborStartDate;
 
         yearFraction_ = dayCounter.yearFraction(earliestDate_, latestDate_);
+
+        IsGivenIndex_ = false;
     }
 
     FuturesRateHelper::FuturesRateHelper(const Handle<Quote>& price,
@@ -228,10 +235,17 @@ namespace QuantLib {
         earliestDate_ = iborStartDate;
         const Calendar& cal = i->fixingCalendar();
         latestDate_ = cal.advance(iborStartDate, i->tenor(),
-                                  i->businessDayConvention());
+            i->businessDayConvention());
         yearFraction_=i->dayCounter().yearFraction(earliestDate_, latestDate_);
+        // take fixing into account
+        iborIndex_ = i->clone(termStructureHandle_);
+        // see above
+        iborIndex_->unregisterWith(termStructureHandle_);
+        registerWith(iborIndex_);
 
         registerWith(convAdj);
+        fixingDate_ = iborIndex_->fixingDate(earliestDate_);
+        IsGivenIndex_ = true;
     }
 
     FuturesRateHelper::FuturesRateHelper(Real price,
@@ -257,20 +271,41 @@ namespace QuantLib {
         earliestDate_ = iborStartDate;
         const Calendar& cal = i->fixingCalendar();
         latestDate_ = cal.advance(iborStartDate, i->tenor(),
-                                  i->businessDayConvention());
+            i->businessDayConvention());
         yearFraction_=i->dayCounter().yearFraction(earliestDate_, latestDate_);
+        // take fixing into account
+        iborIndex_ = i->clone(termStructureHandle_);
+        // see above
+        iborIndex_->unregisterWith(termStructureHandle_);
+        registerWith(iborIndex_);
+        fixingDate_ = iborIndex_->fixingDate(earliestDate_);
+        IsGivenIndex_ = true;
     }
 
     Real FuturesRateHelper::impliedQuote() const {
         QL_REQUIRE(termStructure_ != 0, "term structure not set");
-        Rate forwardRate = (termStructure_->discount(earliestDate_) /
-            termStructure_->discount(latestDate_)-1.0)/yearFraction_;
+        Rate forwardRate;
+        if (IsGivenIndex_)
+            forwardRate = iborIndex_->fixing(fixingDate_, true);
+        else{
+            forwardRate = (termStructure_->discount(earliestDate_) /
+                  termStructure_->discount(latestDate_) - 1.0) / yearFraction_;
+        }
+
         Rate convAdj = convAdj_.empty() ? 0.0 : convAdj_->value();
         // Convexity, as FRA/futures adjustment, has been used in the
         // past to take into account futures margining vs FRA.
         // Therefore, there's no requirement for it to be non-negative.
         Rate futureRate = forwardRate + convAdj;
         return 100.0 * (1.0 - futureRate);
+    }
+
+    void FuturesRateHelper::setTermStructure(YieldTermStructure* t) {
+        // no need to register---the index is not lazy
+        termStructureHandle_.linkTo(
+            shared_ptr<YieldTermStructure>(t, no_deletion),
+            false);
+        RateHelper::setTermStructure(t);
     }
 
     Real FuturesRateHelper::convexityAdjustment() const {
