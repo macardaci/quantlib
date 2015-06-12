@@ -6,6 +6,7 @@
  Copyright (C) 2007, 2008, 2009, 2015 Ferdinando Ametrano
  Copyright (C) 2007, 2009 Roland Lichters
  Copyright (C) 2015 Maddalena Zanzi
+ Copyright (C) 2015 Riccardo Barone
 
  This file is part of QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
@@ -44,6 +45,7 @@ namespace QuantLib {
     class FuturesRateHelper : public BootstrapHelper<ForwardRateCurve> {
       public:
         FuturesRateHelper(const Handle<Quote>& price,
+                          Natural fixingDays,
                           const Date& iborStartDate,
                           Natural lengthInMonths,
                           const Calendar& calendar,
@@ -53,6 +55,7 @@ namespace QuantLib {
                           const Handle<Quote>& convexityAdjustment = Handle<Quote>(),
                           Futures::Type type = Futures::IMM);
         FuturesRateHelper(Real price,
+                          Natural fixingDays,
                           const Date& iborStartDate,
                           Natural lengthInMonths,
                           const Calendar& calendar,
@@ -62,12 +65,14 @@ namespace QuantLib {
                           Rate convexityAdjustment = 0.0,
                           Futures::Type type = Futures::IMM);
         FuturesRateHelper(const Handle<Quote>& price,
+                          Natural fixingDays,
                           const Date& iborStartDate,
                           const Date& iborEndDate,
                           const DayCounter& dayCounter,
                           const Handle<Quote>& convexityAdjustment = Handle<Quote>(),
                           Futures::Type type = Futures::IMM);
         FuturesRateHelper(Real price,
+                          Natural fixingDays,
                           const Date& iborStartDate,
                           const Date& endDate,
                           const DayCounter& dayCounter,
@@ -86,6 +91,7 @@ namespace QuantLib {
         //! \name BootstrapHelper<ForwardRateCurve> interface
         //@{
         Real impliedQuote() const;
+        void setTermStructure(ForwardRateCurve*);
         //@}
         //! \name FuturesRateHelper inspectors
         //@{
@@ -96,6 +102,9 @@ namespace QuantLib {
         void accept(AcyclicVisitor&);
         //@}
       private:
+        Date fixingDate_;
+        boost::shared_ptr<IborIndex> iborIndex_;
+        RelinkableHandle<ForwardRateCurve> termStructureHandle_;
         Handle<Quote> convAdj_;
     };
 

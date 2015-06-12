@@ -450,9 +450,7 @@ namespace {
         Date immStart = Date();
         for (Size i = 0; i<vars.immFuts; i++) {
             immStart = IMM::nextDate(immStart, false);
-            Date end = vars.calendar.advance(immStart, 3, Months,
-                euribor3m->businessDayConvention(),
-                euribor3m->endOfMonth());
+            Date end = euribor3m->maturityDate(immStart);
 
             ForwardRateAgreement immFut(immStart, end, Position::Long,
                 immFutData[i].rate / 100, 100.0,
@@ -477,10 +475,8 @@ namespace {
         Date asxStart = Date();
         for (Size i = 0; i<vars.asxFuts; i++) {
             asxStart = ASX::nextDate(asxStart, false);
-            Date end = vars.calendar.advance(asxStart, 3, Months,
-                euribor3m->businessDayConvention(),
-                euribor3m->endOfMonth());
-
+            Date end = euribor3m->maturityDate(asxStart);
+            
             ForwardRateAgreement asxFut(asxStart, end, Position::Long,
                 asxFutData[i].rate / 100, 100.0,
                 euribor3m, curveHandle);

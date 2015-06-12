@@ -6,6 +6,7 @@
  Copyright (C) 2007, 2008, 2009, 2015 Ferdinando Ametrano
  Copyright (C) 2007, 2009 Roland Lichters
  Copyright (C) 2015 Maddalena Zanzi
+ Copyright (C) 2015 Riccardo Barone
 
 
  This file is part of QuantLib, a free-software/open-source library
@@ -44,6 +45,7 @@ namespace QuantLib {
     }
 
     FuturesRateHelper::FuturesRateHelper(const Handle<Quote>& price,
+                                         Natural fixingDays,
                                          const Date& iborStartDate,
                                          Natural lengthInMonths,
                                          const Calendar& calendar,
@@ -66,12 +68,21 @@ namespace QuantLib {
             QL_FAIL("unknown futures type (" << Integer(type) << ")");
         }
         earliestDate_ = iborStartDate;
-        latestDate_ = calendar.advance(iborStartDate, lengthInMonths*Months,
-                                       convention, endOfMonth);
+        // no way to take fixing into account,
+        // even if we would like to for FRA over today
+        iborIndex_ = shared_ptr<IborIndex>(new
+            IborIndex("no-fix", // correct family name would be needed
+                      lengthInMonths*Months,
+                      fixingDays,
+                      Currency(), calendar, convention,
+                      endOfMonth, dayCounter, termStructureHandle_));
+        latestDate_ = iborIndex_->maturityDate(earliestDate_);
+        fixingDate_ = iborIndex_->fixingDate(earliestDate_);
         registerWith(convAdj_);
     }
 
     FuturesRateHelper::FuturesRateHelper(Real price,
+                                         Natural fixingDays,
                                          const Date& iborStartDate,
                                          Natural lengthInMonths,
                                          const Calendar& calendar,
@@ -96,11 +107,20 @@ namespace QuantLib {
             QL_FAIL("unknown futures type (" << Integer(type) << ")");
         }
         earliestDate_ = iborStartDate;
-        latestDate_ = calendar.advance(iborStartDate, lengthInMonths*Months,
-                                       convention, endOfMonth);
+        // no way to take fixing into account,
+        // even if we would like to for FRA over today
+        iborIndex_ = shared_ptr<IborIndex>(new
+            IborIndex("no-fix", // correct family name would be needed
+                      lengthInMonths*Months,
+                      fixingDays,
+                      Currency(), calendar, convention,
+                      endOfMonth, dayCounter, termStructureHandle_));
+        latestDate_ = iborIndex_->maturityDate(earliestDate_);
+        fixingDate_ = iborIndex_->fixingDate(earliestDate_);
     }
 
     FuturesRateHelper::FuturesRateHelper(const Handle<Quote>& price,
+                                         Natural fixingDays,
                                          const Date& iborStartDate,
                                          const Date& iborEndDate,
                                          const DayCounter& dayCounter,
@@ -151,6 +171,7 @@ namespace QuantLib {
     }
 
     FuturesRateHelper::FuturesRateHelper(Real price,
+                                         Natural fixingDays,
                                          const Date& iborStartDate,
                                          const Date& iborEndDate,
                                          const DayCounter& dayCounter,
@@ -198,7 +219,6 @@ namespace QuantLib {
             QL_FAIL("unknown futures type (" << Integer(type) << ")");
         }
         earliestDate_ = iborStartDate;
-
     }
 
     FuturesRateHelper::FuturesRateHelper(const Handle<Quote>& price,
@@ -219,11 +239,18 @@ namespace QuantLib {
           default:
             QL_FAIL("unknown futures type (" << Integer(type) << ")");
         }
-        earliestDate_ = iborStartDate;
-        const Calendar& cal = i->fixingCalendar();
-        latestDate_ = cal.advance(iborStartDate, i->tenor(),
-                                  i->businessDayConvention());
+
+        // take fixing into account
+        iborIndex_ = i->clone(termStructureHandle_);
+        // see above
+        iborIndex_->unregisterWith(termStructureHandle_);
+        registerWith(iborIndex_);
+
         registerWith(convAdj);
+
+        earliestDate_ = iborStartDate;
+        latestDate_ = iborIndex_->maturityDate(earliestDate_);
+        fixingDate_ = iborIndex_->fixingDate(earliestDate_);
     }
 
     FuturesRateHelper::FuturesRateHelper(Real price,
@@ -246,21 +273,37 @@ namespace QuantLib {
           default:
             QL_FAIL("unknown futures type (" << Integer(type) << ")");
         }
+
+        // take fixing into account
+        iborIndex_ = i->clone(termStructureHandle_);
+        // see above
+        iborIndex_->unregisterWith(termStructureHandle_);
+        registerWith(iborIndex_);
+
         earliestDate_ = iborStartDate;
-        const Calendar& cal = i->fixingCalendar();
-        latestDate_ = cal.advance(iborStartDate, i->tenor(),
-                                  i->businessDayConvention());
+        latestDate_ = iborIndex_->maturityDate(earliestDate_);
+        fixingDate_ = iborIndex_->fixingDate(earliestDate_);
     }
 
     Real FuturesRateHelper::impliedQuote() const {
         QL_REQUIRE(termStructure_ != 0, "term structure not set");
-        Rate forwardRate = termStructure_->forwardRate(earliestDate_);
+        Rate forwardRate = iborIndex_->fixing(fixingDate_, true);
         Rate convAdj = convAdj_.empty() ? 0.0 : convAdj_->value();
         // Convexity, as FRA/futures adjustment, has been used in the
         // past to take into account futures margining vs FRA.
         // Therefore, there's no requirement for it to be non-negative.
         Rate futureRate = forwardRate + convAdj;
         return 100.0 * (1.0 - futureRate);
+    }
+
+    void FuturesRateHelper::setTermStructure(ForwardRateCurve* t) {
+        shared_ptr<ForwardRateCurve> temp(t, no_deletion);
+        // do not set the relinkable handle as an observer
+        // the index is not lazy
+        // force recalculation when needed
+        bool observer = false;
+        termStructureHandle_.linkTo(temp, observer);
+        BootstrapHelper<ForwardRateCurve>::setTermStructure(t);
     }
 
     Real FuturesRateHelper::convexityAdjustment() const {
