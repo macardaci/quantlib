@@ -127,15 +127,18 @@ namespace QuantLib {
         return fwdCurve_;
     }
 
-    inline Rate IborIndex::forecastFixing(const Date& d,
-                                          const Date&,
-                                          Time) const {
+    inline Rate IborIndex::forecastFixing(const Date& d1,
+                                          const Date& d2,
+                                          Time t) const {
         QL_REQUIRE(!fwdCurve_.empty(),
                    "null ForwardRateCurve set to this instance of " << name());
-        //DiscountFactor disc1 = termStructure_->discount(d1);
-        //DiscountFactor disc2 = termStructure_->discount(d2);
-        //return (disc1/disc2 - 1.0) / t;
-        return fwdCurve_->forwardRate(d);
+        boost::shared_ptr<YieldTermStructure> y = convertIntoYTS(fwdCurve_.currentLink());
+        if (y!=0) {
+            DiscountFactor disc1 = y->discount(d1);
+            DiscountFactor disc2 = y->discount(d2);
+            return (disc1/disc2 - 1.0) / t;
+        } else
+            return fwdCurve_->forwardRate(d1);
     }
 
 }

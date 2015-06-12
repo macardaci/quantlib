@@ -92,6 +92,14 @@ namespace QuantLib {
         }
         // upper bound for convergence loop
         static Size maxIterations() {return 25;}
+
+        // pillar date
+        template <class C>
+        static Date pillarDate(Size i,
+                               const C* c)
+        {
+            return c->instruments()[i]->latestDate();
+        }
     };
 
 
@@ -152,6 +160,7 @@ namespace QuantLib {
         const std::vector<Real>& data() const;
         std::vector<std::pair<Date, Real> > nodes() const;
         //@}
+        const std::vector<boost::shared_ptr<typename Traits::helper> >& instruments() const { return instruments_; }
         //! \name Observer interface
         //@{
         void update();

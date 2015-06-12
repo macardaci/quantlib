@@ -84,10 +84,10 @@ namespace QuantLib {
 
         // skip expired helpers
         Date firstDate = Traits::initialDate(ts_);
-        QL_REQUIRE(ts_->instruments_[n_-1]->latestDate()>firstDate,
+        QL_REQUIRE(Traits::pillarDate(n_-1, ts_) > firstDate,
                    "all instruments expired");
         firstAliveHelper_ = 0;
-        while (ts_->instruments_[firstAliveHelper_]->latestDate() <= firstDate)
+        while (Traits::pillarDate(firstAliveHelper_, ts_) <= firstDate)
             ++firstAliveHelper_;
         alive_ = n_-firstAliveHelper_;
         QL_REQUIRE(alive_>=Interpolator::requiredPoints-1,
@@ -108,7 +108,7 @@ namespace QuantLib {
         for (Size i=1, j=firstAliveHelper_; j<n_; ++i, ++j) {
             const boost::shared_ptr<typename Traits::helper>& helper =
                                                         ts_->instruments_[j];
-            dates[i] = helper->latestDate();
+            dates[i] = Traits::pillarDate(j, ts_);
             times[i] = ts_->timeFromReference(dates[i]);
             // check for duplicated maturity
             QL_REQUIRE(dates[i-1]!=dates[i],
@@ -213,6 +213,7 @@ namespace QuantLib {
                     QL_FAIL(io::ordinal(iteration+1) << " iteration: failed "
                             "at " << io::ordinal(i) << " alive instrument, "
                             "maturity " << errors_[i]->helper()->latestDate()<<
+                            ", pillar " << ts_->dates_[i] <<
                             ", reference date " << ts_->dates_[0] <<
                             ": " << e.what());
                 }

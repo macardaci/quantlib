@@ -110,6 +110,14 @@ namespace QuantLib {
         // upper bound for convergence loop
         // calibration is trivial, should be immediate
         static Size maxIterations() { return 5; }
+
+        // pillar date
+        template <class C>
+        static Date pillarDate(Size i,
+                               const C* c)
+        {
+            return c->instruments()[i]->latestDate();
+        }
     };
 
     //! Bootstrap traits to use for PiecewiseZeroInflationCurve
@@ -185,6 +193,14 @@ namespace QuantLib {
         }
         // upper bound for convergence loop
         static Size maxIterations() { return 40; }
+
+        // pillar date
+        template <class C>
+        static Date pillarDate(Size i,
+                               const C* c)
+        {
+            return c->instruments()[i]->latestDate();
+        }
     };
 
 }

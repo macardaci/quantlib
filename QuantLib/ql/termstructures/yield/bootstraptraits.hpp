@@ -116,6 +116,14 @@ namespace QuantLib {
         }
         // upper bound for convergence loop
         static Size maxIterations() { return 100; }
+
+        // pillar date
+        template <class C>
+        static Date pillarDate(Size i,
+                               const C* c)
+        {
+            return c->instruments()[i]->latestDate();
+        }
     };
 
 
@@ -209,6 +217,14 @@ namespace QuantLib {
         }
         // upper bound for convergence loop
         static Size maxIterations() { return 100; }
+
+        // pillar date
+        template <class C>
+        static Date pillarDate(Size i,
+                               const C* c)
+        {
+            return c->instruments()[i]->latestDate();
+        }
     };
 
 
@@ -302,6 +318,14 @@ namespace QuantLib {
         }
         // upper bound for convergence loop
         static Size maxIterations() { return 100; }
+
+        // pillar date
+        template <class C>
+        static Date pillarDate(Size i,
+                               const C* c)
+        {
+            return c->instruments()[i]->latestDate();
+        }
     };
 
 }
